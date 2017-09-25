@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.24)  25 SEP 2017 11:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.24)  25 SEP 2017 12:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1111,7 +1111,7 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 Here is how much of TeX's memory you used:
  16066 strings out of 493029
  314262 string characters out of 6136234
- 353748 words of memory out of 5000000
+ 353740 words of memory out of 5000000
  19296 multiletter control sequences out of 15000+600000
  17947 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1120,7 +1120,7 @@ Here is how much of TeX's memory you used:
 /dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.
 pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share
 /texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on numerical_exp_report.pdf (3 pages, 42258 bytes).
+Output written on numerical_exp_report.pdf (3 pages, 42092 bytes).
 PDF statistics:
  30 PDF objects out of 1000 (max. 8388607)
  21 compressed objects within 1 object stream
