@@ -61,7 +61,7 @@ The main goal of the Demand-Driven Cycamore Archetype project is to develop in s
 
 These prediction models are being developed by University of South Carolina. In this report, we discuss how to design numerical experiments for testing the non-optimizing, deterministic and stochastic prediction methods. 
 
-The first section evaluates the required tests for each kind of method assuming a once through fuel cycle. A once through nuclear fuel cycle refers to when spent fuel is not reprocessed. 
+The first section evaluates the required tests for each method assuming a once through fuel cycle. A once through nuclear fuel cycle refers to when spent fuel is not reprocessed. 
 
 \section{Once through Nuclear Fuel Cycle}
 \begin{figure}[H]
@@ -84,20 +84,46 @@ The first section evaluates the required tests for each kind of method assuming 
 \end{tikzpicture}
 \end{figure}
 
-\subsection*{Non-optimizing method}
-Conditions to Satisfy: 
+\subsection*{Non-optimizing prediction method}
+Conditions for test to satisfy: 
 \begin{itemize}
-\item  Do all the reactors run? 
+\item  Do all the reactors run at full capacity (not lacking fuel)? 
 \item Is the input required by the reactors within a specific uncertainty of the analytic solution? 
-\item  Is the output of the fuel fabrication facilities within a specific range of the input required by the reactors (calculated by the analytic solution) for all of them to run for each time step? 
+\item  Is the output of the fuel fabrication facilities within a specific range (more than?) of the input required by the reactors (calculated by the analytic solution) for all of them to run for each time step? 
+\begin{itemize}
+\item Is a new fuel fabrication facility deployed when the input required by the reactors exceeds the output of current fuel fabrication facilities?
+\item Is a fuel fabrication facility decommissioned when the input required by the reactors falls behind the output of current fuel fabrication facilities?
+\end{itemize}
 \item  Is the output of the enrichment facilities within a specific range of the input required by the fuel fabrication facilities (calculated by the analytic solution) for each time step? 
+\begin{itemize}
+\item Is a new enrichment facility deployed when the input required by the fuel fabrication facilities exceeds the output of current enrichment facilities?
+\item Is a enrichment facility decommissioned when the input required by the fuel fabrication facilities falls behind the output of current enrichment facilities?
+\end{itemize}
 \item Is the output of the conversion facilities within a specific range of the input required by the enrichment facilities (calculated by the analytic solution) for each time step? 
-\item Is the output of uranium mining within a specific range of the input required by the conversion facilities (calculated by the analytic solution) for each time step? 
+\begin{itemize}
+\item Is a new conversion facility deployed when the input required by the enrichment facility exceeds the output of current conversion facilities?
+\item Is a conversion facility decommissioned when the input required by the enrichment facilities falls behind the output of current conversion facilities?
+\end{itemize}
+\item Is the output of the milling facilities within a specific range of the input required by the conversion facilities (calculated by the analytic solution) for each time step? 
+\begin{itemize}
+\item Is a new milling facility deployed when the input required by the conversion facility exceeds the output of current milling facilities?
+\item Is a milling facility decommissioned when the input required by the conversion facilities falls behind the output of current milling facilities?
+\end{itemize}
+\item Is the output of uranium mining within a specific range of the input required by the milling facilities (calculated by the analytic solution) for each time step? 
+\begin{itemize}
+\item Does the amount of uranium mined increase when the input required by the milling facility exceeds the output of current uranium mines?
+\item Does the amount of uranium mined decrease when the input required by the milling facilities falls behind the output of current uranium mines?
+\end{itemize}
+\end{itemize}
+
+\subsection*{Deterministic-Optimizing/Stochastic prediction method}
+Conditions for test to satisfy: 
+\begin{itemize}
 \item 
 \end{itemize}
 
-\subsection*{Deterministic-Optimizing method}
 
+\section{Reprocessing Nuclear Fuel Cycle}
 \end{document}
 
 
