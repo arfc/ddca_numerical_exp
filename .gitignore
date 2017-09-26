@@ -1,0 +1,17 @@
+__pycache__
+*.egg-info
+*~
+*.bak
+.ipynb_checkpoints
+.tox
+.DS_Store
+\#*#
+.#*
+.coverage
+*.swp
+*.sqlite
+*.log
+*.dvi
+*.aux
+*.bbl
+*.blg
