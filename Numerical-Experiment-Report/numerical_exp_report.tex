@@ -77,8 +77,8 @@ each method assuming a once-through fuel cycle.
 \node (sink) [process, left of=reactor, xshift = -2cm]{\texttt{Sink}};
 
 \draw [arrow] (source) -- (enrichment); 
-\draw [arrow] (enrichment) -- (fabrication); 
-\draw [arrow] (fabrication) -- (reactor);
+\draw [arrow] (enrichment) -- (fuelfab); 
+\draw [arrow] (fuelfab) -- (reactor);
 \draw [arrow] (reactor) -- (sink);
 \end{tikzpicture}
 \end{figure}
