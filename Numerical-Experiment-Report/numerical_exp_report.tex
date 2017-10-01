@@ -10,11 +10,12 @@
 \usepackage{times}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{xspace}
 \usepackage{verbatim} % for block comments
 \usepackage{subfig} % for subfigures
 \usepackage{enumitem} % for a) b) c) lists
 \usepackage{float}
-\newcommand{\Cyclus}{textsc{Cyclus}\xspace}
+\newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
 \usepackage{titling}
 \newcommand{\subtitle}[1]{%
   \posttitle{%
@@ -58,9 +59,9 @@
 	\thispagestyle{empty}
 
 \section*{Introduction}
-The main goal of the Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) is to develop \Cyclus in-situ demand-driven deployment through non-optimizing, deterministic-optimizing and stochastic-optimizing prediction algorithms.
+The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cyclus in-situ demand-driven deployment capabilities through non-optimizing, deterministic-optimizing and stochastic-optimizing prediction algorithms.
 
-These prediction models are being developed by the University of South Carolina. In this report, we discuss numerical experiments for testing the non-optimizing, deterministic and stochastic prediction methods. 
+These prediction models are being developed by the University of South Carolina. In this report, we discuss numerical experiments for testing the non-optimizing, deterministic and stochastic optimizing methods. 
 
 \section{Once through Nuclear Fuel Cycle}
 This section evaluates the required tests for
@@ -69,20 +70,16 @@ each method assuming a once-through fuel cycle.
 \begin{figure}[H]
 \caption{Flow Chart of Once through Nuclear Fuel Cycle}
 \begin{tikzpicture}[node distance=2cm]
-\node (mining) [process] {Mining};
-\node (milling) [process, right of=mining, xshift=2cm] {Milling};
-\node (conversion) [process, right of=milling, xshift=2cm] {Conversion};
-\node (enrichment) [process, right of=conversion, xshift=2cm] {Enrichment};
-\node (fabrication) [process, below of=enrichment] {Fuel Fabrication};
-\node (powerplant) [process, left of=fabrication, xshift = -2cm]{Power Plant};
-\node (disposal) [process, left of=powerplant, xshift = -2cm]{Disposal};
+\node (source) [process] {\texttt{Source}};
+\node (enrichment) [process, right of=source, xshift=2cm] {\texttt{Enrichment}};
+\node (fuelfab) [process, below of=enrichment] {\texttt{FuelFab}};
+\node (reactor) [process, left of=fuelfab, xshift = -2cm]{\texttt{Reactor}};
+\node (sink) [process, left of=reactor, xshift = -2cm]{\texttt{Sink}};
 
-\draw [arrow] (mining) -- (milling);
-\draw [arrow] (milling) -- (conversion);
-\draw [arrow] (conversion) -- (enrichment); 
+\draw [arrow] (source) -- (enrichment); 
 \draw [arrow] (enrichment) -- (fabrication); 
-\draw [arrow] (fabrication) -- (powerplant);
-\draw [arrow] (powerplant) -- (disposal);
+\draw [arrow] (fabrication) -- (reactor);
+\draw [arrow] (reactor) -- (sink);
 \end{tikzpicture}
 \end{figure}
 
