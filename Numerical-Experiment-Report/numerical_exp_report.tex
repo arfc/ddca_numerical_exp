@@ -84,35 +84,31 @@ each method assuming a once-through fuel cycle.
 \end{figure}
 
 \subsection*{Non-optimizing prediction method}
-Conditions for test to satisfy: 
+Conditions to satisfy: 
+
 \begin{itemize}
-\item  Do all the reactors run at full capacity (not lacking fuel)? 
-\item Is the input required by the reactors within a specific uncertainty of the analytic solution? 
-\item  Is the output of the fuel fabrication facilities within a specific range (more than?) of the input required by the reactors (calculated by the analytic solution) for all of them to run for each time step? 
+\item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
+
+\item Is the predicted fuel demand within a specific uncertainty of the analytic solution? 
+
+\item  Is the output of the \texttt{Fuelfab} within a specific range (more than?) of the input required by the \texttt{Reactor}s (calculated by the analytic solution) for all of them to run for each time step? 
 \begin{itemize}
-\item Is a new fuel fabrication facility deployed when the input required by the reactors exceeds the output of current fuel fabrication facilities?
-\item Is a fuel fabrication facility decommissioned when the input required by the reactors falls behind the output of current fuel fabrication facilities?
+\item Is a new \texttt{Fuelfab} deployed when the input required by the reactors exceeds the output of current \texttt{Fuelfab}?
+\item Is a \texttt{Fuelfab} decommissioned when the input required by the reactors falls behind the output of current \texttt{Fuelfab} facilities?
 \end{itemize}
-\item  Is the output of the enrichment facilities within a specific range of the input required by the fuel fabrication facilities (calculated by the analytic solution) for each time step? 
+
+\item  Is the output of the \texttt{Enrichment} within a specific range of the input required by the \texttt{Fuelfab} (calculated by the analytic solution) for each time step? 
 \begin{itemize}
-\item Is a new enrichment facility deployed when the input required by the fuel fabrication facilities exceeds the output of current enrichment facilities?
-\item Is a enrichment facility decommissioned when the input required by the fuel fabrication facilities falls behind the output of current enrichment facilities?
+\item Is a new \texttt{Enrichment} deployed when the input required by the \texttt{Fuelfab} exceeds the output of current \texttt{Enrichment} facilities?
+\item Is a \texttt{Enrichment} decommissioned when the input required by the \texttt{Fuelfab} falls behind the output of current \texttt{Enrichment}?
 \end{itemize}
-\item Is the output of the conversion facilities within a specific range of the input required by the enrichment facilities (calculated by the analytic solution) for each time step? 
+
+\item Is the output of \texttt{Source} within a specific range of the input required by the \texttt{Enrichment} (calculated by the analytic solution) for each time step? 
 \begin{itemize}
-\item Is a new conversion facility deployed when the input required by the enrichment facility exceeds the output of current conversion facilities?
-\item Is a conversion facility decommissioned when the input required by the enrichment facilities falls behind the output of current conversion facilities?
+\item Does the \texttt{Source} output increase when the input required by the \texttt{Enrichment} exceeds the output of current \texttt{Source}?
+\item Does the \texttt{Source} output decrease when the input required by the \texttt{Enrichment} falls behind the output of current \texttt{Source}?
 \end{itemize}
-\item Is the output of the milling facilities within a specific range of the input required by the conversion facilities (calculated by the analytic solution) for each time step? 
-\begin{itemize}
-\item Is a new milling facility deployed when the input required by the conversion facility exceeds the output of current milling facilities?
-\item Is a milling facility decommissioned when the input required by the conversion facilities falls behind the output of current milling facilities?
-\end{itemize}
-\item Is the output of uranium mining within a specific range of the input required by the milling facilities (calculated by the analytic solution) for each time step? 
-\begin{itemize}
-\item Does the amount of uranium mined increase when the input required by the milling facility exceeds the output of current uranium mines?
-\item Does the amount of uranium mined decrease when the input required by the milling facilities falls behind the output of current uranium mines?
-\end{itemize}
+
 \end{itemize}
 
 \subsection*{Deterministic-Optimizing/Stochastic prediction method}
