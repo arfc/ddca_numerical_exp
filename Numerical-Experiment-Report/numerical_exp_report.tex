@@ -69,12 +69,12 @@ each method assuming a once-through fuel cycle.
 
 \begin{figure}[H]
 \caption{Flow Chart of Once through Nuclear Fuel Cycle}
-\begin{tikzpicture}[node distance=2cm]
+\begin{tikzpicture}[node distance=3.5cm]
 \node (source) [process] {\texttt{Source}};
-\node (enrichment) [process, right of=source, xshift=2cm] {\texttt{Enrichment}};
-\node (fuelfab) [process, below of=enrichment] {\texttt{FuelFab}};
-\node (reactor) [process, left of=fuelfab, xshift = -2cm]{\texttt{Reactor}};
-\node (sink) [process, left of=reactor, xshift = -2cm]{\texttt{Sink}};
+\node (enrichment) [process, right of=source] {\texttt{Enrichment}};
+\node (fuelfab) [process, right of=enrichment] {\texttt{FuelFab}};
+\node (reactor) [process, right of=fuelfab]{\texttt{Reactor}};
+\node (sink) [process, right of=reactor]{\texttt{Sink}};
 
 \draw [arrow] (source) -- (enrichment); 
 \draw [arrow] (enrichment) -- (fuelfab); 
