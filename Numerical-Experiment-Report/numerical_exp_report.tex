@@ -1,0 +1,131 @@
+\documentclass[12pt,letterpaper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{caption} % for table captions
+
+\usepackage{amsmath} % for multi-line equations and piecewises
+\usepackage{indentfirst} % to indent after a section
+\usepackage{setspace}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xspace}
+\usepackage{verbatim} % for block comments
+\usepackage{subfig} % for subfigures
+\usepackage{enumitem} % for a) b) c) lists
+\usepackage{float}
+\newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
+\usepackage{tikz}
+
+
+\usetikzlibrary{shapes.geometric,arrows}
+\tikzstyle{process} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=blue!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+
+\graphicspath{{images/}}
+ 
+\usepackage[font={footnotesize,it}]{caption}
+ 
+
+
+
+\setlength{\parindent}{15pt} % Default is 15pt.
+
+
+
+
+\fontfamily{ptm}\selectfont
+
+\title{Numerical Experiments for Validating Prediction Algorithms Report}
+\subtitle{Draft 1}
+\author{Jin Whan Bae and Gwendolyn Chee}
+\date{2017-09-23}
+
+
+\begin{document}
+	
+	\maketitle
+	\hrule
+	\onehalfspacing
+	\thispagestyle{empty}
+
+\section*{Introduction}
+The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cyclus in-situ demand-driven deployment capabilities through non-optimizing, deterministic-optimizing and stochastic-optimizing prediction algorithms.
+
+These prediction models are being developed by the University of South Carolina. In this report, we discuss numerical experiments for testing the non-optimizing, deterministic and stochastic optimizing methods. 
+
+\section{Once through Nuclear Fuel Cycle}
+This section evaluates the required tests for
+each method assuming a once-through fuel cycle.
+
+\begin{figure}[H]
+\caption{Flow Chart of Once through Nuclear Fuel Cycle}
+\begin{tikzpicture}[node distance=3.5cm]
+\node (source) [process] {\texttt{Source}};
+\node (enrichment) [process, right of=source] {\texttt{Enrichment}};
+\node (fuelfab) [process, right of=enrichment] {\texttt{FuelFab}};
+\node (reactor) [process, right of=fuelfab]{\texttt{Reactor}};
+\node (sink) [process, right of=reactor]{\texttt{Sink}};
+
+\draw [arrow] (source) -- (enrichment); 
+\draw [arrow] (enrichment) -- (fuelfab); 
+\draw [arrow] (fuelfab) -- (reactor);
+\draw [arrow] (reactor) -- (sink);
+\end{tikzpicture}
+\end{figure}
+
+\subsection*{Non-optimizing prediction method}
+Conditions to satisfy: 
+
+\begin{itemize}
+\item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
+
+\item Is the predicted fuel demand within a specific uncertainty of the analytic solution? 
+
+\item  Is the output of the \texttt{Fuelfab} within a specific range (more than?) of the input required by the \texttt{Reactor}s (calculated by the analytic solution) for all of them to run for each time step? 
+\begin{itemize}
+\item Is a new \texttt{Fuelfab} deployed when the input required by the reactors exceeds the output of current \texttt{Fuelfab}?
+\item Is a \texttt{Fuelfab} decommissioned when the input required by the reactors falls behind the output of current \texttt{Fuelfab} facilities?
+\end{itemize}
+
+\item  Is the output of the \texttt{Enrichment} within a specific range of the input required by the \texttt{Fuelfab} (calculated by the analytic solution) for each time step? 
+\begin{itemize}
+\item Is a new \texttt{Enrichment} deployed when the input required by the \texttt{Fuelfab} exceeds the output of current \texttt{Enrichment} facilities?
+\item Is a \texttt{Enrichment} decommissioned when the input required by the \texttt{Fuelfab} falls behind the output of current \texttt{Enrichment}?
+\end{itemize}
+
+\item Is the output of \texttt{Source} within a specific range of the input required by the \texttt{Enrichment} (calculated by the analytic solution) for each time step? 
+\begin{itemize}
+\item Does the \texttt{Source} output increase when the input required by the \texttt{Enrichment} exceeds the output of current \texttt{Source}?
+\item Does the \texttt{Source} output decrease when the input required by the \texttt{Enrichment} falls behind the output of current \texttt{Source}?
+\end{itemize}
+
+\end{itemize}
+
+\subsection*{Deterministic-Optimizing/Stochastic prediction method}
+Conditions for test to satisfy: 
+\begin{itemize}
+\item 
+\end{itemize}
+
+
+\section{Advanced Fuel Cycles}
+Advanced fuel cycles denote the fuel cycles
+where reprocessing of spent fuel takes place,
+to create fuel for advanced reactors. 
+\end{document}
+
+
+
+
+
+
