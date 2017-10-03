@@ -102,10 +102,10 @@ each method assuming a once-through fuel cycle.
 \end{tikzpicture}
 \end{figure}
 
-\subsection*{Non-optimizing prediction method}
+\subsection{Non-optimizing prediction method}
 Conditions to satisfy: 
 
-\begin{itemize}
+\begin{enumerate}
 \item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
 \begin{lstlisting}[language=C++]
 TEST(ReactorTests, DDDeploy_NO) {
@@ -154,7 +154,7 @@ TEST(ReactorTests, DDDeploy_NO) {
 \end{itemize}
 
 
-\end{itemize}
+\end{enumerate}
 
 
 However, the user may not have his or her cycle set to the generic fuel cycle, and may have
@@ -163,11 +163,12 @@ directly supplied by the \texttt{Source}. This brings the need for the algorithm
 the supply chain the supply fuel to the reactor, and deploy necessary facilities accordingly. 
 
 
-\subsection*{Deterministic-Optimizing/Stochastic prediction method}
+\subsection{Deterministic-Optimizing/Stochastic prediction method}
 Conditions for test to satisfy: 
 \begin{itemize}
 \item 
 \end{itemize}
+
 
 
 \section{Advanced Fuel Cycles}
