@@ -17,6 +17,7 @@
 \usepackage{float}
 \newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
 \usepackage{titling}
+\usepackage{listings}
 \newcommand{\subtitle}[1]{%
   \posttitle{%
     \par\end{center}
@@ -25,6 +26,24 @@
 }
 \usepackage{tikz}
 
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{186,255,241}
+\definecolor{antiquefuchsia}{rgb}{0.57, 0.36, 0.51}
+\definecolor{aquamarine}{rgb}{0.5, 1.0, 0.83}
+\lstset{
+    backgroundcolor=\color{aquamarine},
+    tabsize=4,
+  language=C++,
+  captionpos=b,
+  tabsize=4,
+  frame=lines,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  breaklines=true,
+  showstringspaces=false,
+  basicstyle=\footnotesize,
+  }
 
 \usetikzlibrary{shapes.geometric,arrows}
 \tikzstyle{process} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=blue!30]
@@ -88,12 +107,37 @@ Conditions to satisfy:
 
 \begin{itemize}
 \item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
+\begin{lstlisting}[language=C++]
+TEST(ReactorTests, DDDeploy_NO) {
+    [Example input with the following attributes:]
+        [int simdur = 20;]
+        [Defines reactor with zero refueling cycle and operation cycle of 1 month]
+        [Defines fuel cycle facilities parameters]
+        [Defines Reactor Deploy Scheme / Power Demand]
+        [Increasing Fuel Demand with Time]
+    [Run test]
+    [Test if Reactor has no zero values in output Timeseriespower]
+}
+\end{lstlisting}
 
 \item Is the predicted fuel demand within a specific uncertainty of the analytic solution? 
 
 \item  Is the output of the \texttt{Fuelfab} within a specific range (more than?) of the input required by the \texttt{Reactor}s (calculated by the analytic solution) for all of them to run for each time step? 
 \begin{itemize}
 \item Is a new \texttt{Fuelfab} deployed when the input required by the reactors exceeds the output of current \texttt{Fuelfab}?
+\begin{lstlisting}[language=C++]
+TEST(ReactorTests, DDDeploy_NO) {
+    [Example input with the following attributes:]
+        [int simdur = 20;]
+        [Defines reactor with zero refueling cycle and operation cycle of 1 month]
+        [Defines fuel cycle facilities parameters]
+        [Defines Reactor Deploy Scheme / Power Demand]
+        [Increasing Fuel Demand with Time]
+    [Run test]
+    [Test if Fuelfab is deployed in the beginning]
+    [Test if Fuelfab is deployed later in the simulation (have analytic solution)]
+}
+\end{lstlisting}
 \item Is a \texttt{Fuelfab} decommissioned when the input required by the reactors falls behind the output of current \texttt{Fuelfab} facilities?
 \end{itemize}
 
@@ -109,7 +153,15 @@ Conditions to satisfy:
 \item Does the \texttt{Source} output decrease when the input required by the \texttt{Enrichment} falls behind the output of current \texttt{Source}?
 \end{itemize}
 
+
 \end{itemize}
+
+
+However, the user may not have his or her cycle set to the generic fuel cycle, and may have
+variations so that there is no \texttt{Fuelfab} or \texttt{Enrichment}, but the fuel is
+directly supplied by the \texttt{Source}. This brings the need for the algorithm to recognize
+the supply chain the supply fuel to the reactor, and deploy necessary facilities accordingly. 
+
 
 \subsection*{Deterministic-Optimizing/Stochastic prediction method}
 Conditions for test to satisfy: 
