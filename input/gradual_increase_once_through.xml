@@ -1,0 +1,216 @@
+<!-- 
+
+repo
+    ^
+(spent_uox)
+    ^
+reactor
+    ^
+(uox)
+    ^
+enrichment
+    ^       
+(natl_u)
+    ^
+source
+
+-->
+
+<simulation>
+  <control>
+    <duration>50</duration>
+    <startmonth>1</startmonth>
+    <startyear>2000</startyear>
+  </control>
+  
+
+  <archetypes>
+    <spec> <lib>agents</lib> <name>NullInst</name></spec>
+    <spec> <lib>agents</lib> <name>NullRegion</name></spec>
+    <spec> <lib>cycamore</lib> <name>Source</name></spec>
+    <spec> <lib>cycamore</lib> <name>Sink</name></spec>
+    <spec> <lib>cycamore</lib> <name>Enrichment</name> </spec>
+    <spec> <lib>cycamore</lib> <name>Reactor</name> </spec>
+    <spec> <lib>cycamore</lib> <name>FuelFab</name> </spec>
+    <spec> <lib>cycamore</lib> <name>Separations</name> </spec>
+  </archetypes>
+
+
+  <facility>
+    <name>source</name>
+    <config>
+      <Source>
+        <outcommod>natl_u</outcommod>
+        <outrecipe>natl_u</outrecipe>
+        <throughput>1e4</throughput>
+      </Source>
+    </config>
+  </facility>
+
+  <facility>
+    <name>enrichment</name>
+    <config>
+      <Enrichment>
+        <feed_commod>natl_u</feed_commod>
+        <feed_recipe>natl_u</feed_recipe>
+        <product_commod>uox</product_commod>
+        <tails_assay>0.003</tails_assay>
+        <tails_commod>waste</tails_commod>
+        <swu_capacity>1e4</swu_capacity>
+        <initial_feed>1e4</initial_feed>
+      </Enrichment>
+    </config>
+  </facility>
+
+  <facility>
+    <name>reactor</name>
+    <config>
+      <Reactor>
+        <fuel_inrecipes>  <val>fresh_uox</val>  </fuel_inrecipes>
+        <fuel_outrecipes> <val>spent_uox</val>  </fuel_outrecipes>
+        <fuel_incommods>  <val>uox</val>        </fuel_incommods>
+        <fuel_outcommods> <val>spent_uox</val>  </fuel_outcommods>
+
+        <cycle_time>1</cycle_time>
+        <refuel_time>0</refuel_time>
+        <assem_size>1e3</assem_size>
+        <n_assem_core>3</n_assem_core>
+        <n_assem_batch>1</n_assem_batch>
+      </Reactor>
+    </config>
+  </facility>
+
+  <facility>
+    <name>repo</name>
+    <config>
+      <Sink>
+        <in_commods><val>waste</val></in_commods>
+        <capacity>1e4</capacity>
+      </Sink>
+    </config>
+  </facility>
+
+  <region>
+    <name>SingleRegion</name>
+    <config><NullRegion/></config>
+    <institution>
+      <name>NO_ddd</name>
+       <!-- Institute called NonOptimizng Demand Driven Deployment-->
+       <config><NO_ddd/></config>
+      <reactor_list>
+        <prototype>reactor</prototype>
+      </reactor_list>
+      <!--
+      User can choose from two options for deploying reactors:
+           1. manual deployment of reactors (~= deployinst)
+           2. deployment with energy demand (~= GrowthRegion)
+      -->
+      <deployment>
+      <type>growth</type>
+
+      <growth>
+        <piecewise_function>
+              <piece>
+                <start>0</start>
+                <function>
+                  <type>linear</type>
+                  <params>1 2</params>
+                </function>
+              </piece>
+        </piecewise_function>
+      </growth>
+      
+      </deployment>
+
+      <!-- OR -->
+
+      <deployment>
+      <type>manual</type>
+
+        <build_times>
+          <val>1</val>
+          <val>10</val>
+          <val>20</val>
+          <val>40</val>
+        </build_times>
+        <n_build>
+          <val>3</val>
+          <val>3</val>
+          <val>3</val>
+          <val>3</val>
+        </n_build>
+        <lifetimes>
+          <val>960</val>
+          <val>960</val>
+          <val>960</val>
+          <val>960</val>
+        </lifetimes>
+      </deployment>
+
+    </institution>
+  </region>
+
+  <recipe>
+    <name>natl_u</name>
+    <basis>mass</basis>
+    <nuclide> <id>U235</id> <comp>0.711</comp> </nuclide>
+    <nuclide> <id>U238</id> <comp>99.289</comp> </nuclide>
+  </recipe>
+
+  <recipe>
+    <name>fresh_uox</name>
+    <basis>mass</basis>
+    <nuclide> <id>U235</id><comp>0.04</comp></nuclide>
+    <nuclide><id>U238</id><comp>0.96</comp></nuclide>
+  </recipe>
+
+  <recipe>
+    <name>depleted_u</name>
+    <basis>mass</basis>
+    <nuclide> <id>U235</id><comp>0.003</comp></nuclide>
+    <nuclide><id>U238</id><comp>0.997</comp></nuclide>
+  </recipe>
+
+  <recipe>
+    <name>fresh_mox</name>
+    <basis>mass</basis>
+    <nuclide> <id>U235</id>  <comp>0.0027381</comp> </nuclide>
+    <nuclide> <id>U238</id>  <comp>0.9099619</comp> </nuclide>
+    <nuclide> <id>Pu238</id> <comp>0.001746</comp> </nuclide>
+    <nuclide> <id>Pu239</id> <comp>0.045396</comp> </nuclide>
+    <nuclide> <id>Pu240</id> <comp>0.020952</comp> </nuclide>
+    <nuclide> <id>Pu241</id> <comp>0.013095</comp> </nuclide>
+    <nuclide> <id>Pu242</id> <comp>0.005238</comp> </nuclide>
+  </recipe>
+
+  <recipe>
+    <name>spent_mox</name>
+    <basis>mass</basis>
+    <nuclide> <id>U235</id>  <comp>0.0017381</comp> </nuclide>
+    <nuclide> <id>U238</id>  <comp>0.90</comp> </nuclide>
+    <nuclide> <id>Pu238</id> <comp>0.001746</comp> </nuclide>
+    <nuclide> <id>Pu239</id> <comp>0.0134</comp> </nuclide>
+    <nuclide> <id>Pu240</id> <comp>0.020952</comp> </nuclide>
+    <nuclide> <id>Pu241</id> <comp>0.013095</comp> </nuclide>
+    <nuclide> <id>Pu242</id> <comp>0.005238</comp> </nuclide>
+  </recipe>
+
+  <recipe>
+    <name>spent_uox</name>
+    <basis>mass</basis>
+    <nuclide> <id>U235</id>  <comp>156.729</comp> </nuclide>
+    <nuclide> <id>U236</id>  <comp>102.103</comp> </nuclide>
+    <nuclide> <id>U238</id>  <comp>18280.324</comp> </nuclide>
+    <nuclide> <id>Np237</id> <comp>13.656</comp> </nuclide>
+    <nuclide> <id>Pu238</id> <comp>5.043</comp> </nuclide>
+    <nuclide> <id>Pu239</id> <comp>106.343</comp> </nuclide>
+    <nuclide> <id>Pu240</id> <comp>41.357</comp> </nuclide>
+    <nuclide> <id>Pu241</id> <comp>36.477</comp> </nuclide>
+    <nuclide> <id>Pu242</id> <comp>15.387</comp> </nuclide>
+    <nuclide> <id>Am241</id> <comp>1.234</comp> </nuclide>
+    <nuclide> <id>Am243</id> <comp>3.607</comp> </nuclide>
+    <nuclide> <id>Cm244</id> <comp>0.431</comp> </nuclide>
+    <nuclide> <id>Cm245</id> <comp>1.263</comp> </nuclide>
+  </recipe> 
+
+</simulation>
