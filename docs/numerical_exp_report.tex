@@ -16,6 +16,7 @@
 \usepackage{enumitem} % for a) b) c) lists
 \usepackage{float}
 \newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
+\newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
 \usepackage{titling}
 \usepackage{listings}
 \newcommand{\subtitle}[1]{%
@@ -77,7 +78,7 @@
 
 \fontfamily{ptm}\selectfont
 
-\title{Numerical Experiments for Validating Prediction Algorithms Report}
+\title{Numerical Experiments for Verifying Demand Driven Deployment Algorithms}
 \subtitle{Draft 1}
 \author{Jin Whan Bae and Gwendolyn Chee}
 \date{2017-09-23}
@@ -91,12 +92,13 @@
 	\thispagestyle{empty}
 
 \section*{Introduction}
-The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cyclus in-situ demand-driven deployment capabilities through non-optimizing, deterministic-optimizing and stochastic-optimizing prediction algorithms.
+The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cycamore demand-driven deployment capabilities.
+The project plans to use non-optimizing, deterministic-optimizing and stochastic-optimizing prediction algorithms.
 
-These prediction models are being developed by the University of South Carolina. In this report, we discuss numerical experiments for testing the non-optimizing, deterministic and stochastic optimizing methods. 
+These prediction models are being developed by the University of South Carolina. In this report, we discuss numerical experiments for testing the non-optimizing, deterministic optimizing and stochastic optimizing methods. 
 
 \section{Once through Nuclear Fuel Cycle}
-This section evaluates the required tests for
+This section defines the required tests for
 each method assuming a once-through fuel cycle.
 
 \begin{figure}[H]
@@ -115,19 +117,21 @@ each method assuming a once-through fuel cycle.
 \end{tikzpicture}
 \end{figure}
 
-\section{Input File Format}
-We assume the module to be an \texttt{INSTITUTION}, since
+\section{Input File Specification}
+We assume the archetype to be an \texttt{INSTITUTION}, since
 it governs deployment and decommission of facilities.
 
-The user would only have to define the reactor deployment (either
-directly or indirectly, see below) and the remaining fuel facilities
-, both front end and back end, would be `connected' and deployed.
+The user would only have to define the reactor prototype and reactor deployment. 
+The remaining fuel facilities,
+both front end and back end, would be recognized by the archetype
+by looking at each prototypes' in-and-out commodities.
+Then the recognized, or `connected' fuel cycle facilities deploy
+with demand.
 If an input file does not have the necessary `connections' for the 
 reactor to receive fuel, it will throw an error. 
 
-We suggest an example schema:
-First, the institution would define a prototype, defined in the input file,
-to be deployed. There can be multiple reactors.
+We suggest an example format:
+First, the input file would define reactor prototype to be deployed. There can be multiple reactors.
 \begin{lstlisting}[language=XML, caption=One-reactor fleet institution input schema]
 <institution>
       <name>NO_ddd</name>
@@ -194,97 +198,18 @@ deploy reactors according to power demand (GrowthRegion):
     </institution>
 \end{lstlisting}
 
-This can be advanced to model transition scenarios, where a the power demand
-function is defined separately for each reactor:
-\begin{lstlisting}[language=XML, caption=Reactor deployment input schema for EG30]
-      <institution>
-      <name>NO_ddd</name>
-       <config><NO_ddd/></config>
-      <reactor_list>
-        <val>lwr</val>
-        <val>sfr</val>
-        <val>mox_lwr</val>
-      </reactor_list>
-
-      <deployment>
-      <type>growth</type>
-
-      <growth>
-        <piecewise_function>
-              <piece>
-                <reactor>lwr</reactor>
-                <start>0</start>
-                <function>
-                  <type>linear</type>
-                  <params>1</params>
-                </function>
-              </piece>
-              <piece>
-                <reactor>lwr</reactor>
-                <start>80</start>
-                <function>
-                  <type>linear</type>
-                  <params>-1</params>
-              <piece>
-                <reactor>sfr</reactor>
-                <start>80</start>
-                <function>
-                  <type>linear</type>
-                  <params>0.87</params>
-                </function>
-              </piece>
-              <piece>
-                <reactor>lwr_mox</reactor>
-                <start>80</start>
-                <function>
-                  <type>linear</type>
-                  <params>0.13</params>
-                </function>
-              </piece>
-        </piecewise_function>
-      </growth>
-      
-      </deployment>
-
-    </institution>
-\end{lstlisting}
-
 \subsection{Non-optimizing prediction method}
-Conditions to satisfy: 
+The following conditions need to be satisfied.
 
 \begin{enumerate}
 \item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
-\begin{lstlisting}[language=C++, caption=Test to see all reactors run without lack of fuel]
-TEST(ReactorTests, DDDeploy_NO) {
-    [Example input with the following attributes:]
-        [int simdur = 20;]
-        [Defines reactor with zero refueling cycle and operation cycle of 1 month]
-        [Defines fuel cycle facilities parameters]
-        [Defines Reactor Deploy Scheme / Power Demand]
-        [Increasing Fuel Demand with Time]
-    [Run test]
-    [Test if Reactor has no zero values in output Timeseriespower]
-}
-\end{lstlisting}
 
 \item Is the predicted fuel demand within a specific uncertainty of the analytic solution? 
 
 \item  Is the output of the \texttt{Fuelfab} within a specific range (more than?) of the input required by the \texttt{Reactor}s (calculated by the analytic solution) for all of them to run for each time step? 
 \begin{itemize}
 \item Is a new \texttt{Fuelfab} deployed when the input required by the reactors exceeds the output of current \texttt{Fuelfab}?
-\begin{lstlisting}[language=C++, caption=Test demand-driven deployment of fuel cycle facility]
-TEST(ReactorTests, DDDeploy_NO) {
-    [Example input with the following attributes:]
-        [int simdur = 20;]
-        [Defines reactor with zero refueling cycle and operation cycle of 1 month]
-        [Defines fuel cycle facilities parameters]
-        [Defines Reactor Deploy Scheme / Power Demand]
-        [Increasing Fuel Demand with Time]
-    [Run test]
-    [Test if Fuelfab is deployed in the beginning]
-    [Test if Fuelfab is deployed later in the simulation (have analytic solution)]
-}
-\end{lstlisting}
+
 \item Is a \texttt{Fuelfab} decommissioned when the input required by the reactors falls behind the output of current \texttt{Fuelfab} facilities?
 \end{itemize}
 
@@ -370,9 +295,6 @@ TEST(ReactorTests, DDDeploy_NO) {
 
 
 \section{Advanced Fuel Cycles}
-Advanced fuel cycles denote the fuel cycles
-where reprocessing of spent fuel takes place,
-to create fuel for advanced reactors. 
 \end{document}
 
 
