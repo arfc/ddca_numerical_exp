@@ -1,7 +1,7 @@
 # ddca_numerical_exp
 Numerical Experiment for CYCLUS Demand-Driven Deployment 
 
-The repository is part of an effort to add demand-driven deployment
+hi The repository is part of an effort to add demand-driven deployment
 capabilities into the [CYCLUS](github.com/cyclus/cyclus) framework.
 PI: Kathryn Huff
 
