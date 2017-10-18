@@ -26,7 +26,7 @@
         <product_commod>uox</product_commod>
         <tails_assay>0.003</tails_assay>
         <tails_commod>waste</tails_commod>
-        <swu_capacity>1e100</swu_capacity>
+        <swu_capacity>2000</swu_capacity>
         <initial_feed>1e100</initial_feed>
       </Enrichment>
     </config>
@@ -56,7 +56,7 @@
     <config>
       <Sink>
         <in_commods><val>spent_uox</val></in_commods>
-        <capacity>1e100</capacity>
+        <capacity>200</capacity>
       </Sink>
     </config>
   </facility>
@@ -67,6 +67,7 @@
       <Source>
         <outcommod>natl_u</outcommod>
         <outrecipe>natl_u</outrecipe>
+        <throughput>3000</throughput>
       </Source>
     </config>
   </facility>
