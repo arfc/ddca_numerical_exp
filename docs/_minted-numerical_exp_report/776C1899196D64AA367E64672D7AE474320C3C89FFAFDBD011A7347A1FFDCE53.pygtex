@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{n}{TEST}\PYGdefault{p}{(}\PYGdefault{n}{ReactorTests}\PYGdefault{p}{,} \PYGdefault{n}{DDDeploy\PYGdefaultZus{}DO}\PYGdefault{p}{)} \PYGdefault{p}{\PYGdefaultZob{}}
+    \PYGdefault{p}{[}\PYGdefault{n}{Example} \PYGdefault{n}{input} \PYGdefault{n}{with} \PYGdefault{n}{the} \PYGdefault{n}{following} \PYGdefault{n+nl}{attributes}\PYGdefault{p}{:]}
+        \PYGdefault{p}{[}\PYGdefault{k+kt}{int} \PYGdefault{n}{simdur} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{20}\PYGdefault{p}{;]}
+        \PYGdefault{p}{[}\PYGdefault{n}{Defines} \PYGdefault{n}{reactor} \PYGdefault{n}{with} \PYGdefault{n}{zero} \PYGdefault{n}{refueling} \PYGdefault{n}{cycle} \PYGdefault{n}{and} \PYGdefault{n}{operation}
+        \PYGdefault{n}{cycle} \PYGdefault{n}{of} \PYGdefault{l+m+mi}{1} \PYGdefault{n}{month}\PYGdefault{p}{]}
+        \PYGdefault{p}{[}\PYGdefault{n}{Defines} \PYGdefault{n}{fuel} \PYGdefault{n}{cycle} \PYGdefault{n}{facilities} \PYGdefault{n}{parameters}\PYGdefault{p}{]}
+        \PYGdefault{p}{[}\PYGdefault{n}{Defines} \PYGdefault{n}{Reactor} \PYGdefault{n}{Deploy} \PYGdefault{n}{Scheme} \PYGdefault{o}{/} \PYGdefault{n}{Power} \PYGdefault{n}{Demand}\PYGdefault{p}{]}
+        \PYGdefault{p}{[}\PYGdefault{n}{Increasing} \PYGdefault{n}{Fuel} \PYGdefault{n}{Demand} \PYGdefault{n}{with} \PYGdefault{n}{Time}\PYGdefault{p}{]}
+    \PYGdefault{p}{[}\PYGdefault{n}{Run} \PYGdefault{n}{test}\PYGdefault{p}{]}
+    \PYGdefault{p}{[}\PYGdefault{n}{Test} \PYGdefault{k}{if} \PYGdefault{n}{Reactor} \PYGdefault{n}{has} \PYGdefault{n}{no} \PYGdefault{n}{zero} \PYGdefault{n}{values} \PYGdefault{n}{in} \PYGdefault{n}{output} \PYGdefault{n}{Timeseriespower}\PYGdefault{p}{]}
+\PYGdefault{p}{\PYGdefaultZcb{}}
+\end{Verbatim}

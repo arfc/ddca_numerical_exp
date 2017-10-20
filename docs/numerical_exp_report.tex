@@ -68,16 +68,13 @@
 	\onehalfspacing
 	\thispagestyle{empty}
 
-\section*{Introduction}
+\section{Introduction}
 The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cycamore demand-driven deployment capabilities.
 The project plans to use non-optimizing, deterministic-optimizing and stochastic-optimizing prediction algorithms.
 
-These prediction models are being developed by the University of South Carolina. In this report, we discuss numerical experiments for testing the non-optimizing, deterministic optimizing and stochastic optimizing methods. 
+These prediction models are being developed by the University of South Carolina. In this report, we discuss numerical experiments for testing the non-optimizing, deterministic optimizing and stochastic optimizing methods. The numerical experiments will be designed for both the once through nuclear fuel cycle and advanced fuel cycles. 
 
 \section{Once through Nuclear Fuel Cycle}
-This section defines the required tests for
-each method assuming a once-through fuel cycle.
-
 \begin{figure}[H]
 \caption{Flow Chart of Once through Nuclear Fuel Cycle}
 \begin{tikzpicture}[node distance=3.5cm]
@@ -94,9 +91,10 @@ each method assuming a once-through fuel cycle.
 \end{tikzpicture}
 \end{figure}
 
-\section{Input File Specification}
-We assume the archetype to be an \texttt{INSTITUTION}, since
-it governs deployment and decommission of facilities.
+In this report, the once-through fuel cycle is simplified to have 5 components: \texttt{Source}, \texttt{Enrichment}, \texttt{FuelFab}, \texttt{Reactor} and \texttt{Sink}. However, in a true once-through fuel cycle, there are more than 5 components. Other components include milling, conversion etc. For example, if a fuel cycle includes the milling step and excludes the \texttt{FuelFab} step, the tests can be modified to include milling and exclude \texttt{FuelFab}. 
+
+\subsection{Input File Specification}
+\Cyclus uses XML input files. For the input file, we assume the archetype to be an \texttt{INSTITUTION}, since it governs deployment and decommission of facilities.
 
 The user would only have to define the reactor prototype and reactor deployment. 
 The remaining fuel facilities,
@@ -120,8 +118,6 @@ First, the input file would define reactor prototype to be deployed. There can b
         <val>mox_lwr</val>
       </reactor_list>
 \end{minted}
-
-[Something About Transition Scenario Capabilities]
 
 Then deployment of the reactors is defined, and the user
 is given the option to manually define the deployment(DeployInst):
@@ -152,8 +148,7 @@ is given the option to manually define the deployment(DeployInst):
     </institution>
 \end{minted}
 
-or have the institution
-deploy reactors according to power demand (GrowthRegion):
+Or have the institution deploy reactors according to power demand (GrowthRegion):
 
 \begin{minted}{xml}
       <deployment>
@@ -181,7 +176,7 @@ deploy reactors according to power demand (GrowthRegion):
 A simple scenario definition is given where a predefined \texttt{Reactor}
 is deployed at timestep one and three. The chain of front---end
 fuel cycle facility of one facility each 
-(\texttt{Source}, \texttt{Enrichment}) can supply enough fuel
+(\texttt{Source}, \texttt{Enrichment}, \texttt{FuelFab}) can supply enough fuel
 for the operation of one reactor. A \texttt{Sink} can hold enough
 amount for two batches of fuel. The specifics are listed below:
 
@@ -228,6 +223,7 @@ amount for two batches of fuel. The specifics are listed below:
 An example input file with the facility and simulation
 definitions can be found in the input directory of this repository.
 
+\newpage
 \subsection{Analytical Solution}
 The simple scenario is solve analytically.
 
@@ -253,7 +249,7 @@ The simple scenario is solve analytically.
 \end{table}
 
 
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \begin{tabularx}{\textwidth}{ssss}
        \hline
@@ -284,8 +280,8 @@ The following conditions need to be satisfied for each segment of the fuel cycle
 \subsubsection{\texttt{Reactor}}
 
 \begin{enumerate}
-
-\item 
+ 
+\item Do all the \texttt{Reactor}s run? 
 \item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
 
 \item Is a new \texttt{Reactor} deployed when the energy demand exceeds the energy produced by the current \texttt{Reactor}s? 
@@ -325,17 +321,32 @@ The following conditions need to be satisfied for each segment of the fuel cycle
 The following conditions need to be satisfied for each segment of the fuel cycle. 
 
 \begin{enumerate}
-\item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
+\item Do all the \texttt{Reactor}s run? 
 \begin{minted}{c++}
 TEST(ReactorTests, DDDeploy_DO) {
     [Example input with the following attributes:]
         [int simdur = 20;]
-        [Defines reactor with zero refueling cycle and operation cycle of 1 month]
+        [Defines reactor with zero refueling cycle and operation 
+        cycle of 1 month]
         [Defines fuel cycle facilities parameters]
         [Defines Reactor Deploy Scheme / Power Demand]
         [Increasing Fuel Demand with Time]
     [Run test]
     [Test if Reactor has no zero values in output Timeseriespower]
+}
+\end{minted}
+\item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
+\begin{minted}{c++}
+TEST(ReactorTests, DDDeploy_DO) {
+    [Example input with the following attributes:]
+        [int simdur = 20;]
+        [Defines reactor with zero refueling cycle, power capacity 
+        of x and operation cycle of 1 month]
+        [Defines fuel cycle facilities parameters]
+        [Defines Reactor Deploy Scheme / Power Demand]
+        [Increasing Fuel Demand with Time]
+    [Run test]
+    [Test if Reactor has x value in output Timeseriespower]
 }
 \end{minted}
 
@@ -348,13 +359,15 @@ TEST(ReactorTests, DDDeploy_DO) {
 TEST(ReactorTests, DDDeploy_NO) {
     [Example input with the following attributes:]
         [int simdur = 20;]
-        [Defines reactor with zero refueling cycle and operation cycle of 1 month]
+        [Defines reactor with zero refueling cycle and operation 
+        cycle of 1 month]
         [Defines fuel cycle facilities parameters]
         [Defines Reactor Deploy Scheme / Power Demand]
         [Increasing Fuel Demand with Time]
     [Run test]
     [Test if fuel facility is deployed in the beginning]
-    [Test if fuel facility is deployed later in the simulation (have analytic solution)]
+    [Test if fuel facility is deployed later in the simulation 
+    (have analytic solution)]
 }
 \end{minted}
 
@@ -363,13 +376,15 @@ TEST(ReactorTests, DDDeploy_NO) {
 TEST(ReactorTests, DDDeploy_NO) {
     [Example input with the following attributes:]
         [int simdur = 20;]
-        [Defines reactor with zero refueling cycle and operation cycle of 1 month]
+        [Defines reactor with zero refueling cycle and operation 
+        cycle of 1 month]
         [Defines fuel cycle facilities parameters]
         [Defines Reactor Deploy Scheme / Power Demand]
         [Decreasing Fuel Demand with Time]
     [Run test]
     [Test if fuel facility is deployed in the beginning]
-    [Test if fuel facility exits later in the simulation (have analytic solution)]
+    [Test if fuel facility exits later in the simulation (have 
+    analytic solution)]
 }
 \end{minted}
 
