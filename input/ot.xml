@@ -90,6 +90,12 @@
 
             <val>reactor</val>
             <val>reactor</val>
+
+            <val>source</val>
+            <val>enrichment</val>
+
+            <val>repo</val>
+            <val>repo</val>
           </prototypes>
           <build_times>
             <val>1</val>
@@ -99,6 +105,12 @@
 
             <val>1</val>
             <val>3</val>
+
+            <val>3</val>
+            <val>3</val>
+
+            <val>6</val>
+            <val>8</val>
           </build_times>
           <n_build>
             <val>1</val>
@@ -107,6 +119,12 @@
 
 
             <val>1</val>
+            <val>1</val>
+
+            <val>1</val>
+            <val>1</val>
+
+            <val>2</val>
             <val>1</val>
           </n_build>
           <lifetimes>
@@ -117,6 +135,12 @@
             
             <val>6</val>
             <val>6</val>
+
+            <val>9</val>
+            <val>9</val>
+
+            <val>9</val>
+            <val>9</val>
           </lifetimes>
 
         </DeployInst>
