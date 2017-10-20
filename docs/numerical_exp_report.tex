@@ -68,16 +68,13 @@
 	\onehalfspacing
 	\thispagestyle{empty}
 
-\section*{Introduction}
+\section{Introduction}
 The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cycamore demand-driven deployment capabilities.
 The project plans to use non-optimizing, deterministic-optimizing and stochastic-optimizing prediction algorithms.
 
-These prediction models are being developed by the University of South Carolina. In this report, we discuss numerical experiments for testing the non-optimizing, deterministic optimizing and stochastic optimizing methods. 
+These prediction models are being developed by the University of South Carolina. In this report, we discuss numerical experiments for testing the non-optimizing, deterministic optimizing and stochastic optimizing methods. The numerical experiments will be designed for both the once through nuclear fuel cycle and advanced fuel cycles. 
 
 \section{Once through Nuclear Fuel Cycle}
-This section defines the required tests for
-each method assuming a once-through fuel cycle.
-
 \begin{figure}[H]
 \caption{Flow Chart of Once through Nuclear Fuel Cycle}
 \begin{tikzpicture}[node distance=3.5cm]
@@ -94,9 +91,10 @@ each method assuming a once-through fuel cycle.
 \end{tikzpicture}
 \end{figure}
 
-\section{Input File Specification}
-We assume the archetype to be an \texttt{INSTITUTION}, since
-it governs deployment and decommission of facilities.
+In this report, the once-through fuel cycle is simplified to have 5 components: \texttt{Source}, \texttt{Enrichment}, \texttt{FuelFab}, \texttt{Reactor} and \texttt{Sink}. However, in a true once-through fuel cycle, there are more than 5 components. Other components include milling, conversion etc. For example, if a fuel cycle includes the milling step and excludes the \texttt{FuelFab} step, the tests can be modified to include milling and exclude \texttt{FuelFab}. 
+
+\subsection{Input File Specification}
+\Cyclus uses XML input files. For the input file, we assume the archetype to be an \texttt{INSTITUTION}, since it governs deployment and decommission of facilities.
 
 The user would only have to define the reactor prototype and reactor deployment. 
 The remaining fuel facilities,
@@ -120,8 +118,6 @@ First, the input file would define reactor prototype to be deployed. There can b
         <val>mox_lwr</val>
       </reactor_list>
 \end{minted}
-
-[Something About Transition Scenario Capabilities]
 
 Then deployment of the reactors is defined, and the user
 is given the option to manually define the deployment(DeployInst):
@@ -152,8 +148,7 @@ is given the option to manually define the deployment(DeployInst):
     </institution>
 \end{minted}
 
-or have the institution
-deploy reactors according to power demand (GrowthRegion):
+Or have the institution deploy reactors according to power demand (GrowthRegion):
 
 \begin{minted}{xml}
       <deployment>

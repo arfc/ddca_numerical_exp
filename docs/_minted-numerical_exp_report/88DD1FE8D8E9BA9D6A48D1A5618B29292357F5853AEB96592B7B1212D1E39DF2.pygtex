@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+      \PYGdefault{n+nt}{\PYGdefaultZlt{}deployment\PYGdefaultZgt{}}
+      \PYGdefault{n+nt}{\PYGdefaultZlt{}type\PYGdefaultZgt{}}growth\PYGdefault{n+nt}{\PYGdefaultZlt{}/type\PYGdefaultZgt{}}
+
+      \PYGdefault{n+nt}{\PYGdefaultZlt{}growth\PYGdefaultZgt{}}
+        \PYGdefault{n+nt}{\PYGdefaultZlt{}piecewise\PYGdefaultZus{}function\PYGdefaultZgt{}}
+              \PYGdefault{n+nt}{\PYGdefaultZlt{}piece\PYGdefaultZgt{}}
+                \PYGdefault{n+nt}{\PYGdefaultZlt{}start\PYGdefaultZgt{}}0\PYGdefault{n+nt}{\PYGdefaultZlt{}/start\PYGdefaultZgt{}}
+                \PYGdefault{n+nt}{\PYGdefaultZlt{}function\PYGdefaultZgt{}}
+                  \PYGdefault{n+nt}{\PYGdefaultZlt{}type\PYGdefaultZgt{}}linear\PYGdefault{n+nt}{\PYGdefaultZlt{}/type\PYGdefaultZgt{}}
+                  \PYGdefault{n+nt}{\PYGdefaultZlt{}params\PYGdefaultZgt{}}1 2\PYGdefault{n+nt}{\PYGdefaultZlt{}/params\PYGdefaultZgt{}}
+                \PYGdefault{n+nt}{\PYGdefaultZlt{}/function\PYGdefaultZgt{}}
+              \PYGdefault{n+nt}{\PYGdefaultZlt{}/piece\PYGdefaultZgt{}}
+        \PYGdefault{n+nt}{\PYGdefaultZlt{}/piecewise\PYGdefaultZus{}function\PYGdefaultZgt{}}
+      \PYGdefault{n+nt}{\PYGdefaultZlt{}/growth\PYGdefaultZgt{}}
+
+      \PYGdefault{n+nt}{\PYGdefaultZlt{}/deployment\PYGdefaultZgt{}}
+
+    \PYGdefault{n+nt}{\PYGdefaultZlt{}/institution\PYGdefaultZgt{}}
+\end{Verbatim}
