@@ -176,7 +176,7 @@ Or have the institution deploy reactors according to power demand (GrowthRegion)
 A simple scenario definition is given where a predefined \texttt{Reactor}
 is deployed at timestep one and three. The chain of front---end
 fuel cycle facility of one facility each 
-(\texttt{Source}, \texttt{Enrichment}) can supply enough fuel
+(\texttt{Source}, \texttt{Enrichment}, \texttt{FuelFab}) can supply enough fuel
 for the operation of one reactor. A \texttt{Sink} can hold enough
 amount for two batches of fuel. The specifics are listed below:
 
@@ -223,6 +223,7 @@ amount for two batches of fuel. The specifics are listed below:
 An example input file with the facility and simulation
 definitions can be found in the input directory of this repository.
 
+\newpage
 \subsection{Analytical Solution}
 The simple scenario is solve analytically.
 
@@ -248,7 +249,7 @@ The simple scenario is solve analytically.
 \end{table}
 
 
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \begin{tabularx}{\textwidth}{ssss}
        \hline
@@ -279,8 +280,8 @@ The following conditions need to be satisfied for each segment of the fuel cycle
 \subsubsection{\texttt{Reactor}}
 
 \begin{enumerate}
-
-\item 
+ 
+\item Do all the \texttt{Reactor}s run? 
 \item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
 
 \item Is a new \texttt{Reactor} deployed when the energy demand exceeds the energy produced by the current \texttt{Reactor}s? 
@@ -320,17 +321,32 @@ The following conditions need to be satisfied for each segment of the fuel cycle
 The following conditions need to be satisfied for each segment of the fuel cycle. 
 
 \begin{enumerate}
-\item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
+\item Do all the \texttt{Reactor}s run? 
 \begin{minted}{c++}
 TEST(ReactorTests, DDDeploy_DO) {
     [Example input with the following attributes:]
         [int simdur = 20;]
-        [Defines reactor with zero refueling cycle and operation cycle of 1 month]
+        [Defines reactor with zero refueling cycle and operation 
+        cycle of 1 month]
         [Defines fuel cycle facilities parameters]
         [Defines Reactor Deploy Scheme / Power Demand]
         [Increasing Fuel Demand with Time]
     [Run test]
     [Test if Reactor has no zero values in output Timeseriespower]
+}
+\end{minted}
+\item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
+\begin{minted}{c++}
+TEST(ReactorTests, DDDeploy_DO) {
+    [Example input with the following attributes:]
+        [int simdur = 20;]
+        [Defines reactor with zero refueling cycle, power capacity 
+        of x and operation cycle of 1 month]
+        [Defines fuel cycle facilities parameters]
+        [Defines Reactor Deploy Scheme / Power Demand]
+        [Increasing Fuel Demand with Time]
+    [Run test]
+    [Test if Reactor has x value in output Timeseriespower]
 }
 \end{minted}
 
@@ -343,13 +359,15 @@ TEST(ReactorTests, DDDeploy_DO) {
 TEST(ReactorTests, DDDeploy_NO) {
     [Example input with the following attributes:]
         [int simdur = 20;]
-        [Defines reactor with zero refueling cycle and operation cycle of 1 month]
+        [Defines reactor with zero refueling cycle and operation 
+        cycle of 1 month]
         [Defines fuel cycle facilities parameters]
         [Defines Reactor Deploy Scheme / Power Demand]
         [Increasing Fuel Demand with Time]
     [Run test]
     [Test if fuel facility is deployed in the beginning]
-    [Test if fuel facility is deployed later in the simulation (have analytic solution)]
+    [Test if fuel facility is deployed later in the simulation 
+    (have analytic solution)]
 }
 \end{minted}
 
@@ -358,13 +376,15 @@ TEST(ReactorTests, DDDeploy_NO) {
 TEST(ReactorTests, DDDeploy_NO) {
     [Example input with the following attributes:]
         [int simdur = 20;]
-        [Defines reactor with zero refueling cycle and operation cycle of 1 month]
+        [Defines reactor with zero refueling cycle and operation 
+        cycle of 1 month]
         [Defines fuel cycle facilities parameters]
         [Defines Reactor Deploy Scheme / Power Demand]
         [Decreasing Fuel Demand with Time]
     [Run test]
     [Test if fuel facility is deployed in the beginning]
-    [Test if fuel facility exits later in the simulation (have analytic solution)]
+    [Test if fuel facility exits later in the simulation (have 
+    analytic solution)]
 }
 \end{minted}
 
