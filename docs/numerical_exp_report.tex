@@ -274,28 +274,17 @@ The simple scenario is solve analytically.
 
 
 \subsection{Non-optimizing prediction method}
-The following conditions need to be satisfied for each segment of the fuel cycle. 
+The following conditions need to be satisfied for each segment of the fuel cycle. Under each condition, a simple test is written. 
 
 \subsubsection{\texttt{Reactor}}
 
 \begin{enumerate}
- 
-\item Do all the \texttt{Reactor}s run? 
 \item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
 
 \item Is a new \texttt{Reactor} deployed when the energy demand exceeds the energy produced by the current \texttt{Reactor}s? 
 
 \item Is a \texttt{Reactor} decommissioned when the energy demand falls behind the output of the current \texttt{Reactor}s? 
 
-\end{enumerate}
-
-\subsubsection{\texttt{Fuelfab}}
-\begin{enumerate}
-\item  Is the fuel produced by the \texttt{Fuelfab} within the upper limit of [insert uncertainty] for the analytic solution of fuel required by the \texttt{Reactor}s for all of them to run for each time step? 
-
-\item Is a new \texttt{Fuelfab} deployed when the fuel required by the reactors exceeds the output of current \texttt{Fuelfab}?
-
-\item Is a \texttt{Fuelfab} decommissioned when the fuel required by the reactors falls behind the output of current \texttt{Fuelfab} facilities?
 \end{enumerate}
 
 \subsubsection{\texttt{Enrichment}}
