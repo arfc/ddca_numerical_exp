@@ -77,21 +77,19 @@ These prediction models are being developed by the University of South Carolina.
 \section{Once through Nuclear Fuel Cycle}
 \begin{figure}[H]
 \caption{Flow Chart of Once through Nuclear Fuel Cycle}
-\begin{tikzpicture}[node distance=3.5cm]
+\begin{tikzpicture}[node distance=4.7cm]
 \node (source) [process] {\texttt{Source}};
 \node (enrichment) [process, right of=source] {\texttt{Enrichment}};
-\node (fuelfab) [process, right of=enrichment] {\texttt{FuelFab}};
-\node (reactor) [process, right of=fuelfab]{\texttt{Reactor}};
+\node (reactor) [process, right of=enrichment]{\texttt{Reactor}};
 \node (sink) [process, right of=reactor]{\texttt{Sink}};
 
 \draw [arrow] (source) -- (enrichment); 
-\draw [arrow] (enrichment) -- (fuelfab); 
-\draw [arrow] (fuelfab) -- (reactor);
+\draw [arrow] (enrichment) -- (reactor);
 \draw [arrow] (reactor) -- (sink);
 \end{tikzpicture}
 \end{figure}
 
-In this report, the once-through fuel cycle is simplified to have 5 components: \texttt{Source}, \texttt{Enrichment}, \texttt{FuelFab}, \texttt{Reactor} and \texttt{Sink}. However, in a true once-through fuel cycle, there are more than 5 components. Other components include milling, conversion etc. For example, if a fuel cycle includes the milling step and excludes the \texttt{FuelFab} step, the tests can be modified to include milling and exclude \texttt{FuelFab}. 
+In this report, the once-through fuel cycle is simplified to have 4 components: \texttt{Source}, \texttt{Enrichment}, \texttt{Reactor} and \texttt{Sink}. However, in a true once-through fuel cycle, there are more than 4 components. Other components include milling, conversion, fuel fabrication etc. For example, if a fuel cycle includes the Fuel Fabrication step and excludes the \texttt{Enrichment} step, the tests can be modified to include Fuel Fabrication and exclude \texttt{Enrichment}. 
 
 \subsection{Input File Specification}
 \Cyclus uses XML input files. For the input file, we assume the archetype to be an \texttt{INSTITUTION}, since it governs deployment and decommission of facilities.
