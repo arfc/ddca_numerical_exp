@@ -270,26 +270,48 @@ The simple scenario is solve analytically.
     \label{tab:deployment}
 \end{table}
 
-
-
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{sss}
+    \hline 
+    Time Step & Total Power Output [MWe] \\
+    \hline 
+    1 & 1000\\
+    2 & 1000\\
+    3 & 1000\\
+    4 & 2000\\
+    5 & 1000\\
+    6 & 2000\\
+    7 & 1000\\
+    8 & 1000\\
+    9 & 0\\
+    10 & 0\\
+    \end{tabularx}
+    \caption {Total Power Output}
+    \label{tab:poweroutput}
+\end{table}
 
 \subsection{Non-optimizing prediction method}
-The following conditions need to be satisfied for each segment of the fuel cycle. Under each condition, a simple test is written. 
+The following conditions need to be satisfied for each segment of the fuel cycle. The method to how each condition is tested is described. Tests written in C++ for each condition is included in Appendix A. 
 
 \subsubsection{\texttt{Reactor}}
 
 \begin{enumerate}
-\item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
+\item  \textit{Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)?} \\
+This is tested by determining the total number of time steps which both reactors are in operation, one reactor is in operation or none is in operation. Based on the values of the analytical solution in Table \ref{tab:poweroutput}, there should be 2 time steps where both reactors are in operation, 6 time steps where only one reactor is in operation and 2 time steps where no reactors are in operation. 
 
-\item Is a new \texttt{Reactor} deployed when the energy demand exceeds the energy produced by the current \texttt{Reactor}s? 
+\item \textit{Is a new \texttt{Reactor} deployed when the energy demand exceeds the energy produced by the current \texttt{Reactor}s?} \\
+This is tested by comparing the total number of reactors deployed to the analytical solution. Based on values of the analytical solution in Table \ref{tab:deployment}, in total 2 reactors were deployed.  
 
-\item Is a \texttt{Reactor} decommissioned when the energy demand falls behind the output of the current \texttt{Reactor}s? 
+\item \textit{Is a \texttt{Reactor} decommissioned when the energy demand falls behind the output of the current \texttt{Reactor}s?} \\
 
 \end{enumerate}
 
 \subsubsection{\texttt{Enrichment}}
 \begin{enumerate}
-\item  Is the enriched uranium produced by \texttt{Enrichment} within the upper limit of [insert uncertainty] for the analytic solution of the enriched uranium required by the \texttt{Fuelfab} for each time step? 
+\item  \textit{Is the enriched uranium produced by \texttt{Enrichment} within the upper limit of [insert uncertainty] for the analytic solution of the enriched uranium required by the \texttt{Reactor} for each time step? }
+\\
+
 
 \item Is a new \texttt{Enrichment} facility deployed when the enriched uranium required by the \texttt{Fuelfab} exceeds the enriched uranium produced of current \texttt{Enrichment} facilities?
 
@@ -384,10 +406,88 @@ TEST(ReactorTests, DDDeploy_NO) {
 
 
 \section{Advanced Fuel Cycles}
+
+
+\section{Appendix A - Sample Test Code }
+\subsection{Reactor}
+\begin{enumerate}
+\item  \textit{Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)?}
+\begin{minted}{C++}
+TEST(ReactorTests, FullCapacity) {
+   std::string config = 
+     "  <fuel_inrecipes>  <val>fresh_uox</val>  </fuel_inrecipes>  "
+     "  <fuel_outrecipes> <val>spent_uox</val>  </fuel_outrecipes>  "
+     "  <fuel_incommods>  <val>uox</val> </fuel_incommods>  "
+     "  <fuel_outcommods> <val>spent_uox</val>      </fuel_outcommods>  "
+     "  <fuel_prefs>      <val>1.0</val>        </fuel_prefs>  "
+     ""
+     "  <cycle_time>2</cycle_time>  "
+     "  <refuel_time>1</refuel_time>  "
+     "  <assem_size>100</assem_size>  "
+     "  <n_assem_core>3</n_assem_core>  "
+     "  <n_assem_batch>1</n_assem_batch>  ";
+
+  int simdur = 10 
+  cyclus::MockSim sim(cyclus::AgentSpec(":cycamore:Reactor"),config
+  ,simdur); 
+  sim.AddSource("uox").Finalize();
+  sim.AddRecipe("fresh_uox",c_uox());
+  sim.AddRecipe("spent_uox".c_spentuox());
+  int id. = sim.Run();
+
+  int both_on = 2; 
+  std::vector<Cond> conds; 
+  conds.push_back(Cond("Value", "==",2000));
+  QueryResult qr = sim.db().Query("TimeSeriesPower", &conds);
+  EXPECT_EQ(both_on,qr.rows.size());  
+  
+  int one_on = 6; 
+  std::vector<Cond> conds; 
+  conds.push_back(Cond("Value", "==",1000));
+  QueryResult qr = sim.db().Query("TimeSeriesPower", &conds);
+  EXPECT_EQ(one_on,qr.rows.size());  
+
+  int none_on = 2; 
+  std::vector<Cond> conds; 
+  conds.push_back(Cond("Value", "==",0));
+  QueryResult qr = sim.db().Query("TimeSeriesPower", &conds);
+  EXPECT_EQ(one_on,qr.rows.size());  
+  }
+\end{minted}
+
+\item \textit{Is a new \texttt{Reactor} deployed when the energy demand exceeds the energy produced by the current \texttt{Reactor}s?} 
+\begin{minted}{C++}
+TEST(ReactorTests, DeployNew) {
+   std::string config = 
+     "  <fuel_inrecipes>  <val>fresh_uox</val>  </fuel_inrecipes>  "
+     "  <fuel_outrecipes> <val>spent_uox</val>  </fuel_outrecipes>  "
+     "  <fuel_incommods>  <val>uox</val> </fuel_incommods>  "
+     "  <fuel_outcommods> <val>spent_uox</val>      </fuel_outcommods>  "
+     "  <fuel_prefs>      <val>1.0</val>        </fuel_prefs>  "
+     ""
+     "  <cycle_time>2</cycle_time>  "
+     "  <refuel_time>1</refuel_time>  "
+     "  <assem_size>100</assem_size>  "
+     "  <n_assem_core>3</n_assem_core>  "
+     "  <n_assem_batch>1</n_assem_batch>  ";
+
+  int simdur = 10 
+  cyclus::MockSim sim(cyclus::AgentSpec(":cycamore:Reactor"),config,
+  simdur); 
+  sim.AddSource("uox").Finalize();
+  sim.AddRecipe("fresh_uox",c_uox());
+  sim.AddRecipe("spent_uox".c_spentuox());
+  int id. = sim.Run();
+  
+  int reactors_deployed = 2; 
+  std::vector<Cond> conds; 
+  conds.push_back(Cond("String", "==",:cycamore:Reactor)); 
+  QueryResult qr = sim.db().Query("AgentEntry", &conds);
+  EXPECT_EQ(reactors_deployed,qr.rows.size());
+  }
+\end{minted}
+\end{enumerate}
 \end{document}
-
-
-
 
 
 
