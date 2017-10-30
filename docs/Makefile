@@ -5,7 +5,7 @@ latexopt   = -halt-on-error -file-line-error
 all: all-via-pdf
 
 all-via-pdf: $(manuscript).tex $(references)
-	pdflatex $(latexopt) $<
+	pdflatex $(latexopt) --shell-escape $<
 	bibtex $(manuscript).aux
 	pdflatex $(latexopt) $<
 	pdflatex $(latexopt) $<

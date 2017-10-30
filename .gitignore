@@ -15,3 +15,5 @@ __pycache__
 *.aux
 *.bbl
 *.blg
+*.pygtex
+*.pygstyle
