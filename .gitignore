@@ -17,3 +17,5 @@ __pycache__
 *.blg
 *.pygtex
 *.pygstyle
+.gz
+.pdf
