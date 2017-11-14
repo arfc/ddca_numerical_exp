@@ -72,11 +72,25 @@
 The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cycamore demand-driven deployment capabilities.
 The project plans to use non-optimizing, deterministic-optimizing and stochastic-optimizing prediction algorithms.
 
-These prediction models are being developed by the University of South Carolina. In this report, we discuss numerical experiments for testing the non-optimizing, deterministic optimizing and stochastic optimizing methods. The numerical experiments will be designed for both the once through nuclear fuel cycle and advanced fuel cycles. 
+
+The algorithm's goal is to deploy \texttt{facilities} so that there is no gap
+in the supply chain. It is currently up to the user to define
+a deploy scheme, or facility parameters, to make sure that there's no gap
+in the supply chain. However, this has been done by setting the
+\texttt{facility} capacity to infinity, which does not reflect real-world
+conditions.
+
+
+These prediction models are being developed by the University of South Carolina. 
+In this report, we discuss numerical experiments for testing the non-optimizing, 
+deterministic optimizing and stochastic optimizing methods. The numerical 
+experiments will be designed for both the once through nuclear fuel 
+cycle and advanced fuel cycles. 
+
+
 
 \section{Once through Nuclear Fuel Cycle}
 \begin{figure}[H]
-\caption{Flow Chart of Once through Nuclear Fuel Cycle}
 \begin{tikzpicture}[node distance=4.7cm]
 \node (source) [process] {\texttt{Source}};
 \node (enrichment) [process, right of=source] {\texttt{Enrichment}};
@@ -87,29 +101,43 @@ These prediction models are being developed by the University of South Carolina.
 \draw [arrow] (enrichment) -- (reactor);
 \draw [arrow] (reactor) -- (sink);
 \end{tikzpicture}
+\caption{Flow Chart of Once through Nuclear Fuel Cycle}
+\label{diag:once}
 \end{figure}
 
-In this report, the once-through fuel cycle is simplified to have 4 components: \texttt{Source}, \texttt{Enrichment}, \texttt{Reactor} and \texttt{Sink}. However, in a true once-through fuel cycle, there are more than 4 components. Other components include milling, conversion, fuel fabrication etc. For example, if a fuel cycle includes the Fuel Fabrication step and excludes the \texttt{Enrichment} step, the tests can be modified to include Fuel Fabrication and exclude \texttt{Enrichment}. 
+In this report, the once-through fuel cycle has four stages:
+\texttt{Source}, \texttt{Enrichment}, \texttt{Reactor} and 
+\texttt{Sink}. However, in a true once-through fuel cycle, there are more 
+than 4 components. Other components include milling, conversion, 
+fuel fabrication etc. The flow is shown in figure \ref{diag:once}.
+
+
 
 \subsection{Input File Specification}
-\Cyclus uses XML input files. For the input file, we assume the archetype to be an \texttt{INSTITUTION}, since it governs deployment and decommission of facilities.
+For the XML input file, we assume
+the archetype to be an \texttt{INSTITUTION}, since it governs
+deployment and decommission of facilities.
 
 The user defines the reactor prototype and reactor deployment. 
 The remaining fuel facilities,
-both front end and back end, is recognized by the archetype
+both front end and back end, is recognized by the institute
 by looking at each prototypes' in-and-out commodities.
 Then the recognized, or `connected' fuel cycle facilities deploy
 with demand.
 If an input file does not have the necessary `connections' for the 
 reactor to receive fuel, it will throw an error. 
 
-Reactor deployment is defined in two ways. First method is to manually define it, where the time step for each deployment is input by the user. The second method is to have the \texttt{Institution} deploy according to the power demand. 
+Reactor deployment is defined in two ways. First method is to
+manually define it, where the time step for each deployment
+is input by the user. The second method is to have the
+\texttt{Institution} deploy according to the power demand. 
 
-An example XML input file for defining reactor prototype and both reactor deployment methods is included in Appendix A. 
+An example XML input file for defining reactor prototype
+and both reactor deployment methods is included in Appendix A. 
 
 \subsection{Simple Scenario for Testing}
 
-A simple scenario definition is given where a predefined \texttt{Reactor}
+A simple scenario is defined where a predefined \texttt{Reactor}
 is deployed at timestep one and three. The chain of front---end
 fuel cycle facility of one facility each 
 (\texttt{Source}, \texttt{Enrichment}, \texttt{FuelFab}) can supply enough fuel
@@ -122,9 +150,9 @@ amount for two batches of fuel. The specifics are listed below:
        \hline
        Simulation Parameters & Value & Units \\
        \hline
-       Duration & 7 & timesteps \\
+       Duration & 10 & timesteps \\
        Deploy Reactors & 1, 3 & timesteps \\
-       Natural U Composition & 0.71\% U235 & \\
+       Natural U Composition & 0.71 & \% U235\\
        Tails Assay & 0.003 & \% U235 \\
        Fuel Enrichment & 4 & \% U235 \\
        Enrichment throughput & 300 & $\frac{kg}{month \cdot facility}$ \\
@@ -224,13 +252,14 @@ The simple scenario is solve analytically.
     8 & 1000\\
     9 & 0\\
     10 & 0\\
+    \hline
     \end{tabularx}
     \caption {Total Power Output}
     \label{tab:poweroutput}
 \end{table}
 
 \subsection{Non-optimizing prediction method}
-To ensure that the non-optimizing prediction model is working correctly, each segment of the code must be tested to determine if its output matches the analytical solution. In this section, the conditions that need to be satisfied for each segment of the fuel cycle is stated and the test for each condition is described based on the parameters and analytical solution of the simple scenario. Tests written in C++ for each condition is included in Appendix B. 
+To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution. In this section, the conditions that need to be satisfied for each segment of the fuel cycle is stated and the test for each condition is described based on the parameters and analytical solution of the simple scenario. Unit test examples are included in Appendix B. 
 
 \subsubsection{\texttt{Reactor}}
 \noindent
@@ -239,35 +268,35 @@ This is tested by determining the total number of time steps which both \texttt{
 \texttt{Reactor}s are in operation, 6 time steps where only one \texttt{Reactor} is in operation and 2 time steps where no \texttt{Reactor}s are in operation. 
 
 \noindent
-\textbf{Condition 2: A new \texttt{Reactor} is deployed when the energy demand exceeds the energy produced by the current \texttt{Reactor}s?} \\
+\textbf{Condition 2: A new \texttt{Reactor} is deployed when the energy demand exceeds the energy produced by the current \texttt{Reactor}s} \\
 This is tested by comparing the total number of \texttt{Reactor}s deployed to the analytical solution. Based on values of the analytical solution in Table \ref{tab:deployment}, in total 2 \texttt{Reactor}s were deployed.  
 
 \noindent 
-\textbf{Condition 3: A \texttt{Reactor} is decommissioned when the energy demand falls behind the output of the current \texttt{Reactor}s?}
+\textbf{Condition 3: A \texttt{Reactor} is decommissioned when the energy demand falls behind the output of the current \texttt{Reactor}s}
 
 \subsubsection{\texttt{Enrichment}}
 \noindent 
-\textbf{Condition 1: The enriched uranium produced by \texttt{Enrichment} is equal to the analytic solution of the enriched uranium required by the \texttt{Reactor} for each time step?} \\
+\textbf{Condition 1: The enriched uranium produced by \texttt{Enrichment} is equal to the analytic solution of the enriched uranium required by the \texttt{Reactor} for each time step} \\
 This is tested by determining the total number of SWUs produced by the \texttt{Enrichment} facilities. These values are compared to the SWUs produced per time step in the analytical solution in Table \ref{tab:analytical}. 
 
 \noindent
-\textbf{Condition 2: A new \texttt{Enrichment} facility is deployed when the enriched uranium required by the \texttt{Fuelfab} exceeds the enriched uranium produced of current \texttt{Enrichment} facilities?} \\
+\textbf{Condition 2: A new \texttt{Enrichment} facility is deployed when the enriched uranium required by the \texttt{Fuelfab} exceeds the enriched uranium produced of current \texttt{Enrichment} facilities} \\
 This is tested by comparing the total number of \texttt{Enrichment} facilities deployed to the analytical solution. Based on values of the analytical solution in Table \ref{tab:deployment}, in total 2 \texttt{Enrichment} facilities were deployed.
 
 \noindent 
-\textbf{Condition 3: A \texttt{Enrichment} facility is decommissioned when the enriched uranium required by the \texttt{Fuelfab} falls behind the enriched uranium produced by current \texttt{Enrichment} facilities?}
+\textbf{Condition 3: A \texttt{Enrichment} facility is decommissioned when the enriched uranium required by the \texttt{Fuelfab} falls behind the enriched uranium produced by current \texttt{Enrichment} facilities}
 
 \subsubsection{\texttt{Source}}
 \noindent 
-\textbf{Condition 1: The mined uranium produced by \texttt{Source} is equal to the analytical solution of the mined uranium required by the \texttt{Enrichment} facilities for each time step?}\\
+\textbf{Condition 1: The mined uranium produced by \texttt{Source} is equal to the analytical solution of the mined uranium required by the \texttt{Enrichment} facilities for each time step}\\
 This is tested by determining the total amount of Uranium mined by the \texttt{Source}. These values are compared to the Uranium produced per time step in the analytical solution in Table \ref{tab:analytical}.
 
 \noindent
-\textbf{Condition 2: A \texttt{Source} facility is commissioned when mined uranium required by the \texttt{Enrichment} facilities exceeds mined uranium produced by the current \texttt{Source}?} \\
+\textbf{Condition 2: A \texttt{Source} facility is deployed when mined uranium required by the \texttt{Enrichment} facilities exceeds mined uranium produced by the current \texttt{Source}} \\
 This is tested by comparing the total number of \texttt{Source} facilities deployed to the analytical solution. Based on values of the analytical solution in Table \ref{tab:deployment}, in total 2 \texttt{Source} facilities were deployed.
 
 \noindent 
-\textbf{Condition 3: A \texttt{Source} facility is decommissioned when mined uranium required by the \texttt{Enrichment} facilities falls behind the mined uranium required by the current \texttt{Source}?}
+\textbf{Condition 3: A \texttt{Source} facility is decommissioned when mined uranium required by the \texttt{Enrichment} facilities falls behind the mined uranium required by the current \texttt{Source}}
 
 
 \begin{comment}
