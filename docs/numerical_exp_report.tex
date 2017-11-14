@@ -94,9 +94,9 @@ In this report, the once-through fuel cycle is simplified to have 4 components: 
 \subsection{Input File Specification}
 \Cyclus uses XML input files. For the input file, we assume the archetype to be an \texttt{INSTITUTION}, since it governs deployment and decommission of facilities.
 
-The user would only have to define the reactor prototype and reactor deployment. 
+The user defines the reactor prototype and reactor deployment. 
 The remaining fuel facilities,
-both front end and back end, would be recognized by the archetype
+both front end and back end, is recognized by the archetype
 by looking at each prototypes' in-and-out commodities.
 Then the recognized, or `connected' fuel cycle facilities deploy
 with demand.
@@ -224,7 +224,7 @@ definitions can be found in the input directory of this repository.
 
 \newpage
 \subsection{Analytical Solution}
-The analytical solution is shown in Tables \ref{tab:analytical}, \ref{tab:deployment}, and \ref{tab:poweroutput}:
+The simple scenario is solve analytically.
 
 \begin{table}[h]
     \centering
@@ -286,14 +286,13 @@ The analytical solution is shown in Tables \ref{tab:analytical}, \ref{tab:deploy
     8 & 1000\\
     9 & 0\\
     10 & 0\\
-    \hline
     \end{tabularx}
     \caption {Total Power Output}
     \label{tab:poweroutput}
 \end{table}
 
 \subsection{Non-optimizing prediction method}
-The following conditions need to be satisfied for each segment of the fuel cycle. The method to how each condition is tested is described. Tests written in C++ for each condition is included in Appendix A. 
+The following conditions need to be satisfied for each segment of the fuel cycle. The method of how each condition is tested is described. Tests written in C++ for each condition is included in Appendix A. 
 
 \subsubsection{\texttt{Reactor}}
 
@@ -329,6 +328,9 @@ This is tested by comparing the total number of \texttt{Source} facilities deplo
 \item Does the \texttt{Source} mined uranium produced decrease when mined uranium required by the \texttt{Enrichment} facilities falls behind the mined uranium required by the current \texttt{Source}?
 \end{enumerate}
 
+
+\begin{comment}
+commented out till further time
 \subsection{Deterministic-Optimizing/Stochastic prediction method}
 The following conditions need to be satisfied for each segment of the fuel cycle. 
 
@@ -408,7 +410,7 @@ TEST(ReactorTests, DDDeploy_NO) {
 
 
 \section{Advanced Fuel Cycles}
-
+\end{comment}
 
 \section{Appendix A - Sample Test Code }
 \subsection{Reactor}
