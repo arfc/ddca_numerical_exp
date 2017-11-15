@@ -99,57 +99,47 @@ Then the report lists tests to check correct implementation of the capabilities,
 with a sample fuel cycle with well-defined facility parameters.
 
 
+\section{Configuration}
+The user defines prototypes to be deployed for fuel facilities,
+and reactor deployment scheme.  The reactor deployment causes the demand of fuel
+which triggers fuel facility deployment. The detailed input file XML input schema
+is shown in Appendix A. 
 
-\section{Once through Nuclear Fuel Cycle}
 
-The once-through nuclear fuel cycle with four stages
-is used for the numerical test. This cycle is chosen
-due to its simplicity. It consists of \texttt{Source},
- \texttt{Enrichment}, \texttt{Reactor} and \texttt{Sink},
- which are all \texttt{Cycamore} archetypes. The material
- flow between facilities is shown in figure \ref{diag:once}.
+\section{Logic Flow}
 
-However, it should be clear that the goal is to
-be able to deploy any agents in \Cyclus. 
+The algorithm creates a supply chain with the fuel facilities,
+then calculates the demand for each facility. A simple example is illustrated in
+figure \ref{diag:dem}.
 
 
 \begin{figure}[H]
 \begin{tikzpicture}[node distance=4.7cm]
-\node (source) [process] {\texttt{Source}};
-\node (enrichment) [process, right of=source] {\texttt{Enrichment}};
-\node (reactor) [process, right of=enrichment]{\texttt{Reactor}};
-\node (sink) [process, right of=reactor]{\texttt{Sink}};
+\node (source) [process] {\texttt{Source} [$ax$]};
+\node (enrichment) [process, right of=source] {\texttt{Enrichment} [$x$]};
+\node (reactor) [process, right of=enrichment]{\texttt{Reactor} [$x$]};
+\node (sink) [process, right of=reactor]{\texttt{Sink} [$x$]};
 
 \draw [arrow] (source) -- (enrichment); 
 \draw [arrow] (enrichment) -- (reactor);
 \draw [arrow] (reactor) -- (sink);
 \end{tikzpicture}
-\caption{Flow Chart of Once through Nuclear Fuel Cycle}
-\label{diag:once}
+\caption{Simple flow of materials. The values in the bracket are demands calculated
+         by the algorithm. The \texttt{Reactor} demands $x$ amount of fuel,
+         which translates into demands of $x$ from \texttt{Enrichment} and \texttt{Sink}.
+         The \texttt{Source} has a demand of $a x$ to take in for enrichment losses.
+         $a \approx 9 $ in LEU PWRs.}
+\label{diag:dem}
 \end{figure}
 
+If the demand of a commodity exceeds the current supply, the \texttt{Institution}
+builds more facilities to meet the demand for that commodity.
 
-\subsection{Input File Specification}
-For the XML input file, we assume
-the archetype to be an \texttt{INSTITUTION}, since it governs
-deployment and decommission of facilities.
 
-The user defines the prototypes  and reactor deployment. 
-The remaining fuel facilities,
-both front end and back end, is recognized by the institute
-by looking at each prototypes' in-and-out commodities.
-Then the recognized, or `connected' fuel cycle facilities deploy
-with demand.
-If an input file does not have the necessary `connections' for the 
-reactor to receive fuel, it will throw an error. 
-
-Reactor deployment is defined in two ways. First method is to
-manually define it, where the time step for each deployment
-is input by the user. The second method is to have the
-\texttt{Institution} deploy according to the power demand. 
-
-An example XML input file for defining reactor prototype
-and both reactor deployment methods is included in Appendix A. 
+%% This is Where I worked Till %%%%%
+%% This is Where I worked Till %%%%%
+%% This is Where I worked Till %%%%%
+%% This is Where I worked Till %%%%%
 
 \subsection{Simple Scenario for Testing}
 
@@ -159,6 +149,7 @@ fuel cycle facility of one facility each
 (\texttt{Source}, \texttt{Enrichment}, \texttt{FuelFab}) can supply enough fuel
 for the operation of one reactor. A \texttt{Sink} can hold enough
 amount for two batches of fuel. The specifics are listed below:
+
 
 \begin{table}[h]
      \centering
@@ -205,75 +196,6 @@ An example input file with the facility and simulation
 definitions can be found in the input directory of this repository.
 
 \newpage
-\subsection{Analytical Solution}
-The simple scenario is solve analytically.
-
-\begin{table}[h]
-    \centering
-    \begin{tabularx}{\textwidth}{ssmmmb}
-       \hline
-       Timestep & Fuel [kg] & Enrichment [$\frac{SWU}{month}$]& Source [$\frac{kg}{month}$] & Sink Capacity [kg] & Note\\
-       \hline
-       1 & 300 & 1583 & 2701 & 0 & Reactor1 core load\\
-       2 & 0 & 1583 & 2701 & 0 & \\
-       3 & 400 & 2111 & 3601 & 100 & Reactor2 core load, Reactor1 refuel\\
-       4 & 0 & 2111 & 3601 & 0 & \\
-       5 & 100 & 528 & 901 & 200 & Reactor2 refuel\\
-       6 & 0 & 528 & 901 & 500 & Reactor1 decom \\
-       7 & 0 & 528 & 901 & 500 & \\
-       8 & 0 & 528 & 901 & 800 & Reactor2 decom\\
-       9 & 0 & 528 & 901 & 800 & \\
-       \hline
-    \end{tabularx}
-    \caption {Analytical Solution}
-    \label{tab:analytical}
-\end{table}
-
-
-\begin{table}[H]
-    \centering
-    \begin{tabularx}{\textwidth}{ssss}
-       \hline
-       & Deploy & Deploy & Deploy \\
-       Timestep & Enrichment & Source & Sink  \\
-       \hline
-       1 & \textcolor{red}{1} & \textcolor{red}{1} & 0  \\
-       2 & 0 & 0 & 0  \\
-       3 & \textcolor{red}{1} & 0 & \textcolor{red}{1}  \\
-       4 & 0 & \textcolor{red}{1} & 0  \\
-       5 & 0 & 0 & 0  \\
-       6 & 0 & 0 & \textcolor{red}{2}  \\
-       7 & 0 & 0 & 0  \\
-       8 & 0 & 0 & \textcolor{red}{1}  \\
-       9 & 0 & 0 & 0  \\
-       \hline
-    \end{tabularx}
-    \caption {Deployment Needs}
-    \label{tab:deployment}
-\end{table}
-
-\begin{table}[H]
-    \centering
-    \begin{tabularx}{\textwidth}{sss}
-    \hline 
-    Time Step & Total Power Output [MWe] \\
-    \hline 
-    1 & 1000\\
-    2 & 1000\\
-    3 & 1000\\
-    4 & 2000\\
-    5 & 1000\\
-    6 & 2000\\
-    7 & 1000\\
-    8 & 1000\\
-    9 & 0\\
-    10 & 0\\
-    \hline
-    \end{tabularx}
-    \caption {Total Power Output}
-    \label{tab:poweroutput}
-\end{table}
-
 \subsection{Non-optimizing prediction method}
 To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution. In this section, the conditions that need to be satisfied for each segment of the fuel cycle is stated and the test for each condition is described based on the parameters and analytical solution of the simple scenario. Unit test examples are included in Appendix B. 
 
