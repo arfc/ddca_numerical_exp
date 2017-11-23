@@ -141,36 +141,8 @@ builds more facilities to meet the demand for that commodity.
 %% This is Where I worked Till %%%%%
 %% This is Where I worked Till %%%%%
 
-\subsection{Simple Scenario for Testing}
-
-A simple scenario is defined where a predefined \texttt{Reactor}
-is deployed at timestep one and three. The chain of front---end
-fuel cycle facility of one facility each 
-(\texttt{Source}, \texttt{Enrichment}, \texttt{FuelFab}) can supply enough fuel
-for the operation of one reactor. A \texttt{Sink} can hold enough
-amount for two batches of fuel. The specifics are listed below:
-
-
-\begin{table}[h]
-     \centering
-    \begin{tabularx}{\textwidth}{bbb}
-       \hline
-       Simulation Parameters & Value & Units \\
-       \hline
-       Duration & 10 & timesteps \\
-       Deploy Reactors & 1, 3 & timesteps \\
-       Natural U Composition & 0.71 & \% U235\\
-       Tails Assay & 0.003 & \% U235 \\
-       Fuel Enrichment & 4 & \% U235 \\
-       Enrichment throughput & 300 & $\frac{kg}{month \cdot facility}$ \\
-       Enrichment SWU Capacity & 2000 & $\frac{SWU}{month \cdot facility}$ \\
-       Source Throughput & 3000 & $\frac{kg}{month \cdot facility}$\\
-       Sink Capacity & 200 &  $\frac{kg}{facility}$ \\
-       \hline
-    \end{tabularx}
-    \caption {Simulation Parameters}
-    \label{tab:reactor}
-\end{table}
+\subsection{Reactor Parameters for Test Scenarios}
+Table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the test scenarios and Table \ref{tab:everythingelse} provides the parameters for the \texttt{source}, \texttt{enrichment} and \texttt{sink} facilities in the test scenarios.
 
 \begin{table}[h]
     \centering
@@ -191,14 +163,109 @@ amount for two batches of fuel. The specifics are listed below:
     \label{tab:reactor}
 \end{table}
 
+\begin{table}[H]
+     \centering
+    \begin{tabularx}{\textwidth}{bbb}
+       \hline
+       Parameters & Value & Units \\
+       \hline
+       Natural U Composition & 0.71 & \% U235\\
+       Tails Assay & 0.003 & \% U235 \\
+       Fuel Enrichment & 4 & \% U235 \\
+       Enrichment throughput & 300 & $\frac{kg}{month \cdot facility}$ \\
+       Enrichment SWU Capacity & 2000 & $\frac{SWU}{month \cdot facility}$ \\
+       Source Throughput & 3000 & $\frac{kg}{month \cdot facility}$\\
+       Sink Capacity & 200 &  $\frac{kg}{facility}$ \\
+       \hline
+    \end{tabularx}
+    \caption {Source, Enrichment and Sink Facility Parameters}
+    \label{tab:everythingelse}
+\end{table}
 
 An example input file with the facility and simulation
 definitions can be found in the input directory of this repository.
 
 \newpage
 \subsection{Non-optimizing prediction method}
-To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution. In this section, the conditions that need to be satisfied for each segment of the fuel cycle is stated and the test for each condition is described based on the parameters and analytical solution of the simple scenario. Unit test examples are included in Appendix B. 
+To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution. In this section, the tests that must be met is described based on the parameters defined in Table \ref{tab:reactor} and \ref{tab:everythingelse} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
+\\
+\\
+\noindent
+\textbf{Test 1: A reactor outputs the user defined power capacity when deployed and does not output
+power capacity when decommissioned.} \\
+Test Scenario: A single reactor is deployed at time step 3 and decommissioned at time step 5. \\
+Analytical Solution: During cycle time, the reactor will have a power output of 1000MWe. Therefore,
+there is only be power output of 1000MWe at time steps 3 and 4. The analytical solution of
+the power output of the reactor per time step is given in Table \ref{tab:power}.
 
+\begin{table}[H]
+     \centering
+    \begin{tabularx}{\textwidth}{bbb}
+       \hline
+       Timestep & Reactor Power Output (MWe) \\
+       \hline
+       1 & 0 \\
+       2 & 0 \\
+       3 & 1000 \\
+       4 & 1000 \\
+       5 & 0 \\
+       6 & 0 \\
+       \hline
+    \end{tabularx}
+    \caption {Analytical solution of the power output of the reactor per time step}
+    \label{tab:power}
+\end{table}
+
+\noindent
+\textbf{Test 2: A reactor outputs the user defined power capacity during its cycle time and not during its refuel time.} \\
+Test Scenario: A single reactor is deployed at time step 3 and decommissioned at time step 8. \\
+Analytical Solution: Based on the reactor parameters defined in Table 1, the reactor will have a cycle time of 2 time steps and a refuel time of 1 time step. Therefore, there is only be power output of 1000MWe during cycle time steps. The analytical solution of the power output of the reactor per time step is given in Table \ref{tab:cycles}.
+
+\begin{table}[H]
+     \centering
+    \begin{tabularx}{\textwidth}{bbb}
+       \hline
+       Timestep & Reactor Power Output (MWe) \\
+       \hline
+       1 & 0 \\
+       2 & 0 \\
+       3 & 1000 \\
+       4 & 1000 \\
+       5 & 0 \\
+       6 & 1000 \\
+       7 & 1000 \\
+       8 & 0 \\
+       9 & 0 \\
+       \hline
+    \end{tabularx}
+    \caption {Analytical solution of the power output of the reactor per time step}
+    \label{tab:cycles}
+\end{table}
+
+\noindent
+\textbf{Test 3:1 or more of the facility that produces reactor’s input commodity (fuel) is deployed when the amount of fuel available is below the amount of fuel required by the reactor.} \\
+Test Scenario: A single reactor is deployed at time step 3.\\
+Analytical Solution: Based on the simple supply chain example in Figure 1 and enrichment facility parameters defined in Table 2, an enrichment facility must be deployed at time step 3 to meet fuel demand. The analytical solution of the fuel available per time step is given in Table \ref{tab:fuel}.
+
+\begin{table}[H]
+     \centering
+    \begin{tabularx}{\textwidth}{bbb}
+       \hline
+       Timestep & Fuel (kg) \\
+       \hline
+       1 & 0 \\
+       2 & 0 \\
+       3 & 300 \\
+       4 & 0 \\
+       \hline
+    \end{tabularx}
+    \caption {Analytical solution of the fuel available per time step}
+    \label{tab:fuel}
+\end{table}
+
+
+
+\begin{comment}
 \subsubsection{\texttt{Reactor}}
 \noindent
 \textbf{Condition 1: All the reactors run at full capacity} \\
@@ -237,7 +304,6 @@ This is tested by comparing the total number of \texttt{Source} facilities deplo
 \textbf{Condition 3: A \texttt{Source} facility is decommissioned when mined uranium required by the \texttt{Enrichment} facilities falls behind the mined uranium required by the current \texttt{Source}}
 
 
-\begin{comment}
 commented out till further time
 \subsection{Deterministic-Optimizing/Stochastic prediction method}
 The following conditions need to be satisfied for each segment of the fuel cycle. 
