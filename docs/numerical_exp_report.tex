@@ -106,12 +106,17 @@ which triggers fuel facility deployment. The detailed input file XML input schem
 is shown in Appendix A. 
 
 
-\section{Logic Flow}
+\section{Algorithm Flow}
+
+The algorithm, upon entering, creates a supply chain with the fuel facilities and
+the reactor. Then, at every timestep it calculates the demand from each fuel cycle
+facility and makes decisions to deploy or decommission.
+
+\subsection{Upon Entering (\texttt{Enternotify})}
 
 The algorithm creates a supply chain with the fuel facilities,
-then calculates the demand for each facility. A simple example is illustrated in
-figure \ref{diag:dem}.
-
+then calculates the demand for each facility for a unit quantity of fuel.
+A simple example is illustrated in figure \ref{diag:dem}.
 
 \begin{figure}[H]
 \begin{tikzpicture}[node distance=4.7cm]
@@ -124,16 +129,22 @@ figure \ref{diag:dem}.
 \draw [arrow] (enrichment) -- (reactor);
 \draw [arrow] (reactor) -- (sink);
 \end{tikzpicture}
-\caption{Simple flow of materials. The values in the bracket are demands calculated
+\caption{Simple demand flow of materials. The values in the bracket are demands calculated
          by the algorithm. The \texttt{Reactor} demands $x$ amount of fuel,
          which translates into demands of $x$ from \texttt{Enrichment} and \texttt{Sink}.
          The \texttt{Source} has a demand of $a x$ to take in for enrichment losses.
-         $a \approx 9 $ in LEU PWRs.}
+         $a \approx 9 $ for 3\% enrichment.}
 \label{diag:dem}
 \end{figure}
 
-If the demand of a commodity exceeds the current supply, the \texttt{Institution}
-builds more facilities to meet the demand for that commodity.
+\subsection{Tick}
+Before the dynamic resource exchange phase, the algorithm calculates the fuel demand
+from the current fleet of reactors, and the corresponding demand for fuel facilities.
+The current capacity of each fuel cycle facility is also calculated. If the capacity
+is smaller than the demand, the algorithm build more facilities to meet the demand.
+
+ 
+
 
 
 %% This is Where I worked Till %%%%%
