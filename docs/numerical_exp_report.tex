@@ -152,7 +152,9 @@ is smaller than the demand, the algorithm build more facilities to meet the dema
 %% This is Where I worked Till %%%%%
 %% This is Where I worked Till %%%%%
 
-\subsection{Reactor Parameters for Test Scenarios}
+\section{Simulation parameter for Test Scenarios}
+Simple parameters are given to fuel cycle facilities for the numerical test of 
+the algorithm.  
 Table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the test scenarios and Table \ref{tab:everythingelse} provides the parameters for the \texttt{source}, \texttt{enrichment} and \texttt{sink} facilities in the test scenarios.
 
 \begin{table}[h]
@@ -183,7 +185,6 @@ Table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the
        Natural U Composition & 0.71 & \% U235\\
        Tails Assay & 0.003 & \% U235 \\
        Fuel Enrichment & 4 & \% U235 \\
-       Enrichment throughput & 300 & $\frac{kg}{month \cdot facility}$ \\
        Enrichment SWU Capacity & 2000 & $\frac{SWU}{month \cdot facility}$ \\
        Source Throughput & 3000 & $\frac{kg}{month \cdot facility}$\\
        Sink Capacity & 200 &  $\frac{kg}{facility}$ \\
@@ -197,7 +198,8 @@ An example input file with the facility and simulation
 definitions can be found in the input directory of this repository.
 
 \newpage
-\subsection{Non-optimizing prediction method}
+
+\section{Numerical Tests for the Non-optimizing prediction method}
 To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution. In this section, the tests that must be met is described based on the parameters defined in Table \ref{tab:reactor} and \ref{tab:everythingelse} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
 \\
 \\
