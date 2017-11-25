@@ -206,7 +206,7 @@ To ensure that the non-optimizing prediction model is working correctly, each fu
 \noindent
 \textbf{Test 1: A reactor outputs the user defined power capacity when deployed and does not output
 power capacity when decommissioned.} \\
-Test Scenario: A single reactor is deployed at time step 3 and decommissioned at time step 5. \\
+Test Scenario: A single reactor is deployed at time step 3 and decommissioned at time step 5. There is an infinite source of fuel for the reactor. \\
 Analytical Solution: During cycle time, the reactor will have a power output of 1000MWe. Therefore,
 there is only be power output of 1000MWe at time steps 3 and 4. The analytical solution of
 the power output of the reactor per time step is given in Table \ref{tab:power}.
@@ -256,19 +256,19 @@ Analytical Solution: Based on the reactor parameters defined in Table 1, the rea
 \end{table}
 
 \noindent
-\textbf{Test 3:1 or more of the facility that produces reactor’s input commodity (fuel) is deployed when the amount of fuel available is below the amount of fuel required by the reactor.} \\
+\textbf{Test 3: 1 or more of the facility that produces reactor’s input commodity (fuel) is deployed when the amount of fuel available is below the amount of fuel required by the reactor.} \\
 Test Scenario: A single reactor is deployed at time step 3.\\
-Analytical Solution: Based on the simple supply chain example in Figure 1 and enrichment facility parameters defined in Table 2, an enrichment facility must be deployed at time step 3 to meet fuel demand. The analytical solution of the fuel available per time step is given in Table \ref{tab:fuel}.
+Analytical Solution: Based on the simple supply chain example in Figure 1 and enrichment facility parameters defined in Table 2, an enrichment facility must be deployed at time step 3 to meet fuel demand. The analytical solution of the fuel facility deployment per time step is given in Table \ref{tab:fuel}.
 
 \begin{table}[H]
      \centering
     \begin{tabularx}{\textwidth}{bbb}
        \hline
-       Timestep & Fuel (kg) \\
+       Timestep & Enrichment Facility deployment  \\
        \hline
        1 & 0 \\
        2 & 0 \\
-       3 & 300 \\
+       3 & 1\\
        4 & 0 \\
        \hline
     \end{tabularx}
