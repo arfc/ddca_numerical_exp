@@ -200,7 +200,7 @@ definitions can be found in the input directory of this repository.
 \newpage
 
 \section{Numerical Tests for the Non-optimizing prediction method}
-To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution. In this section, the tests that must be met is described based on the parameters defined in Table \ref{tab:reactor} and \ref{tab:everythingelse} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
+To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution for the specified test scenario. In this section, the tests that must be met is described based on the parameters defined in Table \ref{tab:reactor} and \ref{tab:everythingelse} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
 \\
 \\
 \noindent
@@ -209,7 +209,7 @@ power capacity when decommissioned.} \\
 Test Scenario: A single reactor is deployed at time step 3 and decommissioned at time step 5. There is an infinite source of fuel for the reactor. \\
 Analytical Solution: During cycle time, the reactor will have a power output of 1000MWe. Therefore,
 there is only be power output of 1000MWe at time steps 3 and 4. The analytical solution of
-the power output of the reactor per time step is given in Table \ref{tab:power}.
+the power output of the reactor per time step is given in Table \ref{tab:test-power}.
 
 \begin{table}[H]
      \centering
@@ -226,13 +226,13 @@ the power output of the reactor per time step is given in Table \ref{tab:power}.
        \hline
     \end{tabularx}
     \caption {Analytical solution of the power output of the reactor per time step}
-    \label{tab:power}
+    \label{tab:test-power}
 \end{table}
 
 \noindent
 \textbf{Test 2: A reactor outputs the user defined power capacity during its cycle time and not during its refuel time.} \\
 Test Scenario: A single reactor is deployed at time step 3 and decommissioned at time step 8. \\
-Analytical Solution: Based on the reactor parameters defined in Table 1, the reactor will have a cycle time of 2 time steps and a refuel time of 1 time step. Therefore, there is only be power output of 1000MWe during cycle time steps. The analytical solution of the power output of the reactor per time step is given in Table \ref{tab:cycles}.
+Analytical Solution: Based on the reactor parameters defined in Table 1, the reactor will have a cycle time of 2 time steps and a refuel time of 1 time step. Therefore, there is only be power output of 1000MWe during cycle time steps. The analytical solution of the power output of the reactor per time step is given in Table \ref{tab:test-cycles}.
 
 \begin{table}[H]
      \centering
@@ -252,13 +252,13 @@ Analytical Solution: Based on the reactor parameters defined in Table 1, the rea
        \hline
     \end{tabularx}
     \caption {Analytical solution of the power output of the reactor per time step}
-    \label{tab:cycles}
+    \label{tab:test-cycles}
 \end{table}
 
 \noindent
-\textbf{Test 3: 1 or more of the facility that produces reactor’s input commodity (fuel) is deployed when the amount of fuel available is below the amount of fuel required by the reactor.} \\
+\textbf{Test 3: A facility that produces reactor’s input commodity (fuel) is deployed when the amount of fuel available is below the amount of fuel required by the reactor.} \\
 Test Scenario: A single reactor is deployed at time step 3.\\
-Analytical Solution: Based on the simple supply chain example in Figure 1 and enrichment facility parameters defined in Table 2, an enrichment facility must be deployed at time step 3 to meet fuel demand. The analytical solution of the fuel facility deployment per time step is given in Table \ref{tab:fuel}.
+Analytical Solution: Based on the simple supply chain example in Figure 1 and enrichment facility parameters defined in Table 2, an enrichment facility must be deployed at time step 3 to meet fuel demand. The analytical solution of the fuel facility deployment per time step is given in Table \ref{tab:test-fuel}.
 
 \begin{table}[H]
      \centering
@@ -272,11 +272,50 @@ Analytical Solution: Based on the simple supply chain example in Figure 1 and en
        4 & 0 \\
        \hline
     \end{tabularx}
-    \caption {Analytical solution of the fuel available per time step}
-    \label{tab:fuel}
+    \caption {Analytical solution of the number of fuel facilities deployed per time step}
+    \label{tab:test-fuel}
 \end{table}
 
+\noindent
+\textbf{Test 4: An appropriate number of facilities that produces reactor's input commodity (fuel) is deployed to meet the demand of the amount of fuel required by the reactor, when the initial fuel supply is non-zero.} \\
+Test Scenario: An initial fuel supply of 100kg. 2 reactors deployed at time step 2. \\
+Analytical solution: Based on Table \ref{tab:reactor}, each reactor has a fuel demand of 300kg per time step. Therefore, the fuel supply is 100kg at time step 1 and is 700kg at time steps 2 and 3. The analytical solution of fuel quantity per time step is given in Table \ref{tab:test-fueldemand}  
 
+\begin{table}[H]
+     \centering
+    \begin{tabularx}{\textwidth}{bbb}
+       \hline
+       Timestep & Fuel Quantity (kg)  \\
+       \hline
+       1 & 100 \\
+       2 & 700 \\
+       3 & 700\\
+       \hline
+    \end{tabularx}
+    \caption {Analytical solution of the fuel available per time step}
+    \label{tab:test-fueldemand}
+\end{table}
+
+\noindent
+\textbf{Test 5: The fuel supply is within plus-minus the output of 1 fuel-producing facility of the reactor demand for fuel for all time steps.} \\
+Test Scenario: A reactor is deployed at timesteps 2, 3 and 4.\\
+Analytical Solution: Based on Table \ref{tab:reactor}, each reactor has a fuel demand of 300kg per time step. If an appropriate number of enrichment facilities is deployed to meet fuel demand, the difference between fuel quantity and fuel demand will be 100kg per time step. The analytical solution of difference between fuel quantity and fuel demand per time step is given in Table \ref{tab:test-fueldiff}.  
+
+\begin{table}[H]
+     \centering
+    \begin{tabularx}{\textwidth}{bbbb}
+       \hline
+       Timestep & Fuel Quantity (kg) & Fuel Demand (kg) & Difference (kg)\\
+       \hline
+       1 & 100 & 0 &100\\
+       2 & 400 & 300 &100\\
+       3 & 700 & 600 &100\\
+       4 & 1000 & 900 &100\\
+       \hline
+    \end{tabularx}
+    \caption {Analytical solution of the difference between fuel quantity and fuel demand per time step}
+    \label{tab:test-fueldiff}
+\end{table}
 
 
 \begin{comment}
@@ -513,6 +552,7 @@ is given two choices:
 \label{code:fun_reac}
 \end{code}
 
+\begin{comment}
 \section{Appendix B - Sample Test Code }
 \subsection{Reactor}
 \noindent
@@ -592,6 +632,7 @@ TEST(ReactorTests, DeployNew) {
   EXPECT_EQ(reactors_deployed,qr.rows.size());
   }
 \end{minted}
+\end{comment}
 \end{document}
 
 
