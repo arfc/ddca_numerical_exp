@@ -114,12 +114,13 @@ facility and makes decisions to deploy or decommission. As a reference, the time
 execution for \Cyclus is illustrated in figure \ref{fig:time}.
 
 \begin{figure}[H]
-\begin{tikzpicture}[node distance=4.7cm]
+\centering
+\begin{tikzpicture}[node distance=1.5cm]
 \node (Build) [process] {Build (kernel)};
-\node (Tick) [process, right of=Build] {Tick (agent)};
-\node (DRE) [process, right of=Tick]{Dynamic Resource Exchange (kernel) };
-\node (Tock) [process, right of=DRE]{Tock (agent)};
-\node (Decom) [process, right of=Tock] {Decommission (kernel)};
+\node (Tick) [process, below of=Build] {Tick (agent)};
+\node (DRE) [process, below of=Tick]{Dynamic Resource Exchange (kernel) };
+\node (Tock) [process, below of=DRE]{Tock (agent)};
+\node (Decom) [process, below of=Tock] {Decommission (kernel)};
 
 \draw [arrow] (Build) -- (Tick); 
 \draw [arrow] (Tick) -- (DRE);
@@ -160,19 +161,10 @@ A simple example is illustrated in figure \ref{diag:dem}.
 \end{figure}
 
 \subsection{Tick}
-Before the dynamic resource exchange phase, the algorithm calculates the fuel demand
-from the fleet of reactors, and the corresponding demand for fuel facilities.
+The algorithm calculates the fuel demand
+from the fleet of reactors at one timestep ahead, and the corresponding demand for fuel facilities.
 The current capacity of each fuel cycle facility is also calculated. If the capacity
-is smaller than the demand, the algorithm build more facilities to meet the demand.
-
- 
-
-
-
-%% This is Where I worked Till %%%%%
-%% This is Where I worked Till %%%%%
-%% This is Where I worked Till %%%%%
-%% This is Where I worked Till %%%%%
+is smaller than the demand, the algorithm orders to build more facilities to meet the demand.
 
 \section{Simulation parameter for Test Scenarios}
 Simple parameters are given to fuel cycle facilities for the numerical test of 
