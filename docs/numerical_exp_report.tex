@@ -109,8 +109,30 @@ is shown in Appendix A.
 \section{Algorithm Flow}
 
 The algorithm, upon entering, creates a supply chain with the fuel facilities and
-the reactor. Then, at every timestep it calculates the demand from each fuel cycle
-facility and makes decisions to deploy or decommission.
+the reactor. Then, at every timestep it calculates the expected demand from each fuel cycle
+facility and makes decisions to deploy or decommission. As a reference, the time step
+execution for \Cyclus is illustrated in figure \ref{fig:time}.
+
+\begin{figure}[H]
+\begin{tikzpicture}[node distance=4.7cm]
+\node (Build) [process] {Build (kernel)};
+\node (Tick) [process, right of=Build] {Tick (agent)};
+\node (DRE) [process, right of=Tick]{Dynamic Resource Exchange (kernel) };
+\node (Tock) [process, right of=DRE]{Tock (agent)};
+\node (Decom) [process, right of=Tock] {Decommission (kernel)};
+
+\draw [arrow] (Build) -- (Tick); 
+\draw [arrow] (Tick) -- (DRE);
+\draw [arrow] (DRE) -- (Tock);
+\draw [arrow] (Tock) -- (Decom);
+\end{tikzpicture}
+\caption{Each timestep in \Cyclus follows the five steps in order. Processes labeled
+         kernel are executed by the \Cyclus framework, whereas processes labeled agent
+         are executed by individual agents. What happens in the `Tick' and `Tock' is
+         thus unique to each archetype.}
+\label{diag:time}
+\end{figure}
+
 
 \subsection{Upon Entering (\texttt{Enternotify})}
 
@@ -139,7 +161,7 @@ A simple example is illustrated in figure \ref{diag:dem}.
 
 \subsection{Tick}
 Before the dynamic resource exchange phase, the algorithm calculates the fuel demand
-from the current fleet of reactors, and the corresponding demand for fuel facilities.
+from the fleet of reactors, and the corresponding demand for fuel facilities.
 The current capacity of each fuel cycle facility is also calculated. If the capacity
 is smaller than the demand, the algorithm build more facilities to meet the demand.
 
