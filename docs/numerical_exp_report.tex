@@ -27,6 +27,8 @@
 \newcolumntype{s}{>{\hsize=.5\hsize}X}
 \newcolumntype{m}{>{\hsize=.75\hsize}X}
 \usepackage{titling}
+\usepackage[hang,flushmargin]{footmisc}
+\renewcommand*\footnoterule{}
 \usepackage[newfloat]{minted}
 \newenvironment{code}{\captionsetup{type=listing}}{}
 \SetupFloatingEnvironment{listing}{name=Code}
@@ -111,7 +113,7 @@ is shown in Appendix A.
 The algorithm, upon entering, creates a supply chain with the fuel facilities and
 the reactor. Then, at every timestep it calculates the expected demand from each fuel cycle
 facility and makes decisions to deploy or decommission. As a reference, the time step
-execution for \Cyclus is illustrated in figure \ref{fig:time}.
+execution for \Cyclus is illustrated in figure \ref{diag:time}.
 
 \begin{figure}[H]
 \centering
@@ -171,7 +173,7 @@ so that the fuel demand is met for the next timestep.
 \section{Simulation parameter for Test Scenarios}
 Simple parameters are given to fuel cycle facilities for the numerical test of 
 the algorithm.  
-Table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the test scenarios and Table \ref{tab:everythingelse} provides the parameters for the \texttt{source}, \texttt{enrichment} and \texttt{sink} facilities in the test scenarios.
+table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the test scenarios and table \ref{tab:everythingelse} provides the parameters for the \texttt{source}, \texttt{enrichment} and \texttt{sink} facilities in the test scenarios.
 
 \begin{table}[h]
     \centering
@@ -194,7 +196,8 @@ Table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the
 
 \begin{table}[H]
      \centering
-    \begin{tabularx}{\textwidth}{bbb}
+     \begin{minipage}{\textwidth}
+    \begin{tabularx}{\textwidth}{bff}
        \hline
        Parameters & Value & Units \\
        \hline
@@ -202,15 +205,17 @@ Table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the
        Tails Assay & 0.003 & \% U235 \\
        Fuel Enrichment & 4 & \% U235 \\
        Enrichment SWU Capacity & 2000 & $\frac{SWU}{month \cdot facility}$ \\
-       Source Throughput & 3000 & $\frac{kg}{month \cdot facility}$\\
+       Source Throughput & 3500 & $\frac{kg}{month \cdot facility}$\\
        Sink Capacity & 200 &  $\frac{kg}{facility}$ \\
+       Number of time steps before facility is decommissioned \footnote{This refers to the number of consecutive time steps that the supply exceeds demand by more than 1 facility output before the facility is decomissioned.} & 3 & timesteps \\
        \hline
     \end{tabularx}
+    \end{minipage}
     \caption {Source, Enrichment and Sink Facility Parameters}
     \label{tab:everythingelse}
 \end{table}
 
-Table \ref{tab:simulationparameters} provides the input and output commodity amounts and enrichment SWUs required based on a reactor fuel demand of 100 kg for one time step. These input and output commodities are based on the simple demand flow of materials shown in Figure \ref{diag:dem}. 
+Table \ref{tab:simulationparameters} provides the input and output commodity amounts and enrichment SWUs required based on a reactor fuel demand of 100 kg for one time step. These input and output commodities are based on the simple demand flow of materials shown in figure \ref{diag:dem}. 
 
 \begin{table}[H]
      \centering
@@ -231,16 +236,16 @@ definitions can be found in the input directory of this repository.
 \newpage
 
 \section{Numerical Tests for the Non-optimizing prediction method}
-To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution for the specified test scenario. In this section, the tests that must be met is described based on the parameters defined in Table \ref{tab:reactor} and \ref{tab:everythingelse} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
+To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution for the specified test scenario. In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:reactor} and \ref{tab:everythingelse} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
 \\
 \\
 \noindent
 \textbf{Test 1: A reactor outputs the user defined power capacity when deployed and does not output
 power capacity when decommissioned.} \\
-Test Scenario: A single reactor is deployed at time step 3 and decommissioned at time step 5. There is an infinite source of fuel for the reactor. \\
+Test Scenario: A single reactor is deployed at time step 2 and decommissioned at time step 4. There is an infinite source of fuel for the reactor. \\
 Analytical Solution: During cycle time, the reactor will have a power output of 1000MWe. Therefore,
-there is only be power output of 1000MWe at time steps 3 and 4. The analytical solution of
-the power output of the reactor per time step is given in Table \ref{tab:test-power}.
+there is only be power output of 1000MWe at time steps 2 and 3. The analytical solution of
+the power output of the reactor per time step is given in table \ref{tab:test-power}.
 
 \begin{table}[H]
      \centering
@@ -249,11 +254,9 @@ the power output of the reactor per time step is given in Table \ref{tab:test-po
        Timestep & Reactor Power Output (MWe) \\
        \hline
        1 & 0 \\
-       2 & 0 \\
+       2 & 1000 \\
        3 & 1000 \\
-       4 & 1000 \\
-       5 & 0 \\
-       6 & 0 \\
+       4 & 0 \\
        \hline
     \end{tabularx}
     \caption {Analytical solution of the power output of the reactor per time step}
@@ -262,8 +265,8 @@ the power output of the reactor per time step is given in Table \ref{tab:test-po
 
 \noindent
 \textbf{Test 2: A reactor outputs the user defined power capacity during its cycle time and not during its refuel time.} \\
-Test Scenario: A single reactor is deployed at time step 3 and decommissioned at time step 8. \\
-Analytical Solution: Based on the reactor parameters defined in Table 1, the reactor will have a cycle time of 2 time steps and a refuel time of 1 time step. Therefore, there is only be power output of 1000MWe during cycle time steps. The analytical solution of the power output of the reactor per time step is given in Table \ref{tab:test-cycles}.
+Test Scenario: A single reactor is deployed at time step 2 and decommissioned at time step 87 \\
+Analytical Solution: Based on the reactor parameters defined in table 1, the reactor will have a cycle time of 2 time steps and a refuel time of 1 time step. Therefore, there is only be power output of 1000MWe during cycle time steps. The analytical solution of the power output of the reactor per time step is given in table \ref{tab:test-cycles}.
 
 \begin{table}[H]
      \centering
@@ -272,14 +275,13 @@ Analytical Solution: Based on the reactor parameters defined in Table 1, the rea
        Timestep & Reactor Power Output (MWe) \\
        \hline
        1 & 0 \\
-       2 & 0 \\
+       2 & 1000 \\
        3 & 1000 \\
-       4 & 1000 \\
-       5 & 0 \\
+       4 & 0 \\
+       5 & 1000 \\
        6 & 1000 \\
-       7 & 1000 \\
+       7 & 0 \\
        8 & 0 \\
-       9 & 0 \\
        \hline
     \end{tabularx}
     \caption {Analytical solution of the power output of the reactor per time step}
@@ -288,8 +290,8 @@ Analytical Solution: Based on the reactor parameters defined in Table 1, the rea
 
 \noindent
 \textbf{Test 3: A facility that produces reactor’s input commodity (fuel) is deployed when the amount of fuel available is below the amount of fuel required by the reactor.} \\
-Test Scenario: A single reactor is deployed at time step 3.\\
-Analytical Solution: Based on the simple supply chain example in Figure 1 and enrichment facility parameters defined in Table 2, an enrichment facility must be deployed at time step 3 to meet fuel demand. The analytical solution of the fuel facility deployment per time step is given in Table \ref{tab:test-fuel}.
+Test Scenario: A single reactor is deployed at time step 2.\\
+Analytical Solution: Based on the simple supply chain example in figure \ref{diag:dem} and enrichment facility parameters defined in table \ref{tab:everythingelse}, an enrichment facility must be deployed at time step 2 to meet fuel demand. The analytical solution of the enrichment facility deployment per time step is given in table \ref{tab:test-fuel}.
 
 \begin{table}[H]
      \centering
@@ -298,9 +300,8 @@ Analytical Solution: Based on the simple supply chain example in Figure 1 and en
        Timestep & Enrichment Facility deployment  \\
        \hline
        1 & 0 \\
-       2 & 0 \\
-       3 & 1\\
-       4 & 0 \\
+       2 & 1 \\
+       3 & 0\\
        \hline
     \end{tabularx}
     \caption {Analytical solution of the number of fuel facilities deployed per time step}
@@ -310,7 +311,7 @@ Analytical Solution: Based on the simple supply chain example in Figure 1 and en
 \noindent
 \textbf{Test 4: An appropriate number of facilities that produces reactor's input commodity (fuel) is deployed to meet the demand of the amount of fuel required by the reactor, when the initial fuel supply is non-zero.} \\
 Test Scenario: An initial fuel supply of 100kg. 2 reactors deployed at time step 2. \\
-Analytical solution: Based on Table \ref{tab:reactor}, each reactor has a fuel demand of 300kg per time step. Therefore, the fuel supply is 100kg at time step 1 and is 700kg at time steps 2 and 3. The analytical solution of fuel quantity per time step is given in Table \ref{tab:test-fueldemand}  
+Analytical solution: Based on table \ref{tab:reactor}, each reactor has a fuel demand of 300kg per time step. Therefore, the fuel supply is 100kg at time step 1 and is 700kg at time steps 2 and 3. The analytical solution of fuel quantity per time step is given in table \ref{tab:test-fueldemand}  
 
 \begin{table}[H]
      \centering
@@ -330,7 +331,7 @@ Analytical solution: Based on Table \ref{tab:reactor}, each reactor has a fuel d
 \noindent
 \textbf{Test 5: The fuel supply is within plus-minus the output of 1 fuel-producing facility of the reactor demand for fuel for all time steps.} \\
 Test Scenario: A reactor is deployed at timesteps 2, 3 and 4.\\
-Analytical Solution: Based on Table \ref{tab:reactor}, each reactor has a fuel demand of 300kg per time step. If an appropriate number of enrichment facilities is deployed to meet fuel demand, the difference between fuel quantity and fuel demand will be 100kg per time step. The analytical solution of difference between fuel quantity and fuel demand per time step is given in Table \ref{tab:test-fueldiff}.  
+Analytical Solution: Based on table \ref{tab:reactor}, each reactor has a fuel demand of 300kg per time step. If an appropriate number of enrichment facilities is deployed to meet fuel demand, the difference between fuel quantity and fuel demand will be 100kg per time step. The analytical solution of difference between fuel quantity and fuel demand per time step is given in table \ref{tab:test-fueldiff}.  
 
 \begin{table}[H]
      \centering
@@ -349,9 +350,32 @@ Analytical Solution: Based on Table \ref{tab:reactor}, each reactor has a fuel d
 \end{table}
 
 \noindent
-\textbf{Test 6: A facility that produces fuel producing facility's input commodity is deployed when the amount of input commodity is below the amount required by the fuel producing facility}. \\
+\textbf{Test 6: A fuel-producing facility is decommissioned when the amount of fuel available exceeds the the amount of fuel required by the reactor by 1 fuel-producing facility's fuel output for the number of user-defined consecutive time steps.} \\
 Test Scenario: An enrichment facility is deployed at time step 2. \\
-Analytical Solution: Based on the simple supply chain example in Figure \ref{diag:dem}, a source facility must be deployed at time step 2 to meet natural uranium demand. The analytical solution of the source facility deployment per time step is given in Table \ref{tab:test-NUdemand}. 
+Analytical Solution: Based on table \ref{tab:everythingelse}, the supply of fuel must exceed demand by 1 enrichment facility output for 3 consecutive time steps before it is decommissioned. Therefore, the enrichment facility must be decommissioned at time step 5. The analytical solution of the enrichment facility deployment per time step is given in table \ref{tab:test-supplymoredemand}. 
+
+\begin{table}[H]
+     \centering
+    \begin{tabularx}{\textwidth}{bbb}
+       \hline
+       Timestep & Enrichment Facility deployment \\
+       \hline
+       1 & 0 \\
+       2 & 1 \\
+       3 & 1 \\
+       4 & 1 \\
+       5 & 0 \\
+       \hline
+    \end{tabularx}
+    \caption {Analytical solution of the number of fuel facilities deployed per time step}
+    \label{tab:test-supplymoredemand}
+\end{table}
+
+\noindent
+\textbf{Test 7: A facility that produces fuel producing facility's input commodity is deployed when the amount of input commodity is below the amount required by the fuel producing facility}. \\
+Test Scenario: An enrichment facility is deployed at time step 2. \\
+Analytical Solution: Based on the simple supply chain example in
+figure \ref{diag:dem}, a source facility must be deployed at time step 2 to meet natural uranium demand. The analytical solution of the source facility deployment per time step is given in table \ref{tab:test-NUdemand}. 
 
 \begin{table}[H]
      \centering
@@ -368,45 +392,71 @@ Analytical Solution: Based on the simple supply chain example in Figure \ref{dia
     \label{tab:test-NUdemand}
 \end{table}
 
+\noindent
+\textbf{Test 8: An appropriate number of facilities that produces fuel-producing facility's input commodity is deployed to meet the demand of input commodity required by the fuel producing facility, when the initial input commodity is non-zero.} \\
+Test Scenario: An initial natural uranium supply of 1000kg. 1 enrichment facility deployed at time step 2. \\
+Analytical solution: Based on table \ref{tab:everythingelse}, each enrichment facility has a SWU capacity of 2000 SWU per time step and each source facility has a throughput of 3000kg per time step. Based on table \ref{tab:simulationparameters}, approximately 3500kg of natural uranium is required for enrichment SWU capacity of 2000. Therefore, 1 source facility must be commissioned to meet the demand of one enrichment facility. Therefore, the natural uranium supply is 1000kg at time step 1 and is 4500kg at time steps 2 and 3. The analytical solution of fuel quantity per time step is given in table \ref{tab:test-NUdemand2}.  
+
+\begin{table}[H]
+     \centering
+    \begin{tabularx}{\textwidth}{bbb}
+       \hline
+       Timestep & Natural Uranium Quantity (kg)  \\
+       \hline
+       1 & 1000 \\
+       2 & 4500 \\
+       3 & 4500\\
+       \hline
+    \end{tabularx}
+    \caption {Analytical solution of the fuel available per time step}
+    \label{tab:test-NUdemand2}
+\end{table}
+
+\noindent
+\textbf{Test 9: The supply of input commodity for the fuel-producing facility is within plus-minus the output of 1 facility that produces it, of the fuel-producing facility's demand for the input commodity for all time steps.} \\
+Test Scenario: An enrichment facility is deployed at timesteps 2, 3 and 4.\\
+Analytical Solution: Based on table \ref{tab:simulationparameters}, each enrichment facility has a natural uranium demand of 3412kg per time step. If an appropriate number of source facilities is deployed to meet natural uranium demand, the difference between fuel quantity and fuel demand will be 88kg per time step. The analytical solution of difference between natural uranium quantity and natural uranium demand per time step is given in table \ref{tab:test-NUdiff}.  
+
+\begin{table}[H]
+     \centering
+    \begin{tabularx}{\textwidth}{bbbb}
+       \hline
+       Timestep & Natural Uranium Quantity (kg) & Natural Uranium Demand (kg) & Difference (kg)\\
+       \hline
+       1 & 0 & 0 & 0\\
+       2 & 3500 & 3412 & 88\\
+       3 &  7000 & 6824 & 176\\
+       4 & 10500 & 10236 & 264\\
+       \hline
+    \end{tabularx}
+    \caption {Analytical solution of the difference between natural uranium  quantity and natural uranium demand per time step}
+    \label{tab:test-NUdiff}
+\end{table}
+
+\noindent
+\textbf{Test 10: A facility that produces fuel-producing facility's input commodity is decommissioned when the amount of input commodity available exceeds the the amount of input commodity required by the fuel-producing facility by 1 facility's output for the number of user-defined consecutive time steps.} \\
+Test Scenario: A source facility is deployed at time step 2. \\
+Analytical Solution: Based on table \ref{tab:everythingelse}, the supply of natural uranium must exceed demand by 1 source facility output for 3 consecutive time steps before it is decommissioned. Therefore, the source facility must be decommissioned at time step 5. The analytical solution of the source facility deployment per time step is given in table \ref{tab:test-supplymoredemand2}. 
+
+\begin{table}[H]
+     \centering
+    \begin{tabularx}{\textwidth}{bbb}
+       \hline
+       Timestep & Source Facility deployment \\
+       \hline
+       1 & 0 \\
+       2 & 1 \\
+       3 & 1 \\
+       4 & 1 \\
+       5 & 0 \\
+       \hline
+    \end{tabularx}
+    \caption {Analytical solution of the number of source facilities deployed per time step}
+    \label{tab:test-supplymoredemand2}
+\end{table}
+
+
 \begin{comment}
-\subsubsection{\texttt{Reactor}}
-\noindent
-\textbf{Condition 1: All the reactors run at full capacity} \\
-This is tested by determining the total number of time steps which both \texttt{Reactor}s are in operation, one \texttt{Reactor} is in operation or none is in operation. Based on the values of the analytical solution in Table \ref{tab:poweroutput}, there should be 2 time steps where both 
-\texttt{Reactor}s are in operation, 6 time steps where only one \texttt{Reactor} is in operation and 2 time steps where no \texttt{Reactor}s are in operation. 
-
-\noindent
-\textbf{Condition 2: A new \texttt{Reactor} is deployed when the energy demand exceeds the energy produced by the current \texttt{Reactor}s} \\
-This is tested by comparing the total number of \texttt{Reactor}s deployed to the analytical solution. Based on values of the analytical solution in Table \ref{tab:deployment}, in total 2 \texttt{Reactor}s were deployed.  
-
-\noindent 
-\textbf{Condition 3: A \texttt{Reactor} is decommissioned when the energy demand falls behind the output of the current \texttt{Reactor}s}
-
-\subsubsection{\texttt{Enrichment}}
-\noindent 
-\textbf{Condition 1: The enriched uranium produced by \texttt{Enrichment} is equal to the analytic solution of the enriched uranium required by the \texttt{Reactor} for each time step} \\
-This is tested by determining the total number of SWUs produced by the \texttt{Enrichment} facilities. These values are compared to the SWUs produced per time step in the analytical solution in Table \ref{tab:analytical}. 
-
-\noindent
-\textbf{Condition 2: A new \texttt{Enrichment} facility is deployed when the enriched uranium required by the \texttt{Fuelfab} exceeds the enriched uranium produced of current \texttt{Enrichment} facilities} \\
-This is tested by comparing the total number of \texttt{Enrichment} facilities deployed to the analytical solution. Based on values of the analytical solution in Table \ref{tab:deployment}, in total 2 \texttt{Enrichment} facilities were deployed.
-
-\noindent 
-\textbf{Condition 3: A \texttt{Enrichment} facility is decommissioned when the enriched uranium required by the \texttt{Fuelfab} falls behind the enriched uranium produced by current \texttt{Enrichment} facilities}
-
-\subsubsection{\texttt{Source}}
-\noindent 
-\textbf{Condition 1: The mined uranium produced by \texttt{Source} is equal to the analytical solution of the mined uranium required by the \texttt{Enrichment} facilities for each time step}\\
-This is tested by determining the total amount of Uranium mined by the \texttt{Source}. These values are compared to the Uranium produced per time step in the analytical solution in Table \ref{tab:analytical}.
-
-\noindent
-\textbf{Condition 2: A \texttt{Source} facility is deployed when mined uranium required by the \texttt{Enrichment} facilities exceeds mined uranium produced by the current \texttt{Source}} \\
-This is tested by comparing the total number of \texttt{Source} facilities deployed to the analytical solution. Based on values of the analytical solution in Table \ref{tab:deployment}, in total 2 \texttt{Source} facilities were deployed.
-
-\noindent 
-\textbf{Condition 3: A \texttt{Source} facility is decommissioned when mined uranium required by the \texttt{Enrichment} facilities falls behind the mined uranium required by the current \texttt{Source}}
-
-
 commented out till further time
 \subsection{Deterministic-Optimizing/Stochastic prediction method}
 The following conditions need to be satisfied for each segment of the fuel cycle. 
