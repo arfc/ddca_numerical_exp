@@ -23,11 +23,11 @@
 \usepackage{color}
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
 \newcolumntype{b}{X}
+\newcolumntype{f}{>{\hsize=.15\hsize}X}
 \newcolumntype{s}{>{\hsize=.5\hsize}X}
 \newcolumntype{m}{>{\hsize=.75\hsize}X}
 \usepackage{titling}
 \usepackage[newfloat]{minted}
-
 \newenvironment{code}{\captionsetup{type=listing}}{}
 \SetupFloatingEnvironment{listing}{name=Code}
 
@@ -194,6 +194,21 @@ Table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the
     \label{tab:everythingelse}
 \end{table}
 
+Table \ref{tab:simulationparameters} provides the input and output commodity amounts and enrichment SWUs required based on a reactor fuel demand of 100 kg for one time step. These input and output commodities are based on the simple demand flow of materials shown in Figure \ref{diag:dem}. 
+
+\begin{table}[H]
+     \centering
+    \begin{tabularx}{\textwidth}{bf}
+       \hline
+      Fuel (Reactor input commodity and Enrichment facility output commodity) & 100 kg \\
+       Enrichment SWU & 528 SWU \\
+       Natural Uranium (Source output commodity and enrichment input commodity) & 901 kg \\
+       \hline
+    \end{tabularx}
+    \caption {Simulation parameters}
+    \label{tab:simulationparameters}
+\end{table}
+
 An example input file with the facility and simulation
 definitions can be found in the input directory of this repository.
 
@@ -317,6 +332,25 @@ Analytical Solution: Based on Table \ref{tab:reactor}, each reactor has a fuel d
     \label{tab:test-fueldiff}
 \end{table}
 
+\noindent
+\textbf{Test 6: A facility that produces fuel producing facility's input commodity is deployed when the amount of input commodity is below the amount required by the fuel producing facility}. \\
+Test Scenario: An enrichment facility is deployed at time step 2. \\
+Analytical Solution: Based on the simple supply chain example in Figure \ref{diag:dem}, a source facility must be deployed at time step 2 to meet natural uranium demand. The analytical solution of the source facility deployment per time step is given in Table \ref{tab:test-NUdemand}. 
+
+\begin{table}[H]
+     \centering
+    \begin{tabularx}{\textwidth}{bbb}
+       \hline
+       Timestep & Source Facility deployment  \\
+       \hline
+       1 & 0 \\
+       2 & 1 \\
+       3 & 0 \\
+       \hline
+    \end{tabularx}
+    \caption {Analytical solution of the number of source facilities deployed per time step}
+    \label{tab:test-NUdemand}
+\end{table}
 
 \begin{comment}
 \subsubsection{\texttt{Reactor}}
