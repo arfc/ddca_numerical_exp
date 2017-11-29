@@ -138,8 +138,9 @@ execution for \Cyclus is illustrated in figure \ref{fig:time}.
 \subsection{Upon Entering (\texttt{Enternotify})}
 
 The algorithm creates a supply chain with the fuel facilities,
-then calculates the demand for each facility for a unit quantity of fuel.
-A simple example is illustrated in figure \ref{diag:dem}.
+then calculates the demand for each facility for a unit quantity of fuel
+(example in figure \ref{diag:dem}). It also orders to build fuel cycle
+facilities for the reactors at timestep 1.
 
 \begin{figure}[H]
 \begin{tikzpicture}[node distance=4.7cm]
@@ -164,7 +165,8 @@ A simple example is illustrated in figure \ref{diag:dem}.
 The algorithm calculates the fuel demand
 from the fleet of reactors at one timestep ahead, and the corresponding demand for fuel facilities.
 The current capacity of each fuel cycle facility is also calculated. If the capacity
-is smaller than the demand, the algorithm orders to build more facilities to meet the demand.
+is smaller than the demand, the algorithm orders to build more facilities to meet the demand,
+so that the fuel demand is met for the next timestep.
 
 \section{Simulation parameter for Test Scenarios}
 Simple parameters are given to fuel cycle facilities for the numerical test of 
