@@ -1,5 +1,7 @@
 \documentclass[12pt,letterpaper]{article}
-
+\usepackage{draftwatermark}
+\SetWatermarkText{DRAFT}
+\SetWatermarkScale{1}
 %Note to Self:
 %When Decommission? - after two months of feeling useless or right away?
 
@@ -57,16 +59,13 @@
 
 \title{Numerical Experiments for Verifying Demand Driven Deployment Algorithms}
 \subtitle{Draft 2}
-\author{Jin Whan Bae and Gwendolyn Chee}
+\author{Jin Whan Bae, Gwendolyn Chee, Kathryn Huff}
 \date{2017-10-11}
 
 
 \begin{document}
-	
 	\maketitle
 	\hrule
-	\onehalfspacing
-	\thispagestyle{empty}
 
 \section{Introduction}
 The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cycamore demand-driven deployment capabilities.
@@ -76,7 +75,8 @@ These prediction models are being developed by the University of South Carolina.
 
 \section{Once through Nuclear Fuel Cycle}
 \begin{figure}[H]
-\caption{Flow Chart of Once through Nuclear Fuel Cycle}
+\caption{Simplified once through nuclear fuel cycle used in these numerical 
+experiments.}
 \begin{tikzpicture}[node distance=4.7cm]
 \node (source) [process] {\texttt{Source}};
 \node (enrichment) [process, right of=source] {\texttt{Enrichment}};
@@ -89,22 +89,32 @@ These prediction models are being developed by the University of South Carolina.
 \end{tikzpicture}
 \end{figure}
 
-In this report, the once-through fuel cycle is simplified to have 4 components: \texttt{Source}, \texttt{Enrichment}, \texttt{Reactor} and \texttt{Sink}. However, in a true once-through fuel cycle, there are more than 4 components. Other components include milling, conversion, fuel fabrication etc. For example, if a fuel cycle includes the Fuel Fabrication step and excludes the \texttt{Enrichment} step, the tests can be modified to include Fuel Fabrication and exclude \texttt{Enrichment}. 
+In the simple simulation at the core of the numerical experiments, the 
+once-through fuel cycle is simplified to have 4 components: \texttt{Source}, 
+\texttt{Enrichment}, \texttt{Reactor} and \texttt{Sink}. However, in a true 
+once-through fuel cycle, there are more than 4 components. Other components 
+typically include milling, conversion, fuel fabrication etc. However, this 
+simplified fuel cycle will be sufficient to evaluate the algorithm for all 
+cases. 
 
 \subsection{Input File Specification}
-\Cyclus uses XML input files. For the input file, we assume the archetype to be an \texttt{INSTITUTION}, since it governs deployment and decommission of facilities.
+This section describes expectations for \Cyclus input specifications regarding 
+this archetype. \Cyclus uses XML input files. For these numerical experiements, 
+we assume the demand-driven deployment archetype is an \texttt{INSTITUTION}, 
+since it governs deployment and decommission of facilities.
 
-The user would only have to define the reactor prototype and reactor deployment. 
+The user must only define the reactor prototype and reactor deployment 
+parameter parameters.
 The remaining fuel facilities,
-both front end and back end, would be recognized by the archetype
-by looking at each prototypes' in-and-out commodities.
+both front end and back end, must be recognized by the \texttt{INSTITUTION} archetype
+based on each prototypes' in-and-out commodities.
 Then the recognized, or `connected' fuel cycle facilities deploy
 with demand.
 If an input file does not have the necessary `connections' for the 
-reactor to receive fuel, it will throw an error. 
+reactor to receive fuel, we expect an error to be thrown. 
 
-We suggest an example format:
-First, the input file would define reactor prototype to be deployed. There can be multiple reactors.
+The input file must define reactor prototype to be deployed. There can be 
+multiple reactors. An example follows.
 
 \begin{minted}{xml}
 <institution>
@@ -146,7 +156,9 @@ is given the option to manually define the deployment(DeployInst):
     </institution>
 \end{minted}
 
-Or have the institution deploy reactors according to power demand (GrowthRegion):
+If instead the institution deploys reactors according to a piecewise function, 
+the institution must deploy reactors according to power demand (GrowthRegion) 
+and the fuel cycle facilities must follow:
 
 \begin{minted}{xml}
       <deployment>
@@ -171,12 +183,13 @@ Or have the institution deploy reactors according to power demand (GrowthRegion)
 
 \subsection{Simple Scenario for Testing}
 
-A simple scenario definition is given where a predefined \texttt{Reactor}
-is deployed at timestep one and three. The chain of front---end
-fuel cycle facility of one facility each 
-(\texttt{Source}, \texttt{Enrichment}, \texttt{FuelFab}) can supply enough fuel
+A simple scenario definition is given n this section. A predefined \texttt{Reactor}
+is deployed at timestep one and three. One of each of the front-end
+fuel cycle facilities 
+(\texttt{Source}, \texttt{Enrichment}, \texttt{FuelFab}) is deployed initially 
+and can supply enough fuel
 for the operation of one reactor. A \texttt{Sink} can hold enough
-amount for two batches of fuel. The specifics are listed below:
+for two batches of fuel. The specifics are listed below:
 
 \begin{table}[h]
      \centering
@@ -189,10 +202,10 @@ amount for two batches of fuel. The specifics are listed below:
        Natural U Composition & 0.71\% U235 & \\
        Tails Assay & 0.003 & \% U235 \\
        Fuel Enrichment & 4 & \% U235 \\
-       Enrichment throughput & 300 & $\frac{kg}{month \cdot facility}$ \\
-       Enrichment SWU Capacity & 2000 & $\frac{SWU}{month \cdot facility}$ \\
-       Source Throughput & 3000 & $\frac{kg}{month \cdot facility}$\\
-       Sink Capacity & 200 &  $\frac{kg}{facility}$ \\
+       Enrichment throughput & 300 & $\frac{kg}{month}$\\
+       Enrichment SWU Capacity & 2000 & $\frac{SWU}{month \cdot}$ \\
+       Source Throughput & 3000 & $\frac{kg}{month}$\\
+       Sink Capacity & 200 &  $kg$ \\
        \hline
     \end{tabularx}
     \caption {Simulation Parameters}
