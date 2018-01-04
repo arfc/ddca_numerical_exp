@@ -1,5 +1,4 @@
 \documentclass[12pt,letterpaper]{article}
-
 %Note to Self:
 %When Decommission? - after two months of feeling useless or right away?
 
@@ -62,16 +61,12 @@
 \fontfamily{ptm}\selectfont
 
 \title{Numerical Experiments for Verifying Demand Driven Deployment Algorithms}
-\author{Jin Whan Bae and Gwendolyn Chee}
-\date{2017-10-11}
+\author{Jin Whan Bae, Gwendolyn Chee, Kathryn Huff}
 
 
 \begin{document}
-	
 	\maketitle
 	\hrule
-	\onehalfspacing
-	\thispagestyle{empty}
 
 \section{Introduction}
 For many fuel cycle simulations, it is currently up to the user to define
@@ -93,7 +88,6 @@ deterministic optimizing and stochastic optimizing methods. The numerical
 experiments will be designed for both the once through nuclear fuel 
 cycle and advanced fuel cycles. 
 
-
 \section{Method}
 This report lists necessary capabilities of the new \Cyclus \texttt{institute}
 for demand-driven deployment of fuel cycle facilities. 
@@ -106,7 +100,6 @@ The user defines prototypes to be deployed for fuel facilities,
 and reactor deployment scheme.  The reactor deployment causes the demand of fuel
 which triggers fuel facility deployment. The detailed input file XML input schema
 is shown in Appendix A. 
-
 
 \section{Algorithm Flow}
 
@@ -135,7 +128,6 @@ execution for \Cyclus is illustrated in figure \ref{diag:time}.
          thus unique to each archetype.}
 \label{diag:time}
 \end{figure}
-
 
 \subsection{Upon Entering (\texttt{Enternotify})}
 
