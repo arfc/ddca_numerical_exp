@@ -543,36 +543,36 @@ is given two choices:
 \begin{code}
 \begin{minted}[bgcolor=bg]{xml}
 <interleave>
-    <element name="reactors">
-        <oneOrMore>
-            <element name="val">
-                <data type="string"/>
-            </element>
-        </oneOrMore>
-    </element>
-    <element name="build_times">
-        <oneOrMore>
-            <element name="val">
-                <data type="int"/>
-            </element>
-        </oneOrMore>
-    </element>
-    <element name="n_build">
-        <oneOrMore>
-            <element name="val">
-                <data type="int"/>
-            </element>
-        </oneOrMore>
-    </element>
-    <optional>
-        <element name="lifetimes">
-            <oneOrMore>
-                <element name="val">
-                    <data type="int"/>
-                </element>
-            </oneOrMore>
+  <element name="reactors">
+    <oneOrMore>
+      <element name="val">
+        <data type="string"/>
+      </element>
+    </oneOrMore>
+  </element>
+  <element name="build_times">
+    <oneOrMore>
+      <element name="val">
+        <data type="int"/>
+      </element>
+    </oneOrMore>
+  </element>
+  <element name="n_build">
+    <oneOrMore>
+      <element name="val">
+        <data type="int"/>
+      </element>
+    </oneOrMore>
+  </element>
+  <optional>
+    <element name="lifetimes">
+      <oneOrMore>
+        <element name="val">
+          <data type="int"/>
         </element>
-    </optional>
+      </oneOrMore>
+    </element>
+  </optional>
 </interleave>
 \end{minted}
 \captionof{listing}{Manual definition of reactor deployment}
@@ -582,39 +582,39 @@ is given two choices:
 \begin{code}
 
 \begin{minted}[bgcolor=bg]{xml}
- <interleave>
-    <element name="growth">
-        <oneOrMore>
-            <element name="item">
+<interleave>
+  <element name="growth">
+    <oneOrMore>
+      <element name="item">
+        <interleave>
+          <element name="reactors">
+            <data type="string"/>
+          </element>
+          <element name="piecewise_function">
+            <oneOrMore>
+              <element name="piece">
                 <interleave>
-                    <element name="reactors">
+                  <element name="start">
+                    <data type="int"/>
+                  </element>
+                  <element name="function">
+                    <interleave>
+                      <element name="type">
                         <data type="string"/>
-                    </element>
-                    <element name="piecewise_function">
-                        <oneOrMore>
-                            <element name="piece">
-                                <interleave>
-                                    <element name="start">
-                                        <data type="int"/>
-                                    </element>
-                                    <element name="function">
-                                        <interleave>
-                                            <element name="type">
-                                                <data type="string"/>
-                                            </element>
-                                            <element name="params">
-                                                <data type="string"/>
-                                            </element>
-                                        </interleave>
-                                    </element>
-                                </interleave>
-                            </element>
-                        </oneOrMore>
-                    </element>
+                      </element>
+                      <element name="params">
+                        <data type="string"/>
+                      </element>
+                    </interleave>
+                  </element>
                 </interleave>
-            </element>
-        </oneOrMore>
-    </element>
+              </element>
+            </oneOrMore>
+          </element>
+        </interleave>
+      </element>
+    </oneOrMore>
+  </element>
 </interleave>
 \end{minted}
 \captionof{listing}{Definition of power demand function}
@@ -627,7 +627,7 @@ is given two choices:
 \noindent
 \textbf{Condition 1: All the reactors run at full capacity} 
 \begin{minted}{C++}
-TEST(ReactorTests, FullCapacity) {
+TEtST(ReactorTests, FullCapacity) {
    std::string config = 
      "  <fuel_inrecipes>  <val>fresh_uox</val>  </fuel_inrecipes>  "
      "  <fuel_outrecipes> <val>spent_uox</val>  </fuel_outrecipes>  "
