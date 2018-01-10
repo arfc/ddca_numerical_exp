@@ -1,6 +1,6 @@
 \documentclass[11pt,letterpaper]{article}
 \usepackage[utf8]{inputenc}
-%\usepackage{caption} % for table captions
+\usepackage{caption} % for table captions
 \usepackage{amsmath} % for multi-line equations and piecewises
 \usepackage{graphicx}
 %\usepackage{textcomp}
@@ -28,13 +28,11 @@
 
 
 \usetikzlibrary{shapes.geometric,arrows}
-\tikzstyle{process} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, rounded corners, minimum width=1cm, minimum height=1cm,text centered, draw=black, fill=blue!30]
 \tikzstyle{arrow} = [thick,->,>=stealth]
 
 
 \graphicspath{{images/}}
- 
-\usepackage[font={footnotesize,it}]{caption}
  
 \title{Numerical Experiments for Verifying Demand Driven Deployment Algorithms}
 \author{Jin Whan Bae, Gwendolyn Chee, Kathryn Huff}
@@ -113,15 +111,15 @@ then calculates the demand for each facility for a unit quantity of fuel
 facilities for the reactors at timestep 1.
 
 \begin{figure}[H]
-\begin{tikzpicture}[node distance=4.7cm]
-\node (source) [process] {\texttt{Source} [$ax$]};
-\node (enrichment) [process, right of=source] {\texttt{Enrichment} [$x$]};
-\node (reactor) [process, right of=enrichment]{\texttt{Reactor} [$x$]};
-\node (sink) [process, right of=reactor]{\texttt{Sink} [$x$]};
+\begin{tikzpicture}[node distance=3.5cm]
+\node (source) [process] {\texttt{Source}};
+\node (enrichment) [process, right of=source] {\texttt{Enrichment}};
+\node (reactor) [process, right of=enrichment]{\texttt{Reactor}};
+\node (sink) [process, right of=reactor]{\texttt{Sink}};
 
-\draw [arrow] (source) -- (enrichment); 
-\draw [arrow] (enrichment) -- (reactor);
-\draw [arrow] (reactor) -- (sink);
+\draw [arrow] (source) -- (enrichment) node[midway,fill=white] {$[ax]$}; 
+\draw [arrow] (enrichment) -- (reactor) node[midway,fill=white] {$[x]$}; 
+\draw [arrow] (reactor) -- (sink) node[midway,fill=white] {$[x]$}; 
 \end{tikzpicture}
 \caption{Simple demand flow of materials. The values in the bracket are demands calculated
          by the algorithm. The \texttt{Reactor} demands $x$ amount of fuel,
