@@ -1,20 +1,12 @@
-\documentclass[12pt,letterpaper]{article}
-%Note to Self:
-%When Decommission? - after two months of feeling useless or right away?
-
+\documentclass[11pt,letterpaper]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[letterpaper,margin=1in]{geometry}
-\usepackage{caption} % for table captions
-
+%\usepackage{caption} % for table captions
 \usepackage{amsmath} % for multi-line equations and piecewises
-\usepackage{indentfirst} % to indent after a section
-\usepackage{setspace}
-\usepackage{times}
 \usepackage{graphicx}
-\usepackage{textcomp}
+%\usepackage{textcomp}
 \usepackage{xspace}
 \usepackage{verbatim} % for block comments
-\usepackage{subfig} % for subfigures
+%\usepackage{subfig} % for subfigures
 \usepackage{enumitem} % for a) b) c) lists
 \newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
 \newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
@@ -32,12 +24,6 @@
 \newenvironment{code}{\captionsetup{type=listing}}{}
 \SetupFloatingEnvironment{listing}{name=Code}
 
-\newcommand{\subtitle}[1]{%
-  \posttitle{%
-    \par\end{center}
-    \begin{center}\large#1\end{center}
-    \vskip0.5em}%
-}
 \usepackage{tikz}
 
 
@@ -50,16 +36,6 @@
  
 \usepackage[font={footnotesize,it}]{caption}
  
-
-
-
-\setlength{\parindent}{15pt} % Default is 15pt.
-
-
-
-
-\fontfamily{ptm}\selectfont
-
 \title{Numerical Experiments for Verifying Demand Driven Deployment Algorithms}
 \author{Jin Whan Bae, Gwendolyn Chee, Kathryn Huff}
 
@@ -165,7 +141,8 @@ so that the fuel demand is met for the next timestep.
 \section{Simulation parameter for Test Scenarios}
 Simple parameters are given to fuel cycle facilities for the numerical test of 
 the algorithm.  
-table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the test scenarios and table \ref{tab:everythingelse} provides the parameters for the \texttt{source}, \texttt{enrichment} and \texttt{sink} facilities in the test scenarios.
+
+Table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the test scenarios and table \ref{tab:everythingelse} provides the parameters for the \texttt{source}, \texttt{enrichment} and \texttt{sink} facilities in the test scenarios.
 
 \begin{table}[h]
     \centering
@@ -193,13 +170,13 @@ table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the
        \hline
        Parameters & Value & Units \\
        \hline
-       Natural U Composition & 0.71 & \% U235\\
-       Tails Assay & 0.003 & \% U235 \\
-       Fuel Enrichment & 4 & \% U235 \\
+       Natural U Composition & 0.71 & \% $^{235}U$\\
+       Tails Assay & 0.003 & \% $^{235}U$ \\
+       Fuel Enrichment & 4 & \% $^{235}U$ \\
        Enrichment SWU Capacity & 2000 & $\frac{SWU}{month}$ \\
        Source Throughput & 3500 & $\frac{kg}{month}$\\
        Sink Capacity & 200 &  $kg$ \\
-       Number of time steps before facility is decommissioned \footnote{This refers to the number of consecutive time steps that the supply exceeds demand by more than 1 facility output before the facility is decomissioned.} & 3 & timesteps \\
+       Number of time steps before facility is decommissioned \footnote{This refers to the number of consecutive time steps that the supply exceeds demand by more than 1 facility output before the facility is decommissioned.} & 3 & timesteps \\
        \hline
     \end{tabularx}
     \end{minipage}
