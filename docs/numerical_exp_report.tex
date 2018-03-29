@@ -140,21 +140,43 @@ so that the fuel demand is met for the next timestep.
 Simple parameters are given to fuel cycle facilities for the numerical test of 
 the algorithm.  
 
-Table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the test scenarios and table \ref{tab:everythingelse} provides the parameters for the \texttt{source}, \texttt{enrichment} and \texttt{sink} facilities in the test scenarios.
+Table \ref{tab:testscenario} provides basic parameters for each test scenario. Table \ref{tab:reactor} provides the parameters for the \texttt{source} and \texttt{reactors} in the test scenarios.
+
+\begin{table}[h]
+	\centering
+	\begin{tabularx}{\textwidth}{bsb}
+		\hline
+		Test Scenario Parameters & Value & Units \\
+		\hline
+		Duration & 3 & timesteps \\
+		Start Month & 1 & month \\
+		Start Year & 2000 & year \\
+		\hline
+	\end{tabularx}
+	\caption {Basic Test Parameters}
+	\label{tab:testscenario}
+\end{table}
 
 \begin{table}[h]
     \centering
     \begin{tabularx}{\textwidth}{bbb}
        \hline
+       Source Parameters & Value & Units \\
+       \hline
+       Throughput & 1 & kg \\
+       Output Commodity & fresh uox & \\
+       \hline
        Reactor Parameters & Value & Units \\
        \hline
-       Cycle Time & 2 & timesteps \\
-       Refuel Time & 1 & timesteps \\
-       Lifetime & 6 & timesteps \\
-       Power Capacity & 1000 & MWe \\
-       Assembly Size & 100 & kg \\
-       \# assemblies per core & 3 & \\
+       Cycle Time & 1 & timesteps \\
+       Refuel Time & 0 & timesteps \\
+       Lifetime & 1 & timesteps \\
+       Power Capacity & 1& MWe \\
+       Assembly Size & 1 & kg \\
+       \# assemblies per core & 1 & \\
        \# assemblies per batch & 1 & \\
+       Input Commodity & fresh uox & \\
+       Input Commodity & spent uox & \\
        \hline
     \end{tabularx}
     \caption {Reactor Parameters}
@@ -178,7 +200,7 @@ Table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the
        \hline
     \end{tabularx}
     \end{minipage}
-    \caption {Source, Enrichment and Sink Facility Parameters}
+    \caption {Source Parameters}
     \label{tab:everythingelse}
 \end{table}
 
@@ -203,9 +225,16 @@ definitions can be found in the input directory of this repository.
 \newpage
 
 \section{Numerical Tests for the Non-optimizing prediction method}
+To ensure that the non-optimizing prediction model is working correctly, a variation of input files that uses the non optimizing method archetype to deploy or decommission facilities is tested to determine if their outputs match the analytical solution. In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:reactor} and \ref{tab:everythingelse} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
+
+The tests are split into test A types and test B types. Test A refers to the test scenarios where facilities are expected to be deployed. Test B refers to the test scenarios where facilities are expected to be decommissioned. 
+\\
+\subsection{Test A-1: When the initial demand for  }
+
+\begin{comment}
 To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution for the specified test scenario. In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:reactor} and \ref{tab:everythingelse} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
-\\
-\\
+\end{comment}
+
 \noindent
 \textbf{Test 1: A reactor outputs the user defined power capacity when deployed and does not output
 power capacity when decommissioned.} \\
