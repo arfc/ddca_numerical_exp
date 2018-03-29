@@ -138,7 +138,7 @@ so that the fuel demand is met for the next timestep.
 
 \section{Simulation parameter for Test Scenarios}
 Simple parameters are given to fuel cycle facilities for the numerical testing of 
-the algorithm.  
+the algorithm.  Only \texttt{source} and \texttt{reactor} facilities are used in the test scenarios. 
 
 Table \ref{tab:testscenario} provides basic parameters for each test scenario. Table \ref{tab:reactor} provides the parameters for the \texttt{source} and \texttt{reactors} in the test scenarios.
 
@@ -202,17 +202,24 @@ The aim with the various test scenarios are to check if the non-optimizing metho
 	\item There is a growth in the demand.
 \end{enumerate}
 
-The functionalities are tested alone, and also mixed and matched to give various test scenarios to determine if the non-optimizing method archetype will deploy or decommission facilities correctly in the presence of more than one functionality. For ease of determining the analytical solution, each functionality is standardized in the test scenarios. This means that the three input functionalities are restricted to be:  
-
-\begin{enumerate}
-	\item There is an initial demand of 1 unit. 
-	\item There is 1 initial facility already present. 
-	\item There is a growth rate of 1 (100\%) for the demanded resource.
-\end{enumerate}
-
-
+The functionalities are tested alone, but also mixed and matched to give various test scenarios to determine if the non-optimizing method archetype will deploy or decommission facilities correctly in the presence of more than one functionality. As stated in the previous section, only \texttt{source} and \texttt{reactor} facilities are used in the test scenarios. The test scenarios A1 to A4 and B1 to B2 will only have a \texttt{source} facility, while test scenarios A5 and A6 will have both \texttt{source} and \texttt{reactor} facilities. 
 
 \subsection{Test A-1: There is an initial demand for 1kg of fuel.}
+
+\begin{table}[h]
+	\centering
+	\begin{tabularx}{\textwidth}{bsb}
+		\hline
+		Functionality & Value & Units \\
+		\hline
+		Initial demand & 1 & kg \\
+		Initial facilities & 0 & \#\\
+		Growth Rate & 0 & \% \\
+		\hline
+	\end{tabularx}
+	\caption {Basic Test Parameters}
+	\label{tab:testa1}
+\end{table}
 
 \begin{comment}
 To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution for the specified test scenario. In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:reactor} and \ref{tab:everythingelse} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
