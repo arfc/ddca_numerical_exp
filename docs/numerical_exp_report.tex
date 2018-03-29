@@ -137,7 +137,7 @@ is smaller than the demand, the algorithm orders to build more facilities to mee
 so that the fuel demand is met for the next timestep.
 
 \section{Simulation parameter for Test Scenarios}
-Simple parameters are given to fuel cycle facilities for the numerical test of 
+Simple parameters are given to fuel cycle facilities for the numerical testing of 
 the algorithm.  
 
 Table \ref{tab:testscenario} provides basic parameters for each test scenario. Table \ref{tab:reactor} provides the parameters for the \texttt{source} and \texttt{reactors} in the test scenarios.
@@ -149,6 +149,7 @@ Table \ref{tab:testscenario} provides basic parameters for each test scenario. T
 		Test Scenario Parameters & Value & Units \\
 		\hline
 		Duration & 3 & timesteps \\
+		Timestep & 1 & month \\
 		Start Month & 1 & month \\
 		Start Year & 2000 & year \\
 		\hline
@@ -183,53 +184,35 @@ Table \ref{tab:testscenario} provides basic parameters for each test scenario. T
     \label{tab:reactor}
 \end{table}
 
-\begin{table}[H]
-     \centering
-     \begin{minipage}{\textwidth}
-    \begin{tabularx}{\textwidth}{bff}
-       \hline
-       Parameters & Value & Units \\
-       \hline
-       Natural U Composition & 0.71 & \% $^{235}U$\\
-       Tails Assay & 0.003 & \% $^{235}U$ \\
-       Fuel Enrichment & 4 & \% $^{235}U$ \\
-       Enrichment SWU Capacity & 2000 & $\frac{SWU}{month}$ \\
-       Source Throughput & 3500 & $\frac{kg}{month}$\\
-       Sink Capacity & 200 &  $kg$ \\
-       Number of time steps before facility is decommissioned \footnote{This refers to the number of consecutive time steps that the supply exceeds demand by more than 1 facility output before the facility is decommissioned.} & 3 & timesteps \\
-       \hline
-    \end{tabularx}
-    \end{minipage}
-    \caption {Source Parameters}
-    \label{tab:everythingelse}
-\end{table}
+\begin{comment}
+Should i add a table with the recipes for fresh and spent uox? Seems unnecessary since its not explicitly used in any analytical solutions.
+\end{comment}
 
-Table \ref{tab:simulationparameters} provides the input and output commodity amounts and enrichment SWUs required based on a reactor fuel demand of 100 kg for one time step. These input and output commodities are based on the simple demand flow of materials shown in figure \ref{diag:dem}. 
-
-\begin{table}[H]
-     \centering
-    \begin{tabularx}{\textwidth}{bf}
-       \hline
-      Fuel (Reactor input commodity and Enrichment facility output commodity) & 100 kg \\
-       Enrichment SWU & 528 SWU \\
-       Natural Uranium (Source output commodity and enrichment input commodity) & 901 kg \\
-       \hline
-    \end{tabularx}
-    \caption {Simulation parameters}
-    \label{tab:simulationparameters}
-\end{table}
-
-An example input file with the facility and simulation
-definitions can be found in the input directory of this repository.
-
-\newpage
+\pagebreak
 
 \section{Numerical Tests for the Non-optimizing prediction method}
-To ensure that the non-optimizing prediction model is working correctly, a variation of input files that uses the non optimizing method archetype to deploy or decommission facilities is tested to determine if their outputs match the analytical solution. In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:reactor} and \ref{tab:everythingelse} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
+To ensure that the non-optimizing prediction model is working correctly, a variation of input files that uses the non-optimizing method archetype to deploy or decommission facilities is tested to determine if their outputs match the analytical solution. In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
 
 The tests are split into test A types and test B types. Test A refers to the test scenarios where facilities are expected to be deployed. Test B refers to the test scenarios where facilities are expected to be decommissioned. 
-\\
-\subsection{Test A-1: When the initial demand for  }
+
+The aim with the various test scenarios are to check if the non-optimizing method archetype will deploy or decommission facilities correctly when there is a variation in the three possible input functionalities.  
+\begin{enumerate}
+	\item There is an initial demand. 
+	\item There is an initial facility already present. 
+	\item There is a growth in the demand.
+\end{enumerate}
+
+The functionalities are tested alone, and also mixed and matched to give various test scenarios to determine if the non-optimizing method archetype will deploy or decommission facilities correctly in the presence of more than one functionality. For ease of determining the analytical solution, each functionality is standardized in the test scenarios. This means that the three input functionalities are restricted to be:  
+
+\begin{enumerate}
+	\item There is an initial demand of 1 unit. 
+	\item There is 1 initial facility already present. 
+	\item There is a growth rate of 1 (100\%) for the demanded resource.
+\end{enumerate}
+
+
+
+\subsection{Test A-1: There is an initial demand for 1kg of fuel.}
 
 \begin{comment}
 To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution for the specified test scenario. In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:reactor} and \ref{tab:everythingelse} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
