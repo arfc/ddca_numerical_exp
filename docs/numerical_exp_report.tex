@@ -684,201 +684,111 @@ TEST(ReactorTests, DDDeploy_NO) {
 \end{comment}
 
 \section{Appendix A - parameter configuration}
+Appendix A shows the json file that contains the simulation parameters that are common between all the test scenarios discussed in Section 6.  
 
-First, the user defines the prototypes to be deployed
-to support the reactor.
-
-\begin{code}
-
-\begin{minted}[bgcolor=bg]{xml}
-<interleave>
-  <element name="institution">
-    <data type="string"/>
-  </element>
-    <element name="prototypes">
-      <oneOrMore>
-        <element name="val">
-          <data type="string"/>
-        </element>
-      <oneOrMore>
-    </element>
-</interleave>
-
+\begin{minted}{json}
+template = {
+"simulation": {
+"archetypes": {
+"spec": [
+{"lib": "agents", "name": "NullRegion"}, 
+{"lib": "cycamore", "name": "Source"}, 
+{"lib": "cycamore", "name": "Reactor"},
+{"lib": "cycamore", "name": "Sink"},
+{"lib": "d3ploy.no_inst", "name": "NOInst"}
+]
+}, 
+"control": {"duration": "15", "startmonth": "1", "startyear": "2000"}, 
+"recipe": [
+{
+"basis": "mass", 
+"name": "fresh_uox", 
+"nuclide": [{"comp": "0.711", "id": "U235"}, {"comp": "99.289", "id": "U238"}]
+}, 
+{
+"basis": "mass", 
+"name": "spent_uox", 
+"nuclide": [{"comp": "50", "id": "Kr85"}, {"comp": "50", "id": "Cs137"}]
+}
+], 
+"facility": [{
+"config": {"Source": {"outcommod": "fuel",
+"outrecipe": "fresh_uox",
+"throughput": "1",
+"source_record_supply": "fuel"}}, 
+"name": "source"
+},
+{
+"config": {"Sink": {"in_commods": {"val":"spent_uox"},
+"max_inv_size": 1,
+"sink_record_demand": "fuel_cap"}}, 
+"name": "sink"
+},
+{
+"config": {
+"Reactor":{
+"assem_size":"1",
+"cycle_time": "1", 
+"fuel_incommods": {"val": "fuel"}, 
+"fuel_inrecipes": {"val": "fresh_uox"}, 
+"fuel_outcommods": {"val": "spent_uox"}, 
+"fuel_outrecipes": {"val": "spent_uox"}, 
+"n_assem_batch": "1", 
+"n_assem_core": "1", 
+"power_cap": "1", 
+"refuel_time": "0",
+"reactor_fuel_demand": "fuel_reactor"
+}
+},
+"name": "reactor"
+}]}}
 \end{minted}
-\captionof{listing}{Fuel cycle facility prototype definition}
-\label{code:pro}
-\end{code}
 
-
-Then deployment of the power-producing reactors is defined, and the user
-is given two choices:
-\begin{itemize}
-  \item Manually define the deployment scheme of reactors (code \ref{code:man_reac})
-  \item Define power demand equation (code \ref{code:fun_reac})
-\end{itemize}
-
-\begin{code}
-\begin{minted}[bgcolor=bg]{xml}
-<interleave>
-  <element name="reactors">
-    <oneOrMore>
-      <element name="val">
-        <data type="string"/>
-      </element>
-    </oneOrMore>
-  </element>
-  <element name="build_times">
-    <oneOrMore>
-      <element name="val">
-        <data type="int"/>
-      </element>
-    </oneOrMore>
-  </element>
-  <element name="n_build">
-    <oneOrMore>
-      <element name="val">
-        <data type="int"/>
-      </element>
-    </oneOrMore>
-  </element>
-  <optional>
-    <element name="lifetimes">
-      <oneOrMore>
-        <element name="val">
-          <data type="int"/>
-        </element>
-      </oneOrMore>
-    </element>
-  </optional>
-</interleave>
-\end{minted}
-\captionof{listing}{Manual definition of reactor deployment}
-\label{code:man_reac}
-\end{code}
-
-\begin{code}
-
-\begin{minted}[bgcolor=bg]{xml}
-<interleave>
-  <element name="growth">
-    <oneOrMore>
-      <element name="item">
-        <interleave>
-          <element name="reactors">
-            <data type="string"/>
-          </element>
-          <element name="piecewise_function">
-            <oneOrMore>
-              <element name="piece">
-                <interleave>
-                  <element name="start">
-                    <data type="int"/>
-                  </element>
-                  <element name="function">
-                    <interleave>
-                      <element name="type">
-                        <data type="string"/>
-                      </element>
-                      <element name="params">
-                        <data type="string"/>
-                      </element>
-                    </interleave>
-                  </element>
-                </interleave>
-              </element>
-            </oneOrMore>
-          </element>
-        </interleave>
-      </element>
-    </oneOrMore>
-  </element>
-</interleave>
-\end{minted}
-\captionof{listing}{Definition of power demand function}
-\label{code:fun_reac}
-\end{code}
-
-\begin{comment}
 \section{Appendix B - Sample Test Code }
-\subsection{Reactor}
-\noindent
-\textbf{Condition 1: All the reactors run at full capacity} 
-\begin{minted}{C++}
-TEtST(ReactorTests, FullCapacity) {
-   std::string config = 
-     "  <fuel_inrecipes>  <val>fresh_uox</val>  </fuel_inrecipes>  "
-     "  <fuel_outrecipes> <val>spent_uox</val>  </fuel_outrecipes>  "
-     "  <fuel_incommods>  <val>uox</val> </fuel_incommods>  "
-     "  <fuel_outcommods> <val>spent_uox</val>      </fuel_outcommods>  "
-     "  <fuel_prefs>      <val>1.0</val>        </fuel_prefs>  "
-     ""
-     "  <cycle_time>2</cycle_time>  "
-     "  <refuel_time>1</refuel_time>  "
-     "  <assem_size>100</assem_size>  "
-     "  <n_assem_core>3</n_assem_core>  "
-     "  <n_assem_batch>1</n_assem_batch>  ";
+\subsection*{Sample test code for test A-1}
+Appendix B shows the python file that contains the a segment of the simulation parameters that are unique to test A-1 and the code for test A-1. 
+\begin{minted}{python}
+""" Test A_1 """
+init_demand = copy.deepcopy(template)
+init_demand["simulation"].update({"region":{
+"config": {"NullRegion": "\n      "}, 
+"institution": {
+"config": {
+"NOInst": {
+"calc_method": "arma", 
+"demand_commod": "POWER", 
+"demand_std_dev": "0.0", 
+"growth_rate": "0.0", 
+"initial_demand": "1", 
+"prototypes": {"val": "source"}, 
+"steps": "1", 
+"supply_commod": "fuel"
+}
+}, 
+"name": "source_inst"
+}, 
+"name": "SingleRegion"
+}})
 
-  int simdur = 10 
-  cyclus::MockSim sim(cyclus::AgentSpec(":cycamore:Reactor"),config
-  ,simdur); 
-  sim.AddSource("uox").Finalize();
-  sim.AddRecipe("fresh_uox",c_uox());
-  sim.AddRecipe("spent_uox".c_spentuox());
-  int id. = sim.Run();
+def testA1_init_demand():
+# tests if NOInst deploys a source given initial demand and no initial facilities
+output_file = 'init_file.sqlite'
+with open(input_file, 'w') as f:
+json.dump(init_demand, f)
+s = subprocess.check_output(['cyclus', '-o', output_file, input_file],
+universal_newlines=True, env=env)
+# check if ran successfully
+assert("Cyclus run successful!" in s)
 
-  int both_on = 2; 
-  std::vector<Cond> conds; 
-  conds.push_back(Cond("Value", "==",2000));
-  QueryResult qr = sim.db().Query("TimeSeriesPower", &conds);
-  EXPECT_EQ(both_on,qr.rows.size());  
-  
-  int one_on = 6; 
-  std::vector<Cond> conds; 
-  conds.push_back(Cond("Value", "==",1000));
-  QueryResult qr = sim.db().Query("TimeSeriesPower", &conds);
-  EXPECT_EQ(one_on,qr.rows.size());  
-
-  int none_on = 2; 
-  std::vector<Cond> conds; 
-  conds.push_back(Cond("Value", "==",0));
-  QueryResult qr = sim.db().Query("TimeSeriesPower", &conds);
-  EXPECT_EQ(one_on,qr.rows.size());  
-  }
+# getting the sqlite file
+cur = get_cursor(output_file)
+# check if 10 source facilities were deployed by NOInst
+source = cur.execute("SELECT count(*) FROM agententry WHERE Prototype = 'source'"
+" AND EnterTime = 1").fetchone()
+assert(source[0] == 1)
 \end{minted}
 
-\noindent
-\textbf{Condition 2: A new \texttt{Reactor} is deployed when the energy demand exceeds the energy produced by the current \texttt{Reactor}s?} 
-\begin{minted}{C++}
-TEST(ReactorTests, DeployNew) {
-   std::string config = 
-     "  <fuel_inrecipes>  <val>fresh_uox</val>  </fuel_inrecipes>  "
-     "  <fuel_outrecipes> <val>spent_uox</val>  </fuel_outrecipes>  "
-     "  <fuel_incommods>  <val>uox</val> </fuel_incommods>  "
-     "  <fuel_outcommods> <val>spent_uox</val>      </fuel_outcommods>  "
-     "  <fuel_prefs>      <val>1.0</val>        </fuel_prefs>  "
-     ""
-     "  <cycle_time>2</cycle_time>  "
-     "  <refuel_time>1</refuel_time>  "
-     "  <assem_size>100</assem_size>  "
-     "  <n_assem_core>3</n_assem_core>  "
-     "  <n_assem_batch>1</n_assem_batch>  ";
 
-  int simdur = 10 
-  cyclus::MockSim sim(cyclus::AgentSpec(":cycamore:Reactor"),config,
-  simdur); 
-  sim.AddSource("uox").Finalize();
-  sim.AddRecipe("fresh_uox",c_uox());
-  sim.AddRecipe("spent_uox".c_spentuox());
-  int id. = sim.Run();
-  
-  int reactors_deployed = 2; 
-  std::vector<Cond> conds; 
-  conds.push_back(Cond("String", "==",:cycamore:Reactor)); 
-  QueryResult qr = sim.db().Query("AgentEntry", &conds);
-  EXPECT_EQ(reactors_deployed,qr.rows.size());
-  }
-\end{minted}
-\end{comment}
 \end{document}
 
 
