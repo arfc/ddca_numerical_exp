@@ -208,7 +208,7 @@ D_f(timestep) &= D_i(1+g)^{(\frac{timestep}{12})}
 \end{align}
 Where $D_f$ is demand of resource at specific time step, $D_i$ is initial demand and g is growth rate. 
 
-The functionalities are tested alone, but also mixed and matched to give various test scenarios to determine if the non-optimizing method archetype will deploy or decommission facilities correctly in the presence of more than one functionality. As stated in the previous section, only \texttt{source} and \texttt{reactor} facilities are used in the test scenarios. The test scenarios A1 to A4 and B1 to B2 will only have a \texttt{source} facility, while test scenarios A5 and A6 will have both \texttt{source} and \texttt{reactor} facilities. 
+The functionalities are tested alone, but also mixed and matched to give various test scenarios to determine if the non-optimizing method archetype will deploy or decommission facilities correctly in the presence of more than one functionality. As stated in the previous section, \texttt{source}, \texttt{reactor} and \texttt{sink} facilities are used in the test scenarios. The test scenarios A1 to A4 and B1 to B2 will only have a \texttt{source} facility, test scenarios A5 to A7 will have both \texttt{source} and \texttt{reactor} facilities and test scenarios A8 and A9 will have both \texttt{source} and \texttt{sink} facilities.
 
 \subsection{Test A-1}
 In test A-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa1} shows the input functionality of the source facility in the test scenario. Table \ref{tab:testa1ana} shows the expected analytical solution based on the test scenario.
