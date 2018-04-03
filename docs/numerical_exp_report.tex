@@ -189,7 +189,7 @@ Input Commodity & spent uox & kg\\
 \pagebreak
 
 \section{Numerical Tests for the Non-optimizing prediction method}
-To ensure that the non-optimizing prediction model is working correctly, a variation of input files that uses the non-optimizing method archetype to deploy or decommission facilities is tested to determine if their outputs match the analytical solution. In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
+The non-optimizing prediction method is tested with various scenarios against their analytical solutions . In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
 
 The tests are split into test A types and test B types. Test A refers to the test scenarios where facilities are expected to be deployed. Test B refers to the test scenarios where facilities are expected to be decommissioned. 
 
@@ -200,7 +200,7 @@ The prediction algorithm for the non-optimizing method has three user-defined in
 	\item There is a growth in the demand.
 \end{enumerate}
 
-The growth in demand is governed by Equation \ref{eq:growth}. 
+The growth in demand is governed by the Equation \ref{eq:growth}. 
 
 \begin{align}
 \label{eq:growth}
@@ -431,13 +431,13 @@ In test A-7, both a \texttt{source} and \texttt{reactor} facility is present in 
 		\hline
 		Initial demand & 1 & kg \\
 		Initial facilities & 0 & \#\\
-		Growth Rate & 100 & \% \\
+		Growth Rate & 1 & \% \\
 		\hline
 		\textbf{Reactor Functionality} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 1 & kg \\
 		Initial facilities & 0 & \#\\
-		Growth Rate & 100 & \% \\
+		Growth Rate & 1 & \% \\
 		\hline
 	\end{tabular}
 \end{table}
