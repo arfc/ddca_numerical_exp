@@ -189,15 +189,15 @@ Input Commodity & spent uox & kg\\
 \pagebreak
 
 \section{Numerical Tests for the Non-optimizing prediction method}
-The non-optimizing prediction method is tested with various scenarios against their analytical solutions . In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
+The non-optimizing prediction method is tested by comparing its output for various scenarios against their analytical solutions . In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
 
 The tests are split into test A types and test B types. Test A refers to the test scenarios where facilities are expected to be deployed. Test B refers to the test scenarios where facilities are expected to be decommissioned. 
 
-The prediction algorithm for the non-optimizing method has three user-defined input functionalities. The aim with the various test scenarios are to check if the non-optimizing method archetype will deploy or decommission facilities correctly when there is a variation in the combination of the three input functionalities.  
+The prediction algorithm for the non-optimizing method has three user-defined input parameters. The aim of the various test scenarios are to check if the non-optimizing method archetype will deploy or decommission facilities correctly when there is a variation in the combination of the three input parameters.  The input parameters are: 
 \begin{enumerate}
-	\item There is an initial demand. 
-	\item There is an initial facility already present. 
-	\item There is a growth in the demand.
+	\item Initial demand value  
+	\item Number of initial facilities (initial supply)
+	\item Growth rate of initial demand
 \end{enumerate}
 
 The growth in demand is governed by the Equation \ref{eq:growth}. 
@@ -208,18 +208,18 @@ D_f(timestep) &= D_i(1+g)^{(\frac{timestep}{12})}
 \end{align}
 Where $D_f$ is demand of resource at specific time step, $D_i$ is initial demand and g is growth rate. 
 
-The functionalities are tested alone, but also mixed and matched to give various test scenarios to determine if the non-optimizing method archetype will deploy or decommission facilities correctly in the presence of more than one functionality. As stated in the previous section, \texttt{source}, \texttt{reactor} and \texttt{sink} facilities are used in the test scenarios. The test scenarios A1 to A4 and B1 to B2 will only have a \texttt{source} facility, test scenarios A5 to A7 will have both \texttt{source} and \texttt{reactor} facilities and test scenarios A8 and A9 will have both \texttt{source} and \texttt{sink} facilities.
+\texttt{Source}, \texttt{reactor} and \texttt{sink} facilities are used in the test scenarios. The test scenarios A1 to A4 and B1 to B2 only have a \texttt{source} facility, test scenarios A5 to A7 have both \texttt{source} and \texttt{reactor} facilities and test scenarios A8 and A9 have both \texttt{source} and \texttt{sink} facilities.
 
 \subsection{Test A-1}
-In test A-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa1} shows the input functionality of the source facility in the test scenario. Table \ref{tab:testa1ana} shows the expected analytical solution based on the test scenario.
+In test A-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa1ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-1 Scenario Input Functionality }
+	\caption{Test A-1 Scenario Input Parameters }
 	\label{tab:testa1}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 1 & kg \\
 		Initial facilities & 0 & \#\\
@@ -243,15 +243,15 @@ In test A-1, only a \texttt{source} facility is present in the test scenario. Ta
 \end{table}
 
 \subsection{Test A-2}
-In test A-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa2} shows the input functionality of the source facility in the test scenario. Table \ref{tab:testa2ana} shows the expected analytical solution based on the test scenario.
+In test A-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa2ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-2 Scenario Input Functionality }
+	\caption{Test A-2 Scenario Input Parameters }
 	\label{tab:testa2}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 2 & kg \\
 		Initial facilities & 1 & \#\\
@@ -275,15 +275,15 @@ In test A-2, only a \texttt{source} facility is present in the test scenario. Ta
 \end{table}
 
 \subsection{Test A-3}
-In test A-3, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa3} shows the input functionality of the source facility in the test scenario. Table \ref{tab:testa3ana} shows the expected analytical solution based on the test scenario.
+In test A-3, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa3} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa3ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-3 Scenario Input Functionality }
+	\caption{Test A-3 Scenario Input Parameters}
 	\label{tab:testa3}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 1 & kg \\
 		Initial facilities & 0 & \#\\
@@ -309,15 +309,15 @@ In test A-3, only a \texttt{source} facility is present in the test scenario. Ta
 \end{table}
 
 \subsection{Test A-4}
-In test A-4, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa4} shows the input functionality of the source facility in the test scenario. Table \ref{tab:testa4ana} shows the expected analytical solution based on the test scenario.
+In test A-4, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa4} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa4ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-4 Scenario Input Functionality }
+	\caption{Test A-4 Scenario Input Parameters }
 	\label{tab:testa4}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 2 & kg \\
 		Initial facilities & 1 & \#\\
@@ -343,25 +343,25 @@ In test A-4, only a \texttt{source} facility is present in the test scenario. Ta
 \end{table}
 
 \subsection{Test A-5}
-In test A-5, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:testa5} shows the input functionality of the source facility in the test scenario. Table \ref{tab:testa5ana} shows the expected analytical solution based on the test scenario.
+In test A-5, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:testa5} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa5ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-5 Scenario Input Functionality }
+	\caption{Test A-5 Scenario Input Parameters}
 	\label{tab:testa5}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 1 & kg \\
 		Initial facilities & 0 & \#\\
-		Growth Rate & 0 & \% \\
+		Growth Rate & 0 &  \\
 		\hline
-		\textbf{Reactor Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 1 & kg \\
 		Initial facilities & 0 & \#\\
-		Growth Rate & 0 & \% \\
+		Growth Rate & 0 &  \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -381,25 +381,25 @@ In test A-5, both a \texttt{source} and \texttt{reactor} facility is present in 
 \end{table}
 
 \subsection{Test A-6}
-In test A-6, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:testa6} shows the input functionality of the source facility in the test scenario. Table \ref{tab:testa6ana} shows the expected analytical solution based on the test scenario.
+In test A-6, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:testa6} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa6ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-6 Scenario Input Functionality }
+	\caption{Test A-6 Scenario Input Parameters }
 	\label{tab:testa6}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 2 & kg \\
 		Initial facilities & 1 & \#\\
-		Growth Rate & 0 & \% \\
+		Growth Rate & 0 &  \\
 		\hline
-		\textbf{Reactor Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 2 & kg \\
 		Initial facilities & 1 & \#\\
-		Growth Rate & 0 & \% \\
+		Growth Rate & 0 &  \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -419,25 +419,25 @@ In test A-6, both a \texttt{source} and \texttt{reactor} facility is present in 
 \end{table}
 
 \subsection{Test A-7}
-In test A-7, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:testa7} shows the input functionality of the source facility in the test scenario. Table \ref{tab:testa7ana} shows the expected analytical solution based on the test scenario.
+In test A-7, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:testa7} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa7ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-7 Scenario Input Functionality }
+	\caption{Test A-7 Scenario Input Parameters }
 	\label{tab:testa7}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 1 & kg \\
 		Initial facilities & 0 & \#\\
-		Growth Rate & 1 & \% \\
+		Growth Rate & 1 &  \\
 		\hline
-		\textbf{Reactor Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 1 & kg \\
 		Initial facilities & 0 & \#\\
-		Growth Rate & 1 & \% \\
+		Growth Rate & 1 &  \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -459,25 +459,25 @@ In test A-7, both a \texttt{source} and \texttt{reactor} facility is present in 
 \end{table}
 
 \subsection{Test A-8}
-In test A-8, both a \texttt{source} and \texttt{sink} facility is present in the test scenario. Table \ref{tab:testa8} shows the input functionality of the source facility in the test scenario. Table \ref{tab:testa8ana} shows the expected analytical solution based on the test scenario.
+In test A-8, both a \texttt{source} and \texttt{sink} facility is present in the test scenario. Table \ref{tab:testa8} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa8ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-8 Scenario Input Functionality }
+	\caption{Test A-8 Scenario Input Parameters}
 	\label{tab:testa8}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 1 & kg \\
 		Initial facilities & 0 & \#\\
-		Growth Rate & 0 & \% \\
+		Growth Rate & 0 & \\
 		\hline
-		\textbf{Sink Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Sink Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 1 & kg \\
 		Initial facilities & 0 & \#\\
-		Growth Rate & 0 & \% \\
+		Growth Rate & 0 &  \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -497,25 +497,25 @@ In test A-8, both a \texttt{source} and \texttt{sink} facility is present in the
 \end{table}
 
 \subsection{Test A-9}
-In test A-9, both a \texttt{source} and \texttt{sink} facility is present in the test scenario. Table \ref{tab:testa9} shows the input functionality of the source facility in the test scenario. Table \ref{tab:testa9ana} shows the expected analytical solution based on the test scenario.
+In test A-9, both a \texttt{source} and \texttt{sink} facility is present in the test scenario. Table \ref{tab:testa9} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa9ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-9 Scenario Input Functionality }
+	\caption{Test A-9 Scenario Input Parameters }
 	\label{tab:testa9}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 2 & kg \\
 		Initial facilities & 1 & \#\\
-		Growth Rate & 0 & \% \\
+		Growth Rate & 0 &  \\
 		\hline
-		\textbf{Sink Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Sink Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 2 & kg \\
 		Initial facilities & 1 & \#\\
-		Growth Rate & 0 & \% \\
+		Growth Rate & 0 &  \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -536,19 +536,19 @@ In test A-9, both a \texttt{source} and \texttt{sink} facility is present in the
 
 
 \subsection{Test B-1}
-In test B-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testb1} shows the input functionality of the source facility in the test scenario. Table \ref{tab:testb1ana} shows the expected analytical solution based on the test scenario.
+In test B-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testb1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testb1ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-1 Scenario Input Functionality }
+	\caption{Test B-1 Scenario Input Parameters }
 	\label{tab:testb1}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 0 & kg \\
 		Initial facilities & 1 & \#\\
-		Growth Rate & 0 & \% \\
+		Growth Rate & 0 &  \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -570,15 +570,15 @@ In test B-1, only a \texttt{source} facility is present in the test scenario. Ta
 
 
 \subsection{Test B-2}
-In test B-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testb2} shows the input functionality of the source facility in the test scenario. Table \ref{tab:testb2ana} shows the expected analytical solution based on the test scenario.
+In test B-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testb2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testb2ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-2 Scenario Input Functionality }
+	\caption{Test B-2 Scenario Input Parameters }
 	\label{tab:testb2}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Functionality} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		Initial demand & 1 & kg \\
 		Initial facilities & 1 & \#\\
