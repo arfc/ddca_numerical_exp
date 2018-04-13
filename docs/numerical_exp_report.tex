@@ -208,7 +208,7 @@ D_f(timestep) &= D_i(1+g)^{(\frac{timestep}{12})}
 \end{align}
 Where $D_f$ is demand of resource at specific time step, $D_i$ is initial demand and g is growth rate. 
 
-\texttt{Source}, \texttt{reactor} and \texttt{sink} facilities are used in the test scenarios. The test scenarios A1 to A4 and B1 to B2 only have a \texttt{source} facility, test scenarios A5 to A7 have both \texttt{source} and \texttt{reactor} facilities and test scenarios A8 and A9 have both \texttt{source} and \texttt{sink} facilities.
+\texttt{Source}, \texttt{reactor} and \texttt{sink} facilities are used in the test scenarios. The test scenarios A1 to A4 and B1 to B2 only have a \texttt{source} facility, test scenarios A5 to A7 have both \texttt{source} and \texttt{reactor} facilities and test scenarios A8 and A9 have both \texttt{source} and \texttt{sink} facilities. For each test scenario, there is one table that states the test scenario's input parameters and another table that states the analytical solution. The analytical solution table does not include deployment of the initial facility that is stated in the first table. 
 
 \subsection{Test A-1}
 In test A-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa1ana} shows the expected analytical solution based on the test scenario.
@@ -300,7 +300,7 @@ In test A-3, only a \texttt{source} facility is present in the test scenario. Ta
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
 		\hline
-		1 & 2\\
+		1 & 1\\
 		2 to 12 & 0 \\
 		13 & 1 \\
 		14 to 15 & 0 \\
@@ -319,7 +319,7 @@ In test A-4, only a \texttt{source} facility is present in the test scenario. Ta
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
-		Initial demand & 2 & kg \\
+		Initial demand & 1 & kg \\
 		Initial facilities & 1 & \#\\
 		Growth Rate & 1 &  \\
 		\hline
@@ -334,7 +334,7 @@ In test A-4, only a \texttt{source} facility is present in the test scenario. Ta
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
 		\hline
-		1 & 2\\
+		1 & 1\\
 		2 to 12 & 0 \\
 		13 & 1 \\
 		14 to 15 & 0 \\
@@ -353,9 +353,9 @@ In test A-5, both a \texttt{source} and \texttt{reactor} facility is present in 
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
-		Initial demand & - & kg \\
-		Initial facilities & - & \#\\
-		Growth Rate & - &  \\
+		Initial demand & 1 & kg \\
+		Initial facilities & 0 & \#\\
+		Growth Rate & 0 &  \\
 		\hline
 		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
@@ -391,13 +391,13 @@ In test A-6, both a \texttt{source} and \texttt{reactor} facility is present in 
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
-		Initial demand & - & kg \\
-		Initial facilities & - & \#\\
-		Growth Rate & - &  \\
+		Initial demand & 1 & kg \\
+		Initial facilities & 1 & \#\\
+		Growth Rate & 0 &  \\
 		\hline
 		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
-		Initial demand & 2 & MW \\
+		Initial demand & 1 & MW \\
 		Initial facilities & 1 & \#\\
 		Growth Rate & 0 &  \\
 		\hline
@@ -612,6 +612,8 @@ The first is when there is no initial facility present. This is because the pred
 The second is when there is growth in the demand. 
 
 The third is when facilities are expected to be decommissioned. 
+
+Despite failures in these situations, the non-optimizing method proved to have commissioning capabilities. This is sufficient for the project to move on to developing the deterministic optimization method. The goal is that the deterministic optimization method will be able to overcome the issues faced by the non-optimizing method with reference to the requirement of an initial condition, growth in demand. 
 
 	
 
