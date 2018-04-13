@@ -353,9 +353,9 @@ In test A-5, both a \texttt{source} and \texttt{reactor} facility is present in 
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
-		Initial demand & 1 & kg \\
-		Initial facilities & 0 & \#\\
-		Growth Rate & 0 &  \\
+		Initial demand & - & kg \\
+		Initial facilities & - & \#\\
+		Growth Rate & - &  \\
 		\hline
 		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
@@ -391,9 +391,9 @@ In test A-6, both a \texttt{source} and \texttt{reactor} facility is present in 
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
-		Initial demand & 2 & kg \\
-		Initial facilities & 1 & \#\\
-		Growth Rate & 0 &  \\
+		Initial demand & - & kg \\
+		Initial facilities & - & \#\\
+		Growth Rate & - &  \\
 		\hline
 		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
@@ -601,6 +601,19 @@ In test B-2, only a \texttt{source} facility is present in the test scenario. Ta
 		\hline
 	\end{tabular}
 \end{table}
+
+\section{Numerical Test Results}
+It was found that only test A-2 passed. This was expected due to the nature of the non-optimizing algorithm. 
+
+The tests failed for three types of situations. 
+
+The first is when there is no initial facility present. This is because the prediction algorithm needs an initial condition to give it information about the commodity throughput of the facility it is predicting the supply and demand of. 
+
+The second is when there is growth in the demand. 
+
+The third is when facilities are expected to be decommissioned. 
+
+	
 
 \begin{comment}
 commented out till further time
