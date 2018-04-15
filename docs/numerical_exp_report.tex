@@ -615,6 +615,7 @@ The third is when facilities are expected to be decommissioned.
 
 Despite failures in these situations, the non-optimizing method proved to have commissioning capabilities. This is sufficient for the project to move on to developing the deterministic optimization method. The goal is that the deterministic optimization method will be able to overcome the issues faced by the non-optimizing method with reference to the requirement of an initial condition, growth in demand. 
 
+Appendix C reflects the numerical solution output by the non-optimizing prediction algorithm for each test scenario defined in section 6. 
 	
 
 \begin{comment}
@@ -698,7 +699,7 @@ TEST(ReactorTests, DDDeploy_NO) {
 \section{Advanced Fuel Cycles}
 \end{comment}
 
-\section{Appendix A - parameter configuration}
+\section*{Appendix A - parameter configuration}
 Appendix A shows the json file that contains the simulation parameters that are common between all the test scenarios discussed in Section 6.  
 
 \begin{minted}{json}
@@ -759,7 +760,7 @@ template = {
 }]}}
 \end{minted}
 
-\section{Appendix B - Sample Test Code }
+\section*{Appendix B - Sample Test Code }
 \subsection*{Sample test code for test A-1}
 Appendix B shows the python file that contains the a segment of the simulation parameters that are unique to test A-1 and the code for test A-1. 
 \begin{minted}{python}
@@ -802,6 +803,8 @@ source = cur.execute("SELECT count(*) FROM agententry WHERE Prototype = 'source'
 " AND EnterTime = 1").fetchone()
 assert(source[0] == 1)
 \end{minted}
+
+\section*{Appendix C - Numerical Solution for test scenarios}
 
 
 \end{document}
