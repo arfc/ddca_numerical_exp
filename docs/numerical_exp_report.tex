@@ -17,6 +17,7 @@
 \newcolumntype{f}{>{\hsize=.15\hsize}X}
 \newcolumntype{s}{>{\hsize=.5\hsize}X}
 \newcolumntype{m}{>{\hsize=.75\hsize}X}
+\newcolumntype{r}{>{\hsize=1.1\hsize}X}
 \usepackage{titling}
 \usepackage[hang,flushmargin]{footmisc}
 \renewcommand*\footnoterule{}
@@ -111,21 +112,18 @@ then calculates the demand for each facility for a unit quantity of fuel
 facilities for the reactors at timestep 1.
 
 \begin{figure}[H]
+\centering
 \begin{tikzpicture}[node distance=3.5cm]
 \node (source) [process] {\texttt{Source}};
-\node (enrichment) [process, right of=source] {\texttt{Enrichment}};
-\node (reactor) [process, right of=enrichment]{\texttt{Reactor}};
+\node (reactor) [process, right of=source]{\texttt{Reactor}};
 \node (sink) [process, right of=reactor]{\texttt{Sink}};
 
-\draw [arrow] (source) -- (enrichment) node[midway,fill=white] {$[ax]$}; 
-\draw [arrow] (enrichment) -- (reactor) node[midway,fill=white] {$[x]$}; 
+\draw [arrow] (source) -- (reactor) node[midway,fill=white] {$[x]$}; 
 \draw [arrow] (reactor) -- (sink) node[midway,fill=white] {$[x]$}; 
 \end{tikzpicture}
 \caption{Simple demand flow of materials. The values in the bracket are demands calculated
          by the algorithm. The \texttt{Reactor} demands $x$ amount of fuel,
-         which translates into demands of $x$ from \texttt{Enrichment} and \texttt{Sink}.
-         The \texttt{Source} has a demand of $a x$ to take in for enrichment losses.
-         $a \approx 9 $ for 3\% enrichment.}
+         which translates into demands of $x$ from  \texttt{Sink}.}
 \label{diag:dem}
 \end{figure}
 
@@ -137,291 +135,472 @@ is smaller than the demand, the algorithm orders to build more facilities to mee
 so that the fuel demand is met for the next timestep.
 
 \section{Simulation parameter for Test Scenarios}
-Simple parameters are given to fuel cycle facilities for the numerical test of 
-the algorithm.  
+Simple parameters are given to fuel cycle facilities for the numerical testing of 
+the algorithm.  Only \texttt{source} and \texttt{reactor} facilities are used in the test scenarios. 
 
-Table \ref{tab:reactor} provides the parameters for the \texttt{reactors} in the test scenarios and table \ref{tab:everythingelse} provides the parameters for the \texttt{source}, \texttt{enrichment} and \texttt{sink} facilities in the test scenarios.
+Table \ref{tab:testscenario} provides basic parameters for each test scenario. Table \ref{tab:reactor} provides the parameters for the \texttt{source}, \texttt{reactors} and \texttt{sink} in the test scenarios.
 
-\begin{table}[h]
-    \centering
-    \begin{tabularx}{\textwidth}{bbb}
-       \hline
-       Reactor Parameters & Value & Units \\
-       \hline
-       Cycle Time & 2 & timesteps \\
-       Refuel Time & 1 & timesteps \\
-       Lifetime & 6 & timesteps \\
-       Power Capacity & 1000 & MWe \\
-       Assembly Size & 100 & kg \\
-       \# assemblies per core & 3 & \\
-       \# assemblies per batch & 1 & \\
-       \hline
-    \end{tabularx}
-    \caption {Reactor Parameters}
-    \label{tab:reactor}
+\begin{table}[H]
+	\centering
+	\caption {Basic Test Parameters}
+	\label{tab:testscenario}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Test Scenario Parameters} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Duration & 15 & timesteps \\
+		Timestep & 1 & month \\
+		Start Month & 1 & month \\
+		Start Year & 2000 & year \\
+		\hline
+	\end{tabular}
 \end{table}
 
 \begin{table}[H]
-     \centering
-     \begin{minipage}{\textwidth}
-    \begin{tabularx}{\textwidth}{bff}
-       \hline
-       Parameters & Value & Units \\
-       \hline
-       Natural U Composition & 0.71 & \% $^{235}U$\\
-       Tails Assay & 0.003 & \% $^{235}U$ \\
-       Fuel Enrichment & 4 & \% $^{235}U$ \\
-       Enrichment SWU Capacity & 2000 & $\frac{SWU}{month}$ \\
-       Source Throughput & 3500 & $\frac{kg}{month}$\\
-       Sink Capacity & 200 &  $kg$ \\
-       Number of time steps before facility is decommissioned \footnote{This refers to the number of consecutive time steps that the supply exceeds demand by more than 1 facility output before the facility is decommissioned.} & 3 & timesteps \\
-       \hline
-    \end{tabularx}
-    \end{minipage}
-    \caption {Source, Enrichment and Sink Facility Parameters}
-    \label{tab:everythingelse}
+	\centering
+    \caption {Source, Reactor and Sink Parameters}
+	\label{tab:reactor}
+	\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Source Parameters} & \textbf{Value} & \textbf{Units} \\
+\hline
+Throughput & 1 & kg \\
+Output Commodity & fuel & kg\\
+\hline
+\textbf{Reactor Parameters} & \textbf{Value} & \textbf{Units} \\
+\hline
+Cycle Time & 1 & timesteps \\
+Refuel Time & 0 & timesteps \\
+Lifetime & 1 & timesteps \\
+Power Capacity & 1& MWe \\
+Assembly Size & 1 & kg \\
+\# assemblies per core & 1 & \\
+\# assemblies per batch & 1 & \\
+Input Commodity & fuel & kg\\
+Output Commodity & power & MW\\
+\hline
+\textbf{Sink Parameters} & \textbf{Value} & \textbf{Units} \\
+Throughput & 1 & kg \\
+Input Commodity & spent uox & kg\\
+\hline
+	\end{tabular}
 \end{table}
 
-Table \ref{tab:simulationparameters} provides the input and output commodity amounts and enrichment SWUs required based on a reactor fuel demand of 100 kg for one time step. These input and output commodities are based on the simple demand flow of materials shown in figure \ref{diag:dem}. 
-
-\begin{table}[H]
-     \centering
-    \begin{tabularx}{\textwidth}{bf}
-       \hline
-      Fuel (Reactor input commodity and Enrichment facility output commodity) & 100 kg \\
-       Enrichment SWU & 528 SWU \\
-       Natural Uranium (Source output commodity and enrichment input commodity) & 901 kg \\
-       \hline
-    \end{tabularx}
-    \caption {Simulation parameters}
-    \label{tab:simulationparameters}
-\end{table}
-
-An example input file with the facility and simulation
-definitions can be found in the input directory of this repository.
-
-\newpage
+\pagebreak
 
 \section{Numerical Tests for the Non-optimizing prediction method}
-To ensure that the non-optimizing prediction model is working correctly, each function of the code must be tested to determine if its output matches the analytical solution for the specified test scenario. In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:reactor} and \ref{tab:everythingelse} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
-\\
-\\
-\noindent
-\textbf{Test 1: A reactor outputs the user defined power capacity when deployed and does not output
-power capacity when decommissioned.} \\
-Test Scenario: A single reactor is deployed at time step 2 and decommissioned at time step 4. There is an infinite source of fuel for the reactor. \\
-Analytical Solution: During cycle time, the reactor will have a power output of 1000MWe. Therefore,
-there is only be power output of 1000MWe at time steps 2 and 3. The analytical solution of
-the power output of the reactor per time step is given in table \ref{tab:test-power}.
+The non-optimizing prediction method is tested by comparing its output for various scenarios against their analytical solutions . In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
+
+The tests are split into test A types and test B types. Test A refers to the test scenarios where facilities are expected to be deployed. Test B refers to the test scenarios where facilities are expected to be decommissioned. 
+
+The prediction algorithm for the non-optimizing method has three user-defined input parameters. The aim of the various test scenarios are to check if the non-optimizing method archetype will deploy or decommission facilities correctly when there is a variation in the combination of the three input parameters.  The input parameters are: 
+\begin{enumerate}
+	\item Initial demand value  
+	\item Number of initial facilities (initial supply)
+	\item Growth rate of initial demand
+\end{enumerate}
+
+The growth in demand is governed by the Equation \ref{eq:growth}. 
+
+\begin{align}
+\label{eq:growth}
+D_f(timestep) &= D_i(1+g)^{(\frac{timestep}{12})}
+\end{align}
+Where $D_f$ is demand of resource at specific time step, $D_i$ is initial demand and g is growth rate. 
+
+\texttt{Source}, \texttt{reactor} and \texttt{sink} facilities are used in the test scenarios. The test scenarios A1 to A4 and B1 to B2 only have a \texttt{source} facility, test scenarios A5 to A7 have both \texttt{source} and \texttt{reactor} facilities and test scenarios A8 and A9 have both \texttt{source} and \texttt{sink} facilities.
+
+\subsection{Test A-1}
+In test A-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa1ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
-     \centering
-    \begin{tabularx}{\textwidth}{bbb}
-       \hline
-       Timestep & Reactor Power Output (MWe) \\
-       \hline
-       1 & 0 \\
-       2 & 1000 \\
-       3 & 1000 \\
-       4 & 0 \\
-       \hline
-    \end{tabularx}
-    \caption {Analytical solution of the power output of the reactor per time step}
-    \label{tab:test-power}
+	\centering
+	\caption{Test A-1 Scenario Input Parameters }
+	\label{tab:testa1}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 1 & kg \\
+		Initial facilities & 0 & \#\\
+		Growth Rate & 0 & \\
+\hline
+	\end{tabular}
 \end{table}
-
-\noindent
-\textbf{Test 2: A reactor outputs the user defined power capacity during its cycle time and not during its refuel time.} \\
-Test Scenario: A single reactor is deployed at time step 2 and decommissioned at time step 87 \\
-Analytical Solution: Based on the reactor parameters defined in table 1, the reactor will have a cycle time of 2 time steps and a refuel time of 1 time step. Therefore, there is only be power output of 1000MWe during cycle time steps. The analytical solution of the power output of the reactor per time step is given in table \ref{tab:test-cycles}.
 
 \begin{table}[H]
-     \centering
-    \begin{tabularx}{\textwidth}{bbb}
-       \hline
-       Timestep & Reactor Power Output (MWe) \\
-       \hline
-       1 & 0 \\
-       2 & 1000 \\
-       3 & 1000 \\
-       4 & 0 \\
-       5 & 1000 \\
-       6 & 1000 \\
-       7 & 0 \\
-       8 & 0 \\
-       \hline
-    \end{tabularx}
-    \caption {Analytical solution of the power output of the reactor per time step}
-    \label{tab:test-cycles}
+	\centering
+	\caption{Test A-1 Analytical Solution}
+	\label{tab:testa1ana}
+	\begin{tabular}{|l|l|}
+		\hline
+		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
+		\hline
+		1 & 1\\
+		2 to 15& 0 \\
+		\hline
+	\end{tabular}
 \end{table}
 
-\noindent
-\textbf{Test 3: A facility that produces reactor’s input commodity (fuel) is deployed when the amount of fuel available is below the amount of fuel required by the reactor.} \\
-Test Scenario: A single reactor is deployed at time step 2.\\
-Analytical Solution: Based on the simple supply chain example in figure \ref{diag:dem} and enrichment facility parameters defined in table \ref{tab:everythingelse}, an enrichment facility must be deployed at time step 2 to meet fuel demand. The analytical solution of the enrichment facility deployment per time step is given in table \ref{tab:test-fuel}.
+\subsection{Test A-2}
+In test A-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa2ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
-     \centering
-    \begin{tabularx}{\textwidth}{bbb}
-       \hline
-       Timestep & Enrichment Facility deployment  \\
-       \hline
-       1 & 0 \\
-       2 & 1 \\
-       3 & 0\\
-       \hline
-    \end{tabularx}
-    \caption {Analytical solution of the number of fuel facilities deployed per time step}
-    \label{tab:test-fuel}
+	\centering
+	\caption{Test A-2 Scenario Input Parameters }
+	\label{tab:testa2}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 2 & kg \\
+		Initial facilities & 1 & \#\\
+		Growth Rate & 0 & \\
+		\hline
+	\end{tabular}
 \end{table}
-
-\noindent
-\textbf{Test 4: An appropriate number of facilities that produces reactor's input commodity (fuel) is deployed to meet the demand of the amount of fuel required by the reactor, when the initial fuel supply is non-zero.} \\
-Test Scenario: An initial fuel supply of 100kg. 2 reactors deployed at time step 2. \\
-Analytical solution: Based on table \ref{tab:reactor}, each reactor has a fuel demand of 300kg per time step. Therefore, the fuel supply is 100kg at time step 1 and is 700kg at time steps 2 and 3. The analytical solution of fuel quantity per time step is given in table \ref{tab:test-fueldemand}  
 
 \begin{table}[H]
-     \centering
-    \begin{tabularx}{\textwidth}{bbb}
-       \hline
-       Timestep & Fuel Quantity (kg)  \\
-       \hline
-       1 & 100 \\
-       2 & 700 \\
-       3 & 700\\
-       \hline
-    \end{tabularx}
-    \caption {Analytical solution of the fuel available per time step}
-    \label{tab:test-fueldemand}
+	\centering
+	\caption{Test A-2 Analytical Solution}
+	\label{tab:testa2ana}
+	\begin{tabular}{|l|l|}
+		\hline
+		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
+		\hline
+		1 & 1\\
+		2 to 15& 0 \\
+		\hline
+	\end{tabular}
 \end{table}
 
-\noindent
-\textbf{Test 5: The fuel supply is within plus-minus the output of 1 fuel-producing facility of the reactor demand for fuel for all time steps.} \\
-Test Scenario: A reactor is deployed at timesteps 2, 3 and 4.\\
-Analytical Solution: Based on table \ref{tab:reactor}, each reactor has a fuel demand of 300kg per time step. If an appropriate number of enrichment facilities is deployed to meet fuel demand, the difference between fuel quantity and fuel demand will be 100kg per time step. The analytical solution of difference between fuel quantity and fuel demand per time step is given in table \ref{tab:test-fueldiff}.  
+\subsection{Test A-3}
+In test A-3, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa3} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa3ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
-     \centering
-    \begin{tabularx}{\textwidth}{bbbb}
-       \hline
-       Timestep & Fuel Quantity (kg) & Fuel Demand (kg) & Difference (kg)\\
-       \hline
-       1 & 100 & 0 &100\\
-       2 & 400 & 300 &100\\
-       3 & 700 & 600 &100\\
-       4 & 1000 & 900 &100\\
-       \hline
-    \end{tabularx}
-    \caption {Analytical solution of the difference between fuel quantity and fuel demand per time step}
-    \label{tab:test-fueldiff}
+	\centering
+	\caption{Test A-3 Scenario Input Parameters}
+	\label{tab:testa3}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 1 & kg \\
+		Initial facilities & 0 & \#\\
+		Growth Rate & 1 &  \\
+		\hline
+	\end{tabular}
 \end{table}
-
-\noindent
-\textbf{Test 6: A fuel-producing facility is decommissioned when the amount of fuel available exceeds the the amount of fuel required by the reactor by 1 fuel-producing facility's fuel output for the number of user-defined consecutive time steps.} \\
-Test Scenario: An enrichment facility is deployed at time step 2. \\
-Analytical Solution: Based on table \ref{tab:everythingelse}, the supply of fuel must exceed demand by 1 enrichment facility output for 3 consecutive time steps before it is decommissioned. Therefore, the enrichment facility must be decommissioned at time step 5. The analytical solution of the enrichment facility deployment per time step is given in table \ref{tab:test-supplymoredemand}. 
 
 \begin{table}[H]
-     \centering
-    \begin{tabularx}{\textwidth}{bbb}
-       \hline
-       Timestep & Enrichment Facility deployment \\
-       \hline
-       1 & 0 \\
-       2 & 1 \\
-       3 & 1 \\
-       4 & 1 \\
-       5 & 0 \\
-       \hline
-    \end{tabularx}
-    \caption {Analytical solution of the number of fuel facilities deployed per time step}
-    \label{tab:test-supplymoredemand}
+	\centering
+	\caption{Test A-3 Analytical Solution}
+	\label{tab:testa3ana}
+	\begin{tabular}{|l|l|}
+		\hline
+		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
+		\hline
+		1 & 2\\
+		2 to 12 & 0 \\
+		13 & 1 \\
+		14 to 15 & 0 \\
+		\hline
+	\end{tabular}
 \end{table}
 
-\noindent
-\textbf{Test 7: A facility that produces fuel producing facility's input commodity is deployed when the amount of input commodity is below the amount required by the fuel producing facility}. \\
-Test Scenario: An enrichment facility is deployed at time step 2. \\
-Analytical Solution: Based on the simple supply chain example in
-figure \ref{diag:dem}, a source facility must be deployed at time step 2 to meet natural uranium demand. The analytical solution of the source facility deployment per time step is given in table \ref{tab:test-NUdemand}. 
+\subsection{Test A-4}
+In test A-4, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa4} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa4ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
-     \centering
-    \begin{tabularx}{\textwidth}{bbb}
-       \hline
-       Timestep & Source Facility deployment  \\
-       \hline
-       1 & 0 \\
-       2 & 1 \\
-       3 & 0 \\
-       \hline
-    \end{tabularx}
-    \caption {Analytical solution of the number of source facilities deployed per time step}
-    \label{tab:test-NUdemand}
+	\centering
+	\caption{Test A-4 Scenario Input Parameters }
+	\label{tab:testa4}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 2 & kg \\
+		Initial facilities & 1 & \#\\
+		Growth Rate & 1 &  \\
+		\hline
+	\end{tabular}
 \end{table}
-
-\noindent
-\textbf{Test 8: An appropriate number of facilities that produces fuel-producing facility's input commodity is deployed to meet the demand of input commodity required by the fuel producing facility, when the initial input commodity is non-zero.} \\
-Test Scenario: An initial natural uranium supply of 1000kg. 1 enrichment facility deployed at time step 2. \\
-Analytical solution: Based on table \ref{tab:everythingelse}, each enrichment facility has a SWU capacity of 2000 SWU per time step and each source facility has a throughput of 3000kg per time step. Based on table \ref{tab:simulationparameters}, approximately 3500kg of natural uranium is required for enrichment SWU capacity of 2000. Therefore, 1 source facility must be commissioned to meet the demand of one enrichment facility. Therefore, the natural uranium supply is 1000kg at time step 1 and is 4500kg at time steps 2 and 3. The analytical solution of fuel quantity per time step is given in table \ref{tab:test-NUdemand2}.  
 
 \begin{table}[H]
-     \centering
-    \begin{tabularx}{\textwidth}{bbb}
-       \hline
-       Timestep & Natural Uranium Quantity (kg)  \\
-       \hline
-       1 & 1000 \\
-       2 & 4500 \\
-       3 & 4500\\
-       \hline
-    \end{tabularx}
-    \caption {Analytical solution of the fuel available per time step}
-    \label{tab:test-NUdemand2}
+	\centering
+	\caption{Test A-4 Analytical Solution}
+	\label{tab:testa4ana}
+	\begin{tabular}{|l|l|}
+		\hline
+		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
+		\hline
+		1 & 2\\
+		2 to 12 & 0 \\
+		13 & 1 \\
+		14 to 15 & 0 \\
+		\hline
+	\end{tabular}
 \end{table}
 
-\noindent
-\textbf{Test 9: The supply of input commodity for the fuel-producing facility is within plus-minus the output of 1 facility that produces it, of the fuel-producing facility's demand for the input commodity for all time steps.} \\
-Test Scenario: An enrichment facility is deployed at timesteps 2, 3 and 4.\\
-Analytical Solution: Based on table \ref{tab:simulationparameters}, each enrichment facility has a natural uranium demand of 3412kg per time step. If an appropriate number of source facilities is deployed to meet natural uranium demand, the difference between fuel quantity and fuel demand will be 88kg per time step. The analytical solution of difference between natural uranium quantity and natural uranium demand per time step is given in table \ref{tab:test-NUdiff}.  
+\subsection{Test A-5}
+In test A-5, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:testa5} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa5ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
-     \centering
-    \begin{tabularx}{\textwidth}{bbbb}
-       \hline
-       Timestep & Natural Uranium Quantity (kg) & Natural Uranium Demand (kg) & Difference (kg)\\
-       \hline
-       1 & 0 & 0 & 0\\
-       2 & 3500 & 3412 & 88\\
-       3 &  7000 & 6824 & 176\\
-       4 & 10500 & 10236 & 264\\
-       \hline
-    \end{tabularx}
-    \caption {Analytical solution of the difference between natural uranium  quantity and natural uranium demand per time step}
-    \label{tab:test-NUdiff}
+	\centering
+	\caption{Test A-5 Scenario Input Parameters}
+	\label{tab:testa5}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 1 & kg \\
+		Initial facilities & 0 & \#\\
+		Growth Rate & 0 &  \\
+		\hline
+		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 1 & MW \\
+		Initial facilities & 0 & \#\\
+		Growth Rate & 0 &  \\
+		\hline
+	\end{tabular}
 \end{table}
-
-\noindent
-\textbf{Test 10: A facility that produces fuel-producing facility's input commodity is decommissioned when the amount of input commodity available exceeds the the amount of input commodity required by the fuel-producing facility by 1 facility's output for the number of user-defined consecutive time steps.} \\
-Test Scenario: A source facility is deployed at time step 2. \\
-Analytical Solution: Based on table \ref{tab:everythingelse}, the supply of natural uranium must exceed demand by 1 source facility output for 3 consecutive time steps before it is decommissioned. Therefore, the source facility must be decommissioned at time step 5. The analytical solution of the source facility deployment per time step is given in table \ref{tab:test-supplymoredemand2}. 
 
 \begin{table}[H]
-     \centering
-    \begin{tabularx}{\textwidth}{bbb}
-       \hline
-       Timestep & Source Facility deployment \\
-       \hline
-       1 & 0 \\
-       2 & 1 \\
-       3 & 1 \\
-       4 & 1 \\
-       5 & 0 \\
-       \hline
-    \end{tabularx}
-    \caption {Analytical solution of the number of source facilities deployed per time step}
-    \label{tab:test-supplymoredemand2}
+	\centering
+	\caption{Test A-5 Analytical Solution}
+	\label{tab:testa5ana}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
+		\hline
+		1 & 1 & 1\\
+		2 to 15 & 0 & 0\\
+		\hline
+	\end{tabular}
 \end{table}
 
+\subsection{Test A-6}
+In test A-6, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:testa6} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa6ana} shows the expected analytical solution based on the test scenario.
+
+\begin{table}[H]
+	\centering
+	\caption{Test A-6 Scenario Input Parameters }
+	\label{tab:testa6}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 2 & kg \\
+		Initial facilities & 1 & \#\\
+		Growth Rate & 0 &  \\
+		\hline
+		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 2 & MW \\
+		Initial facilities & 1 & \#\\
+		Growth Rate & 0 &  \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Test A-6 Analytical Solution}
+	\label{tab:testa6ana}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
+		\hline
+		1 & 1 & 1\\
+		2 to 15 & 0 & 0\\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection{Test A-7}
+In test A-7, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:testa7} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa7ana} shows the expected analytical solution based on the test scenario.
+
+\begin{table}[H]
+	\centering
+	\caption{Test A-7 Scenario Input Parameters }
+	\label{tab:testa7}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 1 & kg \\
+		Initial facilities & 0 & \#\\
+		Growth Rate & 1 &  \\
+		\hline
+		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 1 & MW \\
+		Initial facilities & 0 & \#\\
+		Growth Rate & 1 &  \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Test A-7 Analytical Solution}
+	\label{tab:testa7ana}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
+		\hline
+		1 & 2 & 2\\
+		2 to 12 & 0 & 0\\
+		13 & 1 & 1\\
+		14 to 15 & 0 & 0\\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection{Test A-8}
+In test A-8, both a \texttt{source} and \texttt{sink} facility is present in the test scenario. Table \ref{tab:testa8} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa8ana} shows the expected analytical solution based on the test scenario.
+
+\begin{table}[H]
+	\centering
+	\caption{Test A-8 Scenario Input Parameters}
+	\label{tab:testa8}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 1 & kg \\
+		Initial facilities & 0 & \#\\
+		Growth Rate & 0 & \\
+		\hline
+		\textbf{Sink Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 1 & kg \\
+		Initial facilities & 0 & \#\\
+		Growth Rate & 0 &  \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Test A-8 Analytical Solution}
+	\label{tab:testa8ana}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Sink \\Facilities Deployed}}\\
+		\hline
+		1 & 1 & 1\\
+		2 to 15 & 0 & 0\\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection{Test A-9}
+In test A-9, both a \texttt{source} and \texttt{sink} facility is present in the test scenario. Table \ref{tab:testa9} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa9ana} shows the expected analytical solution based on the test scenario.
+
+\begin{table}[H]
+	\centering
+	\caption{Test A-9 Scenario Input Parameters }
+	\label{tab:testa9}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 2 & kg \\
+		Initial facilities & 1 & \#\\
+		Growth Rate & 0 &  \\
+		\hline
+		\textbf{Sink Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 2 & kg \\
+		Initial facilities & 1 & \#\\
+		Growth Rate & 0 &  \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Test A-9 Analytical Solution}
+	\label{tab:testa9ana}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Sink \\Facilities Deployed}}\\
+		\hline
+		1 & 1 & 1\\
+		2 to 15 & 0 & 0\\
+		\hline
+	\end{tabular}
+\end{table}
+
+
+\subsection{Test B-1}
+In test B-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testb1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testb1ana} shows the expected analytical solution based on the test scenario.
+
+\begin{table}[H]
+	\centering
+	\caption{Test B-1 Scenario Input Parameters }
+	\label{tab:testb1}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 0 & kg \\
+		Initial facilities & 1 & \#\\
+		Growth Rate & 0 &  \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Test B-1 Analytical Solution}
+	\label{tab:testb1ana}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}& \textbf{\shortstack{No. of Source \\Facilities Decomissioned}}\\
+		\hline
+		1 & 1 & 0\\
+		2 & 0 & 1\\
+		3 to 15 & 0 & 0\\
+		\hline
+	\end{tabular}
+\end{table}
+
+
+\subsection{Test B-2}
+In test B-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testb2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testb2ana} shows the expected analytical solution based on the test scenario.
+
+\begin{table}[H]
+	\centering
+	\caption{Test B-2 Scenario Input Parameters }
+	\label{tab:testb2}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		Initial demand & 1 & kg \\
+		Initial facilities & 1 & \#\\
+		Growth Rate & -1 &  \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Test B-2 Analytical Solution}
+	\label{tab:testb2ana}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}& \textbf{\shortstack{No. of Source \\Facilities Decomissioned}}\\
+		\hline
+		1 to 12 & 1 & 0\\
+		13 & 0 & 1\\
+		14 to 15 & 0 & 0\\
+		\hline
+	\end{tabular}
+\end{table}
 
 \begin{comment}
 commented out till further time
@@ -505,201 +684,111 @@ TEST(ReactorTests, DDDeploy_NO) {
 \end{comment}
 
 \section{Appendix A - parameter configuration}
+Appendix A shows the json file that contains the simulation parameters that are common between all the test scenarios discussed in Section 6.  
 
-First, the user defines the prototypes to be deployed
-to support the reactor.
-
-\begin{code}
-
-\begin{minted}[bgcolor=bg]{xml}
-<interleave>
-  <element name="institution">
-    <data type="string"/>
-  </element>
-    <element name="prototypes">
-      <oneOrMore>
-        <element name="val">
-          <data type="string"/>
-        </element>
-      <oneOrMore>
-    </element>
-</interleave>
-
+\begin{minted}{json}
+template = {
+"simulation": {
+"archetypes": {
+"spec": [
+{"lib": "agents", "name": "NullRegion"}, 
+{"lib": "cycamore", "name": "Source"}, 
+{"lib": "cycamore", "name": "Reactor"},
+{"lib": "cycamore", "name": "Sink"},
+{"lib": "d3ploy.no_inst", "name": "NOInst"}
+]
+}, 
+"control": {"duration": "15", "startmonth": "1", "startyear": "2000"}, 
+"recipe": [
+{
+"basis": "mass", 
+"name": "fresh_uox", 
+"nuclide": [{"comp": "0.711", "id": "U235"}, {"comp": "99.289", "id": "U238"}]
+}, 
+{
+"basis": "mass", 
+"name": "spent_uox", 
+"nuclide": [{"comp": "50", "id": "Kr85"}, {"comp": "50", "id": "Cs137"}]
+}
+], 
+"facility": [{
+"config": {"Source": {"outcommod": "fuel",
+"outrecipe": "fresh_uox",
+"throughput": "1",
+"source_record_supply": "fuel"}}, 
+"name": "source"
+},
+{
+"config": {"Sink": {"in_commods": {"val":"spent_uox"},
+"max_inv_size": 1,
+"sink_record_demand": "fuel_cap"}}, 
+"name": "sink"
+},
+{
+"config": {
+"Reactor":{
+"assem_size":"1",
+"cycle_time": "1", 
+"fuel_incommods": {"val": "fuel"}, 
+"fuel_inrecipes": {"val": "fresh_uox"}, 
+"fuel_outcommods": {"val": "spent_uox"}, 
+"fuel_outrecipes": {"val": "spent_uox"}, 
+"n_assem_batch": "1", 
+"n_assem_core": "1", 
+"power_cap": "1", 
+"refuel_time": "0",
+"reactor_fuel_demand": "fuel_reactor"
+}
+},
+"name": "reactor"
+}]}}
 \end{minted}
-\captionof{listing}{Fuel cycle facility prototype definition}
-\label{code:pro}
-\end{code}
 
-
-Then deployment of the power-producing reactors is defined, and the user
-is given two choices:
-\begin{itemize}
-  \item Manually define the deployment scheme of reactors (code \ref{code:man_reac})
-  \item Define power demand equation (code \ref{code:fun_reac})
-\end{itemize}
-
-\begin{code}
-\begin{minted}[bgcolor=bg]{xml}
-<interleave>
-  <element name="reactors">
-    <oneOrMore>
-      <element name="val">
-        <data type="string"/>
-      </element>
-    </oneOrMore>
-  </element>
-  <element name="build_times">
-    <oneOrMore>
-      <element name="val">
-        <data type="int"/>
-      </element>
-    </oneOrMore>
-  </element>
-  <element name="n_build">
-    <oneOrMore>
-      <element name="val">
-        <data type="int"/>
-      </element>
-    </oneOrMore>
-  </element>
-  <optional>
-    <element name="lifetimes">
-      <oneOrMore>
-        <element name="val">
-          <data type="int"/>
-        </element>
-      </oneOrMore>
-    </element>
-  </optional>
-</interleave>
-\end{minted}
-\captionof{listing}{Manual definition of reactor deployment}
-\label{code:man_reac}
-\end{code}
-
-\begin{code}
-
-\begin{minted}[bgcolor=bg]{xml}
-<interleave>
-  <element name="growth">
-    <oneOrMore>
-      <element name="item">
-        <interleave>
-          <element name="reactors">
-            <data type="string"/>
-          </element>
-          <element name="piecewise_function">
-            <oneOrMore>
-              <element name="piece">
-                <interleave>
-                  <element name="start">
-                    <data type="int"/>
-                  </element>
-                  <element name="function">
-                    <interleave>
-                      <element name="type">
-                        <data type="string"/>
-                      </element>
-                      <element name="params">
-                        <data type="string"/>
-                      </element>
-                    </interleave>
-                  </element>
-                </interleave>
-              </element>
-            </oneOrMore>
-          </element>
-        </interleave>
-      </element>
-    </oneOrMore>
-  </element>
-</interleave>
-\end{minted}
-\captionof{listing}{Definition of power demand function}
-\label{code:fun_reac}
-\end{code}
-
-\begin{comment}
 \section{Appendix B - Sample Test Code }
-\subsection{Reactor}
-\noindent
-\textbf{Condition 1: All the reactors run at full capacity} 
-\begin{minted}{C++}
-TEtST(ReactorTests, FullCapacity) {
-   std::string config = 
-     "  <fuel_inrecipes>  <val>fresh_uox</val>  </fuel_inrecipes>  "
-     "  <fuel_outrecipes> <val>spent_uox</val>  </fuel_outrecipes>  "
-     "  <fuel_incommods>  <val>uox</val> </fuel_incommods>  "
-     "  <fuel_outcommods> <val>spent_uox</val>      </fuel_outcommods>  "
-     "  <fuel_prefs>      <val>1.0</val>        </fuel_prefs>  "
-     ""
-     "  <cycle_time>2</cycle_time>  "
-     "  <refuel_time>1</refuel_time>  "
-     "  <assem_size>100</assem_size>  "
-     "  <n_assem_core>3</n_assem_core>  "
-     "  <n_assem_batch>1</n_assem_batch>  ";
+\subsection*{Sample test code for test A-1}
+Appendix B shows the python file that contains the a segment of the simulation parameters that are unique to test A-1 and the code for test A-1. 
+\begin{minted}{python}
+""" Test A_1 """
+init_demand = copy.deepcopy(template)
+init_demand["simulation"].update({"region":{
+"config": {"NullRegion": "\n      "}, 
+"institution": {
+"config": {
+"NOInst": {
+"calc_method": "arma", 
+"demand_commod": "POWER", 
+"demand_std_dev": "0.0", 
+"growth_rate": "0.0", 
+"initial_demand": "1", 
+"prototypes": {"val": "source"}, 
+"steps": "1", 
+"supply_commod": "fuel"
+}
+}, 
+"name": "source_inst"
+}, 
+"name": "SingleRegion"
+}})
 
-  int simdur = 10 
-  cyclus::MockSim sim(cyclus::AgentSpec(":cycamore:Reactor"),config
-  ,simdur); 
-  sim.AddSource("uox").Finalize();
-  sim.AddRecipe("fresh_uox",c_uox());
-  sim.AddRecipe("spent_uox".c_spentuox());
-  int id. = sim.Run();
+def testA1_init_demand():
+# tests if NOInst deploys a source given initial demand and no initial facilities
+output_file = 'init_file.sqlite'
+with open(input_file, 'w') as f:
+json.dump(init_demand, f)
+s = subprocess.check_output(['cyclus', '-o', output_file, input_file],
+universal_newlines=True, env=env)
+# check if ran successfully
+assert("Cyclus run successful!" in s)
 
-  int both_on = 2; 
-  std::vector<Cond> conds; 
-  conds.push_back(Cond("Value", "==",2000));
-  QueryResult qr = sim.db().Query("TimeSeriesPower", &conds);
-  EXPECT_EQ(both_on,qr.rows.size());  
-  
-  int one_on = 6; 
-  std::vector<Cond> conds; 
-  conds.push_back(Cond("Value", "==",1000));
-  QueryResult qr = sim.db().Query("TimeSeriesPower", &conds);
-  EXPECT_EQ(one_on,qr.rows.size());  
-
-  int none_on = 2; 
-  std::vector<Cond> conds; 
-  conds.push_back(Cond("Value", "==",0));
-  QueryResult qr = sim.db().Query("TimeSeriesPower", &conds);
-  EXPECT_EQ(one_on,qr.rows.size());  
-  }
+# getting the sqlite file
+cur = get_cursor(output_file)
+# check if 10 source facilities were deployed by NOInst
+source = cur.execute("SELECT count(*) FROM agententry WHERE Prototype = 'source'"
+" AND EnterTime = 1").fetchone()
+assert(source[0] == 1)
 \end{minted}
 
-\noindent
-\textbf{Condition 2: A new \texttt{Reactor} is deployed when the energy demand exceeds the energy produced by the current \texttt{Reactor}s?} 
-\begin{minted}{C++}
-TEST(ReactorTests, DeployNew) {
-   std::string config = 
-     "  <fuel_inrecipes>  <val>fresh_uox</val>  </fuel_inrecipes>  "
-     "  <fuel_outrecipes> <val>spent_uox</val>  </fuel_outrecipes>  "
-     "  <fuel_incommods>  <val>uox</val> </fuel_incommods>  "
-     "  <fuel_outcommods> <val>spent_uox</val>      </fuel_outcommods>  "
-     "  <fuel_prefs>      <val>1.0</val>        </fuel_prefs>  "
-     ""
-     "  <cycle_time>2</cycle_time>  "
-     "  <refuel_time>1</refuel_time>  "
-     "  <assem_size>100</assem_size>  "
-     "  <n_assem_core>3</n_assem_core>  "
-     "  <n_assem_batch>1</n_assem_batch>  ";
 
-  int simdur = 10 
-  cyclus::MockSim sim(cyclus::AgentSpec(":cycamore:Reactor"),config,
-  simdur); 
-  sim.AddSource("uox").Finalize();
-  sim.AddRecipe("fresh_uox",c_uox());
-  sim.AddRecipe("spent_uox".c_spentuox());
-  int id. = sim.Run();
-  
-  int reactors_deployed = 2; 
-  std::vector<Cond> conds; 
-  conds.push_back(Cond("String", "==",:cycamore:Reactor)); 
-  QueryResult qr = sim.db().Query("AgentEntry", &conds);
-  EXPECT_EQ(reactors_deployed,qr.rows.size());
-  }
-\end{minted}
-\end{comment}
 \end{document}
 
 
