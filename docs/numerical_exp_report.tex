@@ -458,83 +458,6 @@ In test A-7, both a \texttt{source} and \texttt{reactor} facility is present in 
 	\end{tabular}
 \end{table}
 
-\subsection{Test A-8}
-In test A-8, both a \texttt{source} and \texttt{sink} facility is present in the test scenario. Table \ref{tab:testa8} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa8ana} shows the expected analytical solution based on the test scenario.
-
-\begin{table}[H]
-	\centering
-	\caption{Test A-8 Scenario Input Parameters}
-	\label{tab:testa8}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 1 & kg \\
-		Initial facilities & 0 & \#\\
-		Growth Rate & 0 & \\
-		\hline
-		\textbf{Sink Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 1 & kg \\
-		Initial facilities & 0 & \#\\
-		Growth Rate & 0 &  \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\begin{table}[H]
-	\centering
-	\caption{Test A-8 Analytical Solution}
-	\label{tab:testa8ana}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Sink \\Facilities Deployed}}\\
-		\hline
-		1 & 1 & 1\\
-		2 to 15 & 0 & 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection{Test A-9}
-In test A-9, both a \texttt{source} and \texttt{sink} facility is present in the test scenario. Table \ref{tab:testa9} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa9ana} shows the expected analytical solution based on the test scenario.
-
-\begin{table}[H]
-	\centering
-	\caption{Test A-9 Scenario Input Parameters }
-	\label{tab:testa9}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 2 & kg \\
-		Initial facilities & 1 & \#\\
-		Growth Rate & 0 &  \\
-		\hline
-		\textbf{Sink Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 2 & kg \\
-		Initial facilities & 1 & \#\\
-		Growth Rate & 0 &  \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\begin{table}[H]
-	\centering
-	\caption{Test A-9 Analytical Solution}
-	\label{tab:testa9ana}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Sink \\Facilities Deployed}}\\
-		\hline
-		1 & 1 & 1\\
-		2 to 15 & 0 & 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-
 \subsection{Test B-1}
 In test B-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testb1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testb1ana} shows the expected analytical solution based on the test scenario.
 
@@ -603,21 +526,16 @@ In test B-2, only a \texttt{source} facility is present in the test scenario. Ta
 \end{table}
 
 \section{Numerical Test Results}
-
 It was found that, even with the base cases where a tolerance of one capacity was given,
 none of the tests passed. 
 
 The failures attribute to three reasons.
 
-The first is when there is no initial facility present. An initial condition
-must be given for the algorithm to understand the capacity of the facility it deploys.
-Without it, b
-
-The second is when there is growth in the demand. The algorithm failed to deploy
-facilities to meet the increase in demand.
-
-The third is when facilities are expected to be decommissioned. There is yet to be an implementation
-on decommissioning behavior.
+\begin{enumerate}
+	\item There is a test failure when there is no initial facility present. An initial condition must be given for the algorithm to understand the capacity of the facility it deploys.
+	\item There is a test failure when there is growth in the demand. the algorithm failed to deploy facilities to meet the increase in demand.
+	\item There is a test failure when facilities are expected to be decommissioned. There is yet to be an implementation on decommissioning behavior.
+\end{enumerate}
 
 Despite failures in these situations, the non-optimizing method proved to have commissioning capabilities
 to meet demand. Because of the limitation in the algorithm, it is hard to predict demand with precision
