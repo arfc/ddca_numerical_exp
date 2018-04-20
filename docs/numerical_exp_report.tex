@@ -619,14 +619,12 @@ In test B-2, only a \texttt{source} facility is present in the test scenario. Ta
 \end{table}
 
 \section{Numerical Test Results}
-It was found that, even with the base cases where a tolerance of one capacity was given,
-none of the tests passed. 
-
-The failures attribute to three reasons.
+It was found that none of the exact tests and base case tests passed. 
+The failures are attributed to three reasons:
 
 \begin{enumerate}
 	\item There is a test failure when there is no initial facility present. An initial condition must be given for the algorithm to understand the capacity of the facility it deploys.
-	\item There is a test failure when there is growth in the demand. the algorithm failed to deploy facilities to meet the increase in demand.
+	\item There is a test failure when there is growth in the demand. The algorithm failed to deploy facilities to meet the increase in demand.
 	\item There is a test failure when facilities are expected to be decommissioned. There is yet to be an implementation on decommissioning behavior.
 \end{enumerate}
 
