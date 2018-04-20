@@ -603,101 +603,31 @@ In test B-2, only a \texttt{source} facility is present in the test scenario. Ta
 \end{table}
 
 \section{Numerical Test Results}
-It was found that only test A-2 passed. This was expected due to the nature of the non-optimizing algorithm. 
 
-The tests failed for three types of situations. 
+It was found that, even with the base cases where a tolerance of one capacity was given,
+none of the tests passed. 
 
-The first is when there is no initial facility present. This is because the prediction algorithm needs an initial condition to give it information about the commodity throughput of the facility it is predicting the supply and demand of. 
+The failures attribute to three reasons.
 
-The second is when there is growth in the demand. 
+The first is when there is no initial facility present. An initial condition
+must be given for the algorithm to understand the capacity of the facility it deploys.
+Without it, b
 
-The third is when facilities are expected to be decommissioned. 
+The second is when there is growth in the demand. The algorithm failed to deploy
+facilities to meet the increase in demand.
 
-Despite failures in these situations, the non-optimizing method proved to have commissioning capabilities. This is sufficient for the project to move on to developing the deterministic optimization method. The goal is that the deterministic optimization method will be able to overcome the issues faced by the non-optimizing method with reference to the requirement of an initial condition, growth in demand. 
+The third is when facilities are expected to be decommissioned. There is yet to be an implementation
+on decommissioning behavior.
+
+Despite failures in these situations, the non-optimizing method proved to have commissioning capabilities
+to meet demand. Because of the limitation in the algorithm, it is hard to predict demand with precision
+in such a short time. However, the same numerical experiments can be applied to the deterministic
+optimizing algorithm, which holds more promise. The goal is that the deterministic optimization method
+will be able to overcome the issues faced by the non-optimizing method with reference to the
+requirement of an initial condition, growth in demand. Also, the capability to decommission facilities
+upon oversupply will be added.
 
 Appendix C reflects the numerical experiment solution output by the non-optimizing prediction algorithm for each test scenario defined in section 6. 
-	
-
-\begin{comment}
-commented out till further time
-\subsection{Deterministic-Optimizing/Stochastic prediction method}
-The following conditions need to be satisfied for each segment of the fuel cycle. 
-
-\begin{enumerate}
-\item Do all the \texttt{Reactor}s run? 
-\begin{minted}{c++}
-TEST(ReactorTests, DDDeploy_DO) {
-    [Example input with the following attributes:]
-        [int simdur = 20;]
-        [Defines reactor with zero refueling cycle and operation 
-        cycle of 1 month]
-        [Defines fuel cycle facilities parameters]
-        [Defines Reactor Deploy Scheme / Power Demand]
-        [Increasing Fuel Demand with Time]
-    [Run test]
-    [Test if Reactor has no zero values in output Timeseriespower]
-}
-\end{minted}
-\item  Do all the \texttt{Reactor}s run at full capacity (not lacking fuel)? 
-\begin{minted}{c++}
-TEST(ReactorTests, DDDeploy_DO) {
-    [Example input with the following attributes:]
-        [int simdur = 20;]
-        [Defines reactor with zero refueling cycle, power capacity 
-        of x and operation cycle of 1 month]
-        [Defines fuel cycle facilities parameters]
-        [Defines Reactor Deploy Scheme / Power Demand]
-        [Increasing Fuel Demand with Time]
-    [Run test]
-    [Test if Reactor has x value in output Timeseriespower]
-}
-\end{minted}
-
-\item Is the objective function optimized?
-
-\item Is the constraint followed? 
-
-\item  Do the related fuel cycle facilities get deployed upon demand?
-\begin{minted}{xml}
-TEST(ReactorTests, DDDeploy_NO) {
-    [Example input with the following attributes:]
-        [int simdur = 20;]
-        [Defines reactor with zero refueling cycle and operation 
-        cycle of 1 month]
-        [Defines fuel cycle facilities parameters]
-        [Defines Reactor Deploy Scheme / Power Demand]
-        [Increasing Fuel Demand with Time]
-    [Run test]
-    [Test if fuel facility is deployed in the beginning]
-    [Test if fuel facility is deployed later in the simulation 
-    (have analytic solution)]
-}
-\end{minted}
-
-\item Do the related fuel cycle facilities exit upon demand decrease?
-\begin{minted}{xml}
-TEST(ReactorTests, DDDeploy_NO) {
-    [Example input with the following attributes:]
-        [int simdur = 20;]
-        [Defines reactor with zero refueling cycle and operation 
-        cycle of 1 month]
-        [Defines fuel cycle facilities parameters]
-        [Defines Reactor Deploy Scheme / Power Demand]
-        [Decreasing Fuel Demand with Time]
-    [Run test]
-    [Test if fuel facility is deployed in the beginning]
-    [Test if fuel facility exits later in the simulation (have 
-    analytic solution)]
-}
-\end{minted}
-
-
-\end{enumerate}
-
-
-
-\section{Advanced Fuel Cycles}
-\end{comment}
 
 \pagebreak
 \section*{Appendix A - parameter configuration}
