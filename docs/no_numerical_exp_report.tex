@@ -61,11 +61,10 @@ The developed algorithm, in the form of \Cyclus \texttt{Institution}
 agent, deploys \texttt{Facilities} to meet the front-end and back-end demands of the 
 fuel cycle.
 
-This report describes numerical tests for the non-optimizing algorithm, namely \gls{ARMA} and \gls{ARCH}.
+This report describes numerical experiments for the non-optimizing algorithm, namely \gls{ARMA} and \gls{ARCH}.
 
-These prediction models are being developed by the University of South Carolina. 
-In this report, we discuss numerical experiments for testing the non-optimizing methods.
-The numerical experiments will be designed for both the once through nuclear fuel 
+These prediction models are being developed by the University of South Carolina. The numerical experiments will be designed for both
+ the once through nuclear fuel 
 cycle and advanced fuel cycles. 
 
 \section{Method}
@@ -76,8 +75,11 @@ with a sample fuel cycle with well-defined facility parameters.
 
 
 \section{Configuration}
-The user defines prototypes to be deployed for fuel facilities, and the 
-demand equation.  The reactor deployment causes the demand of fuel
+The user defines what prototypes are to be deployed, the initial demand, and the 
+growth rate for one of the commodities. For example, if the user
+chooses a positive demand growth equation for power, this triggers reactor deployment.
+The reactor deployment then causes an increase in the demand of fuel, which triggers fuel facility deployment.
+The reactor deployment causes the demand of fuel
 which triggers fuel facility deployment. The detailed input file XML input schema
 is shown in Appendix A. 
 
@@ -86,7 +88,7 @@ is shown in Appendix A.
 The algorithm is an \texttt{Institution}, which is a \Cyclus agent type
 that deploys and decommissions facilities. 
 
-The algorithm predicts the demand by looking at the previous demand and supply values.
+The algorithm predicts the demand of a commodity by lfooking at the previous demand and supply values.
 This is done through the \texttt{TimeSeries} toolkit in \Cyclus. To implement
 this functionality, every \Cycamore archetype is configured to record their
 demand and supply whenever they occur (usually, at every \texttt{Tick} or \texttt{Tock},
@@ -154,7 +156,7 @@ the difference. If the difference is bigger than the capacity of one facility, i
 schedules to deploy a new facility, or a decommissioning of an existing facility.
 The decommissioning takes place in the \texttt{Decommission} phase of \Cyclus, and
 the construction takes place in the \texttt{Build} phase of \Cyclus. Thus, all the
-adjustment of facilities occur prior to the next DRE.
+adjustment of facilities occur prior to the next \gls{DRE}.
 
 
 \begin{figure}[H]
