@@ -2,7 +2,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage{caption} % for table captions
 \usepackage{amsmath} % for multi-line equations and piecewises
+\DeclareMathOperator{\sign}{sign}
 \usepackage{graphicx}
+\usepackage{relsize}
 %\usepackage{textcomp}
 \usepackage{xspace}
 \usepackage{verbatim} % for block comments
@@ -12,6 +14,8 @@
 \newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
 \usepackage{tabularx}
 \usepackage{color}
+\usepackage[acronym,toc]{glossaries}
+\include{acros}
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
 \newcolumntype{b}{X}
 \newcolumntype{f}{>{\hsize=.15\hsize}X}
@@ -26,6 +30,7 @@
 \SetupFloatingEnvironment{listing}{name=Code}
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
+\bibliographystyle{abbrv}
 \usepackage{tikz}
 
 
@@ -35,7 +40,6 @@
 
 
 \graphicspath{{images/}}
- 
 \title{Numerical Experiments for Verifying Demand Driven Deployment Algorithms 
         \\ \vspace{0.5em} Non-Optimizing Algorithm}
 \author{Jin Whan Bae, Gwendolyn Chee, Kathryn Huff}
@@ -57,12 +61,11 @@ The developed algorithm, in the form of \Cyclus \texttt{Institution}
 agent, deploys \texttt{Facilities} to meet the front-end and back-end demands of the 
 fuel cycle.
 
-This report describes numerical tests for non-optimizing, deterministic-optimizing and stochastic-optimizing prediction algorithms.
+This report describes numerical tests for the non-optimizing algorithm, namely \gls{ARMA} and \gls{ARCH}.
 
 These prediction models are being developed by the University of South Carolina. 
-In this report, we discuss numerical experiments for testing the non-optimizing, 
-deterministic optimizing and stochastic optimizing methods. The numerical 
-experiments will be designed for both the once through nuclear fuel 
+In this report, we discuss numerical experiments for testing the non-optimizing methods.
+The numerical experiments will be designed for both the once through nuclear fuel 
 cycle and advanced fuel cycles. 
 
 \section{Method}
@@ -73,17 +76,86 @@ with a sample fuel cycle with well-defined facility parameters.
 
 
 \section{Configuration}
-The user defines prototypes to be deployed for fuel facilities,
-and reactor deployment scheme.  The reactor deployment causes the demand of fuel
+The user defines prototypes to be deployed for fuel facilities, and the 
+demand equation.  The reactor deployment causes the demand of fuel
 which triggers fuel facility deployment. The detailed input file XML input schema
 is shown in Appendix A. 
 
 \section{Algorithm Flow}
 
-The algorithm, upon entering, creates a supply chain with the fuel facilities and
-the reactor. Then, at every timestep it calculates the expected demand from each fuel cycle
-facility and makes decisions to deploy or decommission. As a reference, the time step
-execution for \Cyclus is illustrated in figure \ref{diag:time}.
+The algorithm is an \texttt{Institution}, which is a \Cyclus agent type
+that deploys and decommissions facilities. 
+
+The algorithm predicts the demand by looking at the previous demand and supply values.
+This is done through the \texttt{TimeSeries} toolkit in \Cyclus. To implement
+this functionality, every \Cycamore archetype is configured to record their
+demand and supply whenever they occur (usually, at every \texttt{Tick} or \texttt{Tock},
+discussed later). The algorithm accesses this timeseries and makes a prediction to
+what the demand will be in the future. If the algorithm sees a lack or excess of supply,
+it deploys new facilities or decommissions existing facilities.
+
+\subsection{Autoregressive Moving Average (ARMA)}
+
+\gls{ARMA} is a combination of two models, the Autoregressive
+and the Moving Average model. The Autoregressive model 
+predicts future values with a linear curve fit of the latest
+datasets, and the Moving Average method does so by fitting the 
+errors \cite{stine_introduction_2011}.
+
+The model is referred to as ARMA(p,q), where the p and q represent 
+the order (number of previous time step values fitted) of the autoregressive,
+and the moving average parts,
+respectively. 
+The \gls{ARMA} model can be represented by the following equation:
+
+\begin{align}
+    X_i&=c + \epsilon_t + {\mathlarger{\sum}}_{i=1}^{p}\theta_i \cdot X_{t-i}+
+     {\mathlarger{\sum}}_{j=1}^{q}\phi_j\cdot\epsilon_{t-j}\\
+    X_i&= \mbox{next predicted value of the time series}\\
+    c&= \mbox{adjustable constant}\\
+    \theta_i&=i^{th} \mbox{parameter}\\
+    \phi_i&=j^{th} \mbox{parameter of the moving average system}\\
+    \epsilon &= \mbox{white noise}
+\end{align}
+
+\gls{ARMA} is applied to a `well behaved' set of time series data,
+where there is little volatility. This makes \gls{ARMA} a suitable
+candidate for demand prediction in the case of slowly changing power demand and 
+corresponding reactor deployment.
+
+
+\subsection{Autoregressive Conditional Heteroskedastic (ARCH)}
+The \gls{ARCH} model is similar to the \gls{ARMA} model, except that
+it uses previous variance terms to calculate current error terms, instead
+of the value itself. This allows the model to be used in highly volatile 
+time series (e.g. prediction of inflation or stock prices over time 
+\cite{bollerslev_generalized_1986}).
+The \gls{ARCH} model can be represented by the following equation:
+
+\begin{align}
+    \epsilon_t^2 &= \alpha_0+{\mathlarger{\sum}}_{i=1}^{q}\alpha_i\cdot\epsilon_{t-1}^2\\
+    \alpha_i&= i^{th} \mbox{parameter of the conditional heteroskedastic model}
+\end{align}
+
+A comprehensive fuel cycle simulator must have predictive capabilities which 
+can deploy fuel cycle support facilities intelligently even in the face of 
+volatile dynamics. Such volatility may arise during transitions between 
+technologies, from upsets related to unexpected facility shutdowns, due to the variability 
+of an increasingly renewable electric grid, or other nonlinear economic 
+drivers.  In these cases, the \gls{ARCH} model is more generically applicable 
+and should therefore be preferred over the \gls{ARMA} 
+model.
+
+\subsection{Time Step Execution in \Cyclus}
+As a reference, the time step execution for \Cyclus is illustrated in figure \ref{diag:time}.
+
+At \texttt{Tock}, the algorithm calculates the demand and supply for the next timestep, and calculates
+the difference. If the difference is bigger than the capacity of one facility, it
+schedules to deploy a new facility, or a decommissioning of an existing facility.
+The decommissioning takes place in the \texttt{Decommission} phase of \Cyclus, and
+the construction takes place in the \texttt{Build} phase of \Cyclus. Thus, all the
+adjustment of facilities occur prior to the next DRE.
+
 
 \begin{figure}[H]
 \centering
@@ -106,35 +178,6 @@ execution for \Cyclus is illustrated in figure \ref{diag:time}.
 \label{diag:time}
 \end{figure}
 
-\subsection{Upon Entering (\texttt{Enternotify})}
-
-The algorithm creates a supply chain with the fuel facilities,
-then calculates the demand for each facility for a unit quantity of fuel
-(example in figure \ref{diag:dem}). It also orders to build fuel cycle
-facilities for the reactors at timestep 1.
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=3.5cm]
-\node (source) [process] {\texttt{Source}};
-\node (reactor) [process, right of=source]{\texttt{Reactor}};
-\node (sink) [process, right of=reactor]{\texttt{Sink}};
-
-\draw [arrow] (source) -- (reactor) node[midway,fill=white] {$[x]$}; 
-\draw [arrow] (reactor) -- (sink) node[midway,fill=white] {$[x]$}; 
-\end{tikzpicture}
-\caption{Simple demand flow of materials. The values in the bracket are demands calculated
-         by the algorithm. The \texttt{Reactor} demands $x$ amount of fuel,
-         which translates into demands of $x$ from  \texttt{Sink}.}
-\label{diag:dem}
-\end{figure}
-
-\subsection{Tick}
-The algorithm calculates the fuel demand
-from the fleet of reactors at one timestep ahead, and the corresponding demand for fuel facilities.
-The current capacity of each fuel cycle facility is also calculated. If the capacity
-is smaller than the demand, the algorithm orders to build more facilities to meet the demand,
-so that the fuel demand is met for the next timestep.
 
 \section{Simulation parameter for Test Scenarios}
 Simple parameters are given to fuel cycle facilities for the numerical testing of 
@@ -640,6 +683,12 @@ upon oversupply will be added.
 Appendix C reflects the numerical experiment solution output by the non-optimizing prediction algorithm for each test scenario defined in section 6. 
 
 \pagebreak
+
+\section{References}
+\bibliography{bibliography}
+
+\pagebreak
+
 \section*{Appendix A - parameter configuration}
 Appendix A shows the json file that contains the simulation parameters that are common between all the test scenarios discussed in Section 6.  
 

@@ -1,4 +1,4 @@
-manuscript = numerical_exp_report
+manuscript = no_numerical_exp_report
 references = $(wildcard *.bib)
 latexopt   = -halt-on-error -file-line-error
 
