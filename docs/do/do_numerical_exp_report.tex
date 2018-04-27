@@ -41,7 +41,7 @@
 
 \graphicspath{{images/}}
 \title{Numerical Experiments for Verifying Demand Driven Deployment Algorithms 
-        \\ \vspace{0.5em} Non-Optimizing Algorithm}
+        \\ \vspace{0.5em} Deterministic-Optimizing Algorithm}
 \author{Jin Whan Bae, Gwendolyn Chee, Kathryn Huff}
 
 
@@ -61,7 +61,8 @@ The developed algorithm, in the form of \Cyclus \texttt{Institution}
 agent, deploys \texttt{Facilities} to meet the front-end and back-end demands of the 
 fuel cycle.
 
-This report describes numerical experiments for the non-optimizing algorithm, namely \gls{ARMA} and \gls{ARCH}.
+This report describes numerical experiments for the deterministic
+-optimizing algorithm, namely \gls{ARMA} and \gls{ARCH}.
 
 These prediction models are being developed by the University of South Carolina. The numerical experiments will be designed for both
  the once through nuclear fuel 
@@ -75,78 +76,52 @@ with a sample fuel cycle with well-defined facility parameters.
 
 
 \section{Configuration}
-The user defines what prototypes are to be deployed, the initial demand, and the 
-growth rate for one of the commodities. For example, if the user
-chooses a positive demand growth equation for power, this triggers reactor deployment.
-The reactor deployment then causes an increase in the demand of fuel, which triggers fuel facility deployment.
-The reactor deployment causes the demand of fuel
-which triggers fuel facility deployment. The detailed input file XML input schema
-is shown in Appendix A. 
+The user defines a demand equation of a commodity (e.g. power, spent fuel, plutonium etc.)
+and a supply chain that results in the creation of the demanded commodity.
+For example, a user would define a power demand equation, and list
+the facilities that lead up to power production, as such:
+
+\begin{minted}{xml}
+<!-- Definition of demand commodity and demand equation -->
+<demand_commodity> POWER </demand_commodity>
+<piecewise_function>
+	<piece>
+		<start>0</start>
+		<function>
+			<type>linear</type>
+			<params> 1 2 </params>
+		</function>
+	</piece>
+</piecewise_function>
+
+<!-- Definition of supply chain leading to power production -->
+<supply_chain>
+	<val> source </val>
+	<val> enrichment </val>
+	<val> reactor </val>
+</supply_chain>
+\end{minted}
+
+
 
 \section{Algorithm Flow}
 
 The algorithm is an \texttt{Institution}, which is a \Cyclus agent type
-that deploys and decommissions facilities. 
+that deploys and decommissions facilities.
 
-The algorithm predicts the demand of a commodity by looking at the previous demand and supply values.
-This is done through the \texttt{TimeSeries} toolkit in \Cyclus. To implement
-this functionality, every \Cycamore archetype is configured to record their
-demand and supply whenever they occur (usually, at every \texttt{Tick} or \texttt{Tock},
-discussed later). The algorithm accesses this timeseries and makes a prediction to
-what the demand will be in the future. If the algorithm sees a lack or excess of supply,
-it deploys new facilities or decommissions existing facilities.
-
-\subsection{Autoregressive Moving Average (ARMA)}
-
-\gls{ARMA} is a combination of two models, the Autoregressive
-and the Moving Average model. The Autoregressive model 
-predicts future values with a linear curve fit of the latest
-datasets, and the Moving Average method does so by fitting the 
-errors \cite{stine_introduction_2011}.
-
-The model is referred to as ARMA(p,q), where the p and q represent 
-the order (number of previous time step values fitted) of the autoregressive,
-and the moving average parts,
-respectively. 
-The \gls{ARMA} model can be represented by the following equation:
-
-\begin{align}
-    X_i&=c + \epsilon_t + {\mathlarger{\sum}}_{i=1}^{p}\theta_i \cdot X_{t-i}+
-     {\mathlarger{\sum}}_{j=1}^{q}\phi_j\cdot\epsilon_{t-j}\\
-    X_i&= \mbox{next predicted value of the time series}\\
-    c&= \mbox{adjustable constant}\\
-    \theta_i&=i^{th} \mbox{parameter}\\
-    \phi_i&=j^{th} \mbox{parameter of the moving average system}\\
-    \epsilon &= \mbox{white noise}
-\end{align}
-
-\gls{ARMA} is applied to a `well behaved' set of time series data,
-where there is little volatility. This makes \gls{ARMA} a suitable
-candidate for demand prediction in the case of slowly changing power demand and 
-corresponding reactor deployment.
+Upon entering, the \Cyclus \texttt{institute} accesses the parameters for each
+facility in the chain to extract the supply and demand parameters (capacity, throughput).
+The algorithm then creates a matrix of commodity demand quantities for every
+facility of the supply chain. It does so by first creating a vector
+of the final demand (e.g. power) and back-calculating the demand for other
+commodities in order to meet power production demand.
+The matrix has a size of \texttt{(Timestep X Length of Chain)}.
+The demand quantity matrix is then calculated into a deployment matrix that
+lists the number of facilities to be deployed at a given timestep.
 
 
-\subsection{Autoregressive Conditional Heteroskedastic (ARCH)}
-The \gls{ARCH} model is similar to the \gls{ARMA} model, except that
-it uses previous variance terms to calculate current error terms, instead
-of the value itself. This allows the model to be used in highly volatile 
-time series (e.g. prediction of inflation or stock prices over time 
-\cite{bollerslev_generalized_1986}).
-The \gls{ARCH} model can be represented by the following equation:
+\subsection{Specifics}
 
-\begin{align}
-    \epsilon_t^2 &= \alpha_0+{\mathlarger{\sum}}_{i=1}^{q}\alpha_i\cdot\epsilon_{t-1}^2\\
-    \alpha_i&= i^{th} \mbox{parameter of the conditional heteroskedastic model}
-\end{align}
-
-A comprehensive fuel cycle simulator must have predictive capabilities which 
-can deploy fuel cycle support facilities intelligently even in the face of 
-volatile dynamics. Such volatility may arise during transitions between 
-technologies, from upsets related to unexpected facility shutdowns, due to the variability 
-of an increasingly renewable electric grid, or other nonlinear economic 
-drivers.  In these cases, the \gls{ARCH} model is more generically applicable 
-and should therefore be preferred over the \gls{ARMA} 
-model.
 
 \subsection{Time Step Execution in \Cyclus}
 As a reference, the time step execution for \Cyclus is illustrated in figure \ref{diag:time}.
