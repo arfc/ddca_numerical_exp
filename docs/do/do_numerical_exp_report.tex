@@ -53,11 +53,13 @@ minimum height=2em]
 \section{Introduction}
 For many fuel cycle simulations, it is currently up to the user to define
 a deploy scheme, or facility parameters, to make sure that there's no gap
-in the supply chain. Or, the same goal is achieved by setting the
-\texttt{facility} capacity to infinity, which does not reflect real-world
+in the supply chain. Or, the same goal is achieved by setting the supply
+\texttt{facility}'s capacity to infinity, which does not reflect real-world
 conditions. 
 
-The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cycamore demand-driven deployment capabilities.
+The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop demand-driven deployment capabilities
+in \Cyclus. To understand the terms used in this report, please read \cite{huff_fundamental_2016}. 
+
 The developed algorithm, in the form of \Cyclus \texttt{Institution}
 agent, deploys \texttt{Facilities} to meet the front-end and back-end demands of the 
 fuel cycle.
@@ -101,22 +103,28 @@ the facilities that lead up to power production, as such:
 	<val> enrichment </val>
 	<val> reactor </val>
 </supply_chain>
+
+<!-- Added definition of supply and demand commodities -->
 \end{minted}
 
-
+Note that the user input is expansive and detailed due to the 
+independent, agent-based nature of \Cyclus. The user-defined
+parameters will allow the institution create a supply chain,
+demand timeseries for each commodity, and deployment timeseries,
+which will be explained in the next section.
 
 \section{Algorithm Flow}
 
 The algorithm is an \texttt{Institution}, which is a \Cyclus agent type
 that deploys and decommissions facilities.
 
-Upon entering, the \Cyclus \texttt{institute} accesses the parameters for each
+Upon entering, the \Cyclus \texttt{Institution} accesses the parameters for each
 facility in the chain to extract the supply and demand parameters (capacity, throughput).
 The algorithm then creates a matrix of commodity demand quantities for every
 facility of the supply chain. It does so by first creating a vector
 of the final demand (e.g. power) and back-calculating the demand for other
 commodities in order to meet power production demand.
-The matrix has a size of \texttt{(Timestep X Length of Chain)}.
+The matrix has a size of \texttt{[Timestep X Length of Chain]}.
 The demand quantity matrix is then calculated into a deployment matrix that
 lists the number of facilities to be deployed at a given timestep.
 
@@ -187,22 +195,23 @@ Table \ref{tab:testscenario} provides basic parameters for each test scenario. T
 \hline
 \textbf{Source Parameters} & \textbf{Value} & \textbf{Units} \\
 \hline
-Throughput & 1 & kg \\
+Throughput & 1 & kg / time step \\
 Output Commodity & fuel & kg\\
 Lifetime & 4 & time steps \\
+% what is this wait time
 Wait time & 3 & time steps \\
 \hline
 \textbf{Reactor Parameters} & \textbf{Value} & \textbf{Units} \\
 \hline
 Input Commodity & fuel & kg\\
 Output Commodity & power & MWe\\
+Power Capacity & 1& MWe \\
 Cycle Time & 1 & time steps \\
 Refuel Time & 0 & time steps \\
 Lifetime & 4 & time steps \\
-Power Capacity & 1& MWe \\
 Assembly Size & 1 & kg \\
-\# assemblies per batch & 1 & \\
-\# assemblies per core & 3 & \\
+Num. assemblies per batch & 1 & -\\
+Num. assemblies per core & 3 & - \\
 \hline
 	\end{tabular}
 \end{table}
@@ -212,7 +221,7 @@ Assembly Size & 1 & kg \\
 \section{Numerical Tests for the Deterministic optimizing prediction method}
 The deterministic optimizing prediction method is tested by comparing its output for various scenarios against their analytical solutions . In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
 
-The tests are split into test A types and test B types. Test A refers to the test scenarios where there are only \texttt{source} facilities. Test B refers to the test scenarios where there are both \texttt{source} and \texttt{reactor} facilities. Each test type is sub-categorized into type 1,2 and 3. Test A1 and B1 refer to test scenarios where facilities are expected to be deployed. Tests A2 and B2 refers to the test scenarios where facilities are expected to be decommissioned. Tests A3 and B3 refers to test scenarios where facilities are expected to be deployed and decommissioned. It is assumed that the commodity whose demand that all facilities are trying to meet is power. Figure \ref{fig:sourceflow} and \ref{fig:sourcereactorflow} show the commodity flow for test type A and B respectively. 
+The tests are split into test A types and test B types. Test A refers to the test scenarios where there are only \texttt{source} facilities. Test B refers to the test scenarios where there are both \texttt{source} and \texttt{reactor} facilities. Each test type is sub-categorized into type 1,2 and 3. Test A1 and B1 refer to test scenarios where facilities are expected to be deployed. Tests A2 and B2 refers to the test scenarios where facilities are expected to be decommissioned. Tests A3 and B3 refers to test scenarios where facilities are expected to be deployed and decommissioned. In all scenarios the ultimate demand commodity is \texttt{Power}. Figure \ref{fig:sourceflow} and \ref{fig:sourcereactorflow} show the commodity flow for test type A and B respectively. 
 
 \begin{figure}[H]
 	\centering
@@ -245,6 +254,8 @@ The tests listed below are unique to the deterministic optimizing algorithm. The
 
 The prediction algorithm for the deterministic optimizing method has two user-defined input parameters for the scenario and one user-defined input parameter per facility type present. The aim of the various test scenarios are to check if the deterministic optimizing method archetype will deploy or decommission facilities correctly when there is a variation in the combination of these input parameters.  \\
 
+% This should be melted into the input parameters section
+% We should deviate away from growth rate -> stepwise functions
 The two scenario input parameters are: 
 \begin{enumerate}
 	\item Initial demand of Power
@@ -258,8 +269,9 @@ The one user-defined input parameter per facility type:
 
 For each test scenario, there is one table that states the test scenario's input parameters and another table that states the exact analytical solution. 
 
-Additionally, we created base tests for that passes when the supply meets the demand within a given facility number tolerance. In other words, when the supply exceeds the demand by the specified tolerance quantity, the test still passes. For this report, the tolerance is set to one facility. For example in test A-1, the expected total number facilities deployed is 1, and since the facility over-prediction tolerance is 1, the acceptable range of total number of facilities $(x)$ deployed in the entire test scenario is $1<x<2$. If the total number of facilities deployed is within this range, the base case test will pass.  
+Additionally, we created base tests that pass when the supply meets the demand within a given facility number tolerance. In other words, when the supply exceeds the demand by the specified tolerance quantity, the test still passes. For this numerical experiment, the tolerance is set to one facility. For example in test A-1, the expected total number facilities deployed is 1, and since the facility over-prediction tolerance is 1, the acceptable range of total number of facilities $(x)$ deployed in the entire test scenario is $1<x<2$. If the total number of facilities deployed is within this range, the base case test will pass. Note that there is no tolerance for under-supplying.   
 
+% why does it start from a3-1?
 \subsection{Test A3-1}
 The goal of test A3-1 is to determine is a source facility is deployed when the lifetime of another is ending to meet the upcoming loss of power supply. 
 Table \ref{tab:testa3-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa3-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testa3-1base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1. 
@@ -281,6 +293,7 @@ Table \ref{tab:testa3-1} shows the input parameters of the source facility in th
 	\end{tabular}
 \end{table}
 
+% why?
 \begin{table}[H]
 	\centering
 	\caption{Test A3-1 Analytical Solution (If the time step is skipped over, it is because there are no facilities deployed or decommissioned during that time step.)}
@@ -319,7 +332,8 @@ Table \ref{tab:testa3-1} shows the input parameters of the source facility in th
 \end{table}
 
 \subsection{Test A3-2}
-The goal of test A3-2 is to determine is a source facility is deployed when the lifetime of another is ending to meet the upcoming loss of power supply when there multiple source facilities decommissioning and deploying at different times. 
+% wording
+The goal of test A3-2 is to determine whether a source facility is deployed when the lifetime of another is ending to meet the upcoming loss of power supply when there multiple source facilities decommissioning and deploying at different times. 
 Table \ref{tab:testa3-2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa3-2ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testa3-2base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1. 
 \begin{table}[H]
 	\centering
@@ -339,6 +353,7 @@ Table \ref{tab:testa3-2} shows the input parameters of the source facility in th
 	\end{tabular}
 \end{table}
 
+% huhu?
 \begin{table}[H]
 	\centering
 	\caption{Test A3-2 Analytical Solution (If the time step is skipped over, it is because there are no facilities deployed or decommissioned during that time step.)}
