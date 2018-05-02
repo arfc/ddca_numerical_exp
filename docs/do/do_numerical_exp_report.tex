@@ -309,7 +309,7 @@ Table \ref{tab:test_A-dep-1} shows the input parameters of the \texttt{Instituti
 		Supply Chain & source \rightarrow \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
-\end{table}s
+\end{table}
 
 
 \begin{table}[H]
@@ -344,60 +344,65 @@ Table \ref{tab:test_A-dep-1} shows the input parameters of the \texttt{Instituti
 
 \subsection{Test A-dep-2}
 % wording
-The goal of test A-dep-3 is to determine whether a source facility is deployed when the lifetime of another is ending to meet the upcoming loss of power supply when there multiple source facilities decommissioning and deploying at different times. 
-Table \ref{tab:test-A-dep-2} shows the input parameters of the \texttt{Institution}. Table \ref{tab:test-A-dep-2ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-A-dep-2base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1. 
+The goal of test A-dep-2 is to determine whether a source facility is deployed
+to meet the upcoming loss of supply due to the end of a lifetime of another.
+The difference between this test and test A-dep-1 is that multiple facilities
+exit and are deployed at different times.
+Table \ref{tab:test-A-dep-2} shows the input parameters of the \texttt{Institution}. Table \ref{tab:test-A-dep-2ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-A-dep-2base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1.
+
+\begin{figure}[htbp!]
+	\begin{center}
+		\includegraphics[scale=0.7]{./images/A-dep-2.png}
+	\end{center}
+        \caption{Fuel demand for test A-dep-2.}
+	\label{fig:A-dep-2}
+\end{figure}
+
+
 \begin{table}[H]
 	\centering
-	\caption{Test A3-2 Scenario Input Parameters }
-	\label{tab:test-A-dep-1}
+	\caption{Test A-dep-2 Scenario Input Parameters }
+	\label{tab:test_A-dep-2}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Power} & \textbf{Value} & \textbf{Units} \\
-		\hline 
-		Initial demand & 2 & Mwe \\
-		Growth Rate & 0 & \\
+		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial facilities & 1 & \#\\
+		End demand commodity & fuel & kg \\
+		Demand Equation & D = 2 & \\
+		Supply Chain & source \rightarrow \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
-\end{table}
+\end{table}s
+
 
 % huhu?
 \begin{table}[H]
 	\centering
-	\caption{Test A3-2 Analytical Solution (If the time step is skipped over, it is because there are no facilities deployed or decommissioned during that time step.)}
-	\label{tab:testa3-2ana}
+	\caption{Test A-dep-2 Analytical Solution (If the time step is skipped over, it is because there are no facilities deployed or decommissioned during that time step.)}
+	\label{tab:test-A-dep-2ana}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Source \\Facilities Decommissioned}} \\
 		\hline
 		0 & 1 & 0 \\
 		1 & 1 & 0 \\
-		3 & 0 & 1 \\
-		4 & 1 & 1 \\
-		5 & 1 & 0 \\
-		7 & 0 & 1 \\
-		8 & 1 & 1 \\
-		11 & 0 & 1 \\
-		12 & 1 & 1 \\
-		15 & 0 & 1 \\
+		6 & 0 & 1 \\
+		7 & 1 & 1 \\
+		8 & 1 & 0 \\
+		13 & 0 & 1 \\
+		14 & 1 & 1 \\
+		12 & 1 & 0 \\
 		\hline
 	\end{tabular}
 \end{table}
 
 \begin{table}[H]
 	\centering
-	\caption{Test A3-2 Base Test Acceptance}
-	\label{tab:test-A-dep-1base}
+	\caption{Test A-dep-2 Base Test Acceptance}
+	\label{tab:test-A-dep-2 base}
 	\begin{tabular}{|P{7.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
-		\hline
-		6 $<$ x $<$ 7 \\
-		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Decommisioned - tolerance}}\\
 		\hline
 		6 $<$ x $<$ 7 \\
 		\hline
