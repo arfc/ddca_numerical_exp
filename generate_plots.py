@@ -12,8 +12,18 @@ def generate_plot(test_name, x, y):
     plt.axis([0, 15, min(y) - 1, max(y) + 1])
     plt.savefig('./docs/do/images/%s' %test_name)
 
+def generate_step(test_name, x, y):
+    plt.step(x,y)
+    plt.xlabel('Timestep')
+    plt.ylabel('Demand [kg]')
+    plt.title('Test %s Demand' %test_name)
+    plt.axis([0, 15, min(y) - 1, max(y) + 1])
+    plt.savefig('./docs/do/images/%s' %test_name)
+
 
 x = np.arange(0, 16, step=1)
 y = np.zeros(16)
-y = y + 1
-generate_plot('A_dep_1', x, y)
+y[0] = 1
+y[1] = 1
+y[2] = 1
+generate_step('A-mix-1', x, y)
