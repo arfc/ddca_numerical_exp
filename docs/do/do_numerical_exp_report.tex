@@ -283,59 +283,59 @@ total number facilities deployed is 1, and since the facility over-prediction to
 range of total number of facilities $(x)$ deployed in the entire test scenario is $1<x<2$. If the total
 number of facilities deployed is within this range, the base case test will pass. Note that there is no tolerance for under-supplying.   
 
-\subsection{Test A3-1}
-The goal of test A3-1 is to determine is a source facility is deployed when the lifetime of another is ending to meet the upcoming loss of power supply. 
-Table \ref{tab:testa3-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa3-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testa3-1base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1. 
+\subsection{Test A-dep-1}
+The goal of test A-dep-1 is to determine is a source facility is deployed when the lifetime of another is ending to meet the upcoming loss of power supply. 
+Table \ref{tab:test_A-dep-1} shows the input parameters of the \texttt{Institution} in the test scenario. Table \ref{tab:test_A-dep-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test_A-dep-1base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1.
+
+\begin{figure}[htbp!]
+	\begin{center}
+		\includegraphics[scale=0.7]{./images/A-dep-1.png}
+	\end{center}
+        \caption{Fuel demand for test A-dep-1.}
+	\label{fig:A-dep-1}
+\end{figure}
+
+
 \begin{table}[H]
 	\centering
-	\caption{Test A3-1 Scenario Input Parameters }
-	\label{tab:testa3-1}
+	\caption{Test A-dep-1 Scenario Input Parameters }
+	\label{tab:test_A-dep-1}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Power} & \textbf{Value} & \textbf{Units} \\
-		\hline 
-		Initial demand & 1 & Mwe \\
-		Growth Rate & 0 & \\
+		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial facilities & 1 & \#\\
+		End demand commodity & fuel & kg \\
+		Demand Equation & D = 1 & \\
+		Supply Chain & source -> \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
-\end{table}
+\end{table}s
 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A3-1 Analytical Solution (If the time step is skipped over, it is because there are no facilities deployed or decommissioned during that time step.)}
-	\label{tab:testa3-1ana}
+	\caption{Test A-dep-1 Analytical Solution (If the time step is skipped over, it is because there are no facilities deployed or decommissioned during that time step.)}
+	\label{tab:test_A-dep-1ana}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Source \\Facilities Decommissioned}} \\
+		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{No. of Source Exits} \\
 		\hline
-		0 & 1 & 0 \\
-		3 & 0 & 1 \\
-		4 & 1 & 0 \\
+		1 & 1 & 0 \\
 		7 & 0 & 1 \\
 		8 & 1 & 0 \\
-		11 & 0 & 1 \\
-		12 & 1 & 0 \\
-		15 & 0 & 1 \\
+		14 & 0 & 1 \\
+		15 & 1 & 0 \\
 		\hline
 	\end{tabular}
 \end{table}
 
 \begin{table}[H]
 	\centering
-	\caption{Test A3-1 Base Test Acceptance}
-	\label{tab:testa3-1base}
+	\caption{Test A-dep-1 Base Test Acceptance}
+	\label{tab:test-A-dep-1base}
 	\begin{tabular}{|P{7.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
-		\hline
-		3 $<$ x $<$ 4 \\
-		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Decommisioned - tolerance}}\\
 		\hline
 		3 $<$ x $<$ 4 \\
 		\hline
@@ -349,7 +349,7 @@ Table \ref{tab:testa3-2} shows the input parameters of the source facility in th
 \begin{table}[H]
 	\centering
 	\caption{Test A3-2 Scenario Input Parameters }
-	\label{tab:testa3-1}
+	\label{tab:test-A-dep-1}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Power} & \textbf{Value} & \textbf{Units} \\
@@ -390,7 +390,7 @@ Table \ref{tab:testa3-2} shows the input parameters of the source facility in th
 \begin{table}[H]
 	\centering
 	\caption{Test A3-2 Base Test Acceptance}
-	\label{tab:testa3-1base}
+	\label{tab:test-A-dep-1base}
 	\begin{tabular}{|P{7.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
