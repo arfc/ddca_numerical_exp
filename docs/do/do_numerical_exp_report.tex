@@ -270,18 +270,14 @@ in the combination of these input parameters. The input parameters are listed as
 
 \begin{enumerate}
 	\item End demand commodity
-	\item Demand equation (can be stepwise)
+	\item Demand equation 
 	\item Supply chain of facilities
 \end{enumerate}
 
 For each test scenario, there is one table that states the test scenario's input parameters and another table that states the exact analytical solution. 
 
 Additionally, we created base tests that pass when the supply meets the demand within a given facility number tolerance.
-In other words, when the supply exceeds the demand by the specified tolerance quantity, the test still passes.
-For this numerical experiment, the tolerance is set to one facility. For example in test A-1, the expected
-total number facilities deployed is 1, and since the facility over-prediction tolerance is 1, the acceptable
-range of total number of facilities $(x)$ deployed in the entire test scenario is $1<x<2$. If the total
-number of facilities deployed is within this range, the base case test will pass. Note that there is no tolerance for under-supplying.   
+In other words, when the supply exceeds the demand by the specified tolerance quantity, the test still passes. For this numerical experiment, the tolerance is set to one facility. 
 
 \subsection{Test A-dep-1}
 The goal of test A-dep-1 is to determine is a source facility is deployed when the lifetime of another is ending to meet the upcoming loss of power supply. 
@@ -306,7 +302,7 @@ Table \ref{tab:test_A-dep-1} shows the input parameters of the \texttt{Instituti
 		\hline
 		End demand commodity & fuel & kg \\
 		Demand Equation & D = 1 & \\
-		Supply Chain & source \rightarrow \texttt{End Demand Commodity} &  \\
+		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -369,7 +365,7 @@ Table \ref{tab:test-A-dep-2} shows the input parameters of the \texttt{Instituti
 		\hline
 		End demand commodity & fuel & kg \\
 		Demand Equation & D = 2 & \\
-		Supply Chain & source \rightarrow \texttt{End Demand Commodity} &  \\
+		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
 \end{table}s
