@@ -270,24 +270,20 @@ in the combination of these input parameters. The input parameters are listed as
 
 \begin{enumerate}
 	\item End demand commodity
-	\item Demand equation (can be stepwise)
+	\item Demand equation 
 	\item Supply chain of facilities
 \end{enumerate}
 
 For each test scenario, there is one table that states the test scenario's input parameters and another table that states the exact analytical solution. 
 
 Additionally, we created base tests that pass when the supply meets the demand within a given facility number tolerance.
-In other words, when the supply exceeds the demand by the specified tolerance quantity, the test still passes.
-For this numerical experiment, the tolerance is set to one facility. For example in test A-1, the expected
-total number facilities deployed is 1, and since the facility over-prediction tolerance is 1, the acceptable
-range of total number of facilities $(x)$ deployed in the entire test scenario is $1<x<2$. If the total
-number of facilities deployed is within this range, the base case test will pass. Note that there is no tolerance for under-supplying.   
+In other words, when the supply exceeds the demand by the specified tolerance quantity, the test still passes. For this numerical experiment, the tolerance is set to one facility. 
 
 \subsection{Test A-dep-1}
 The goal of test A-dep-1 is to determine is a source facility is deployed when the lifetime of another is ending to meet the upcoming loss of power supply. 
 Table \ref{tab:test_A-dep-1} shows the input parameters of the \texttt{Institution} in the test scenario. Table \ref{tab:test_A-dep-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test_A-dep-1base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1.
 
-\begin{figure}[htbp!]
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.7]{./images/A-dep-1.png}
 	\end{center}
@@ -306,7 +302,7 @@ Table \ref{tab:test_A-dep-1} shows the input parameters of the \texttt{Instituti
 		\hline
 		End demand commodity & fuel & kg \\
 		Demand Equation & D = 1 & \\
-		Supply Chain & source \rightarrow \texttt{End Demand Commodity} &  \\
+		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -350,7 +346,7 @@ The difference between this test and test A-dep-1 is that multiple facilities
 exit and are deployed at different times.
 Table \ref{tab:test-A-dep-2} shows the input parameters of the \texttt{Institution}. Table \ref{tab:test-A-dep-2ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-A-dep-2base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1.
 
-\begin{figure}[htbp!]
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.7]{./images/A-dep-2.png}
 	\end{center}
@@ -369,13 +365,11 @@ Table \ref{tab:test-A-dep-2} shows the input parameters of the \texttt{Instituti
 		\hline
 		End demand commodity & fuel & kg \\
 		Demand Equation & D = 2 & \\
-		Supply Chain & source \rightarrow \texttt{End Demand Commodity} &  \\
+		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
 \end{table}s
 
-
-% huhu?
 \begin{table}[H]
 	\centering
 	\caption{Test A-dep-2 Analytical Solution (If the time step is skipped over, it is because there
@@ -410,106 +404,108 @@ Table \ref{tab:test-A-dep-2} shows the input parameters of the \texttt{Instituti
 	\end{tabular}
 \end{table}
 
-\subsection{Test A3-3}
-The goal of test A3-3 is to determine if a source facility is not decommissioned until after the wait time (defined in Table \ref{tab:reactor}) even if there is over-supply of power commodity. 
-Table \ref{tab:testa3-3} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa3-3ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testa3-3base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1. 
-\begin{table}[H]
-	\centering
-	\caption{Test A3-3 Scenario Input Parameters }
-	\label{tab:testa3-3}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Power} & \textbf{Value} & \textbf{Units} \\
-		\hline 
-		Initial demand & 1 & Mwe \\
-		Growth Rate & 0 & \\
-		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial facilities & 2 & \#\\
-		\hline
-	\end{tabular}
-\end{table}
+\subsection{Test A-mix-1}
+The goal of test A-mix-1 is to determine if a source facility is not decommissioned until after the wait time (defined in Table \ref{tab:reactor}) even if there is over-supply of fuel commodity. Figure \ref{fig:A-mix-1} shows the plot of the fuel demand for test A-mix-1. 
+Table \ref{tab:testA-mix-1} shows the input parameters of the \texttt{Institution} in the test scenario. Table \ref{tab:testA-mix-1ana} shows the expected analytical solution based on the test scenario. 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A3-3 Analytical Solution (If the time step is skipped over, it is because there are no facilities deployed or decommissioned during that time step.)}
-	\label{tab:testa3-3ana}
+	\caption{Test A-mix-1 Scenario Input Parameters }
+	\label{tab:test_A-mix-1}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		End demand commodity & fuel & kg \\
+		Demand Equation & D = 
+		\left\{
+		\begin{array}{ll} 
+			1 , & 0 < t < 2 \\
+			0 , &  2<t  \\
+		\end{array}
+		\right.
+		& \\
+		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
+		\hline
+		\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+				\includegraphics[scale=0.7]{./images/A-mix-1.png}
+	\end{center}
+	\caption{Fuel demand for test A-mix-1.}
+	\label{fig:A-mix-1}
+\end{figure}
+
+\begin{table}[H]
+	\centering
+	\caption{Test A-mix-1 Analytical Solution (If the time step is skipped over, it is because there are no facilities deployed or decommissioned during that time step.)}
+	\label{tab:testA-mix-1ana}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Source \\Facilities Decommissioned}} \\
 		\hline
-		0 & 1 & 0 \\
-		3 & 0 & 1 \\
+		1 & 1 & 0 \\
+		5 & 0 & 1 \\
 		\hline
 	\end{tabular}
 \end{table}
 
-\begin{table}[H]
-	\centering
-	\caption{Test A3-3 Base Test Acceptance}
-	\label{tab:testa3-3base}
-	\begin{tabular}{|P{7.5cm}|}
-		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
-		\hline
-		1 $<$ x $<$ 2 \\
-		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Decommisioned - tolerance}}\\
-		\hline
-		0 $<$ x $<$ 1 \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection{Test B1-1}
-The goal of test B1-1 is to determine if source and reactor facilities are deployed when the lifetime of another is ending. 
-Table \ref{tab:testb1-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testb1-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testb1-1base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1. 
+\subsection{Test B-dep-1}
+The goal of test B-dep-1 is to determine if source and reactor facilities are deployed when the lifetime of another is ending. Figure \ref{fig:B-dep-1} shows the plot of the power demand for test B-dep-1. 
+Table \ref{tab:testB-dep-1} shows the input parameters of the \texttt{Institution} in the test scenario. Figure \ref{fig:B-dep-1} shows the plot of the fuel demand for test B-dep-1. 
+Table \ref{tab:testB-dep-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testB-dep-1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over prediction tolerance of 1. 
 
 \begin{table}[H]
 	\centering
-	\caption{Test B1-1 Scenario Input Parameters }
-	\label{tab:testb1-1}
+	\caption{Test B-dep-1 Scenario Input Parameters }
+	\label{tab:test_B-dep-1}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Power} & \textbf{Value} & \textbf{Units} \\
-		\hline 
-		Initial demand & 1 & Mwe \\
-		Growth Rate & 0 & \\
+		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		End demand commodity & fuel & kg \\
+		Demand Equation & D = 1 & \\
+		Supply Chain & source \rightarrow \texttt{End Demand Commodity} &  \\
 		\hline
-		Initial facilities & 0 & \#\\
+	\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.7]{./images/B-dep-1.png}
+	\end{center}
+	\caption{Fuel demand for test B-dep-1.}
+	\label{fig:B-dep-1}
+\end{figure}
+
+\begin{table}[H]
+	\centering
+	\caption{Test B-dep-1 Analytical Solution}
+	\label{tab:testB-dep-1ana}
+	\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
+		\textbf{Time Step} & \textbf{\shortstack{No. of \\ Source \\ Deployed}} & \textbf{\shortstack{No. of \\ Reactor \\ Deployed}} & \textbf{\shortstack{No. of \\ Sources \\Exit}} & \textbf{\shortstack{No. of \\ Reactors \\Exit}} \\
 		\hline
-		Initial facilities & 0 & \#\\
+		1 & 3 & 1 & 0 & 0 \\
+		7 & 0 & 0  & 3 & 1 \\
+		8 & 3 & 1 & 0 & 0 \\
+		14 & 0 & 0  & 3 & 1 \\
+		15  & 3 & 1 & 0 & 0 \\
 		\hline
 	\end{tabular}
 \end{table}
 
 \begin{table}[H]
 	\centering
-	\caption{Test B1-1 Analytical Solution}
-	\label{tab:testa5ana}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
-		\hline
-		1 & 3 & 1\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\begin{table}[H]
-	\centering
-	\caption{Test B1-1 Base Test Acceptance}
+	\caption{Test B-dep-1Base Test Acceptance}
 	\label{tab:testa5base}
 	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
 		\hline
-		3 $<$ x $<$ 4 & 1 $<$ x $<$ 2\\
+		9 $<$ x $<$ 10 & 3 $<$ x $<$ 4\\
 		\hline
 	\end{tabular}
 \end{table}
