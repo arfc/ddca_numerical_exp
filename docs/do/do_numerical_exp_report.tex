@@ -573,8 +573,6 @@ Table \ref{tab:testB-dep-1ana} shows the expected analytical solution based on t
 \end{table}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \subsection{Test B-dep-2}
 The goal of test B-dep-2 is to determine whether source and reactor facilities are deployed
 to meet the increasing power demand. 
@@ -630,6 +628,67 @@ Table \ref{tab:test-B-dep-2} shows the input parameters of the \texttt{Instituti
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
 		\hline
 		12 $<$ x $<$ 13 & 4 $<$ x $<$ 5\\
+		\hline
+	\end{tabular}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Test B-mix-1}
+The goal of test B-mix-1 is to determine whether source and reactor facilities are controlled
+to meet decreasing demand.
+Table \ref{tab:test-B-mix-1} shows the input parameters of the \texttt{Institution}. Table \ref{tab:test-B-mix-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-mix-1base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1.
+
+\begin{table}[H]
+	\centering
+	\caption{Test B-mix-1 Scenario Input Parameters }
+	\label{tab:test_B-mix-1}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
+		\hline
+		End demand commodity & Power & GWe \\
+		Demand Equation & D = 2 - (0.1 * t) & \\
+		Supply Chain & source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity} &  \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.7]{./images/B-mix-1.png}
+	\end{center}
+	\caption{Power demand for test B-mix-1.}
+	\label{fig:B-dep-2}
+\end{figure}
+
+\begin{table}[H]
+	\centering
+	\caption{Test B-mix-1 Analytical Solution}
+	\label{tab:testB-mix-1ana}
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\textbf{Time Step} & \textbf{\shortstack{No. of \\ Source \\ Deployed}} & \textbf{\shortstack{No. of \\ Reactor \\ Deployed}} & \textbf{\shortstack{No. of \\ Sources \\Exit}} & \textbf{\shortstack{No. of \\ Reactors \\Exit}} \\
+		\hline
+		1 & 6 & 2 & 0 & 0 \\
+		7 & 0 & 0  & 6 & 2 \\
+		8 & 6 & 2 & 0 & 0 \\
+		13 & 0 & 0 & 3 & 1 \\
+		14 & 0 & 0  & 3 & 1 \\
+		15  & 3 & 1 & 0 & 0 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Test B-mix-1 Base Test Acceptance}
+	\label{tab:test-B-mix-1base}
+	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
+		\hline
+		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
+		\hline
+		15 $<$ x $<$ 16 & 5 $<$ x $<$ 6\\
 		\hline
 	\end{tabular}
 \end{table}
