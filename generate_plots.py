@@ -85,7 +85,7 @@ y = 2 - 0.1 * x
 plt.plot(x,y)
 plt.xlabel('Timestep')
 plt.ylabel('Fuel Demand [kg]')
-plt.title('Test %s Power Demand' %test_name)
+plt.title('Test %s Fuel Demand' %test_name)
 plt.axis([0, 15, min(y) - 1, max(y) + 1])
 fn = os.path.join(os.path.dirname(__file__),
                   './docs/do/images/%s' %test_name )
