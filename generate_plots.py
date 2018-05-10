@@ -14,7 +14,7 @@ def generate_plot(test_name, x, y):
                       './docs/do/images/%s' %test_name)
     plt.savefig(fn)
 
-test_name = 'A-dep-1'
+test_name = 'A-const-1'
 x = np.arange(0, 16, step=1)
 y = np.zeros(16)
 y = y + 1
@@ -30,7 +30,7 @@ plt.savefig(fn)
 plt.close()
 
 
-test_name = 'A-dep-2'
+test_name = 'A-const-2'
 x = np.arange(0, 16, step=1)
 y = np.zeros(16)
 y = y + 2
@@ -46,7 +46,7 @@ plt.savefig(fn)
 plt.close()
 
 
-test_name = 'A-dep-3'
+test_name = 'A-grow-1'
 x = np.arange(0, 16, step=1)
 y = 0.1 * x
 plt.plot(x,y)
@@ -61,7 +61,7 @@ plt.savefig(fn)
 plt.close()
 
 
-test_name = 'A-mix-1'
+test_name = 'A-decl-1'
 x = np.arange(0, 16, step=1)
 y = np.zeros(16)
 y[0] = 1
@@ -79,7 +79,7 @@ plt.savefig(fn)
 plt.close()
 
 
-test_name = 'A-mix-2'
+test_name = 'A-decl-2'
 x = np.arange(0, 16, step=1)
 y = 2 - 0.1 * x
 plt.plot(x,y)
@@ -95,7 +95,7 @@ plt.grid()
 plt.close()
 
 
-test_name = 'A-mix-3'
+test_name = 'A-mix-1'
 x = np.arange(0, 16, step=1)
 y = 0.5 * x
 y[7:] = 3 - 0.2 * (x[7:]-6)
@@ -111,7 +111,7 @@ plt.savefig(fn)
 plt.close()
 
 
-test_name = 'B-dep-1'
+test_name = 'B-const-1'
 x = np.arange(0, 16, step=1)
 y = np.zeros(16)
 y = y + 1
@@ -127,7 +127,7 @@ plt.savefig(fn)
 plt.close()
 
 
-test_name = 'B-dep-2'
+test_name = 'B-grow-1'
 x = np.arange(0, 16, step=1)
 y = 0.1 * x
 plt.plot(x,y)
@@ -142,7 +142,7 @@ plt.savefig(fn)
 plt.close()
 
 
-test_name = 'B-mix-1'
+test_name = 'B-decl-1'
 x = np.arange(0, 16, step=1)
 y = 2- 0.1 * x
 plt.plot(x,y)
@@ -157,7 +157,7 @@ plt.savefig(fn)
 plt.close()
 
 
-test_name = 'B-mix-2'
+test_name = 'B-mix-1'
 x = np.arange(0, 16, step=1)
 y = 0.5 * x
 y[7:] = 3 - 0.2 * (x[7:]-6)
