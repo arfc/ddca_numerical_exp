@@ -172,3 +172,41 @@ plt.grid()
 plt.savefig(fn)
 plt.close()
 
+
+test_name = 'C-const-1'
+x = np.arange(0, 16, step=1)
+y = np.zeros(16)
+y = y + 1
+plt.plot(x,y)
+plt.xlabel('Timestep')
+plt.ylabel('Power demand [GWe]')
+plt.title('Test %s Power Demand' %test_name)
+plt.axis([0, 15, min(y) - 1, max(y) + 1])
+fn = os.path.join(os.path.dirname(__file__),
+                  './docs/do/images/%s' %test_name )
+plt.grid()
+plt.savefig(fn)
+plt.close()
+
+test_name = 'C-const-1-waste'
+x = np.arange(0, 16, step=1)
+y = [1]
+for time in x[1:]:
+  prev_value = y[-1]
+  # if time is a multiple of 7, which is when they decommission
+  if time%7 == 0:
+    add = 3
+  else:
+    add = 1
+  now_value = prev_value + add
+  y.append(now_value)
+plt.step(x,y)
+plt.xlabel('Timestep')
+plt.ylabel('Cumulative Waste Disposal Demand [kg]')
+plt.title('Test %s Waste Disposal Demand' %test_name.replace('-waste', ''))
+plt.axis([0, 15, min(y) - 1, max(y) + 1])
+fn = os.path.join(os.path.dirname(__file__),
+                  './docs/do/images/%s' %test_name )
+plt.grid()
+plt.savefig(fn)
+plt.close()
