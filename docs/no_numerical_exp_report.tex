@@ -238,7 +238,11 @@ Input Commodity & spent uox & kg\\
 \section{Numerical Tests for the Non-optimizing prediction method}
 The non-optimizing prediction method is tested by comparing its output for various scenarios against their analytical solutions . In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
 
-The tests are split into test A types and test B types. Test A refers to the test scenarios where facilities are expected to be deployed. Test B refers to the test scenarios where facilities are expected to be decommissioned. 
+The tests are split into test A types and test B types. Test A refers to the test scenarios where there are only \texttt{source} facilities. Test B refers to the test scenarios where there are both \texttt{source} and \texttt{reactor} facilities, where a
+source facility supplies fuel for the reactor facility. Tests with a more complex fuel cycle will be categorized as
+C, D, and so on. Each test type is then sub-categorized into \texttt{dep}, \texttt{dec}, and \texttt{mix}.
+\texttt{dep} tests check only the deployment capability, \texttt{dec} tests check only the decommissioning capability,
+and \texttt{mix} tests check both capabilities of the \texttt{Institution}.
 
 The prediction algorithm for the non-optimizing method has three user-defined input parameters. The aim of the various test scenarios are to check if the non-optimizing method archetype will deploy or decommission facilities correctly when there is a variation in the combination of the three input parameters.  The input parameters are: 
 \begin{enumerate}
