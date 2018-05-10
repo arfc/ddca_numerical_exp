@@ -241,7 +241,10 @@ Wait time & 2 & \shortstack{Wait time for the facility to decommission \\ when n
 \section{Numerical Tests for the Deterministic optimizing prediction method}
 The deterministic optimizing prediction method is tested by comparing its output for various scenarios against their analytical solutions . In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
 
-The tests are split into test A types and test B types. Test A refers to the test scenarios where there are only \texttt{source} facilities. Test B refers to the test scenarios where there are both \texttt{source} and \texttt{reactor} facilities, where a
+The tests are in forms of \texttt{[alphabet]-[traj]-[num]}. \texttt{Alphabet} refers to the supply chain of the test scenario,
+\texttt{traj} the demand change in time, and \texttt{num} for tests with the same \texttt{alphabet} and \texttt{traj}.
+
+ Test A refers to the test scenarios where there are only \texttt{source} facilities. Test B refers to the test scenarios where there are both \texttt{source} and \texttt{reactor} facilities, where a
 source facility supplies fuel for the reactor facility. Tests with a more complex fuel cycle will be categorized as
 C, D, and so on. Each test type is then sub-categorized into \texttt{dep}, \texttt{dec}, and \texttt{mix}.
 \texttt{dep} tests check only the deployment capability, \texttt{dec} tests check only the decommissioning capability,
@@ -621,15 +624,15 @@ Table \ref{tab:testA-mix-3} shows the input parameters of the \texttt{Institutio
 	\end{tabular}
 \end{table}
 
-\subsection{Test B-dep-1}
-The goal of test B-dep-1 is to determine if source and reactor facilities are deployed when the lifetime of another is ending. Figure \ref{fig:B-dep-1} shows the plot of the power demand for test B-dep-1. 
-Table \ref{tab:testB-dep-1} shows the input parameters of the \texttt{Institution} in the test scenario. Figure \ref{fig:B-dep-1} shows the plot of the fuel demand for test B-dep-1. 
-Table \ref{tab:testB-dep-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testB-dep-1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over prediction tolerance of 1. 
+\subsection{Test B-const-1}
+The goal of test B-const-1 is to determine if source and reactor facilities are deployed when the lifetime of another is ending. Figure \ref{fig:B-const-1} shows the plot of the power demand for test B-const-1. 
+Table \ref{tab:testB-const-1} shows the input parameters of the \texttt{Institution} in the test scenario. Figure \ref{fig:B-const-1} shows the plot of the fuel demand for test B-const-1. 
+Table \ref{tab:testB-const-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testB-const-1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over prediction tolerance of 1. 
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-dep-1 Scenario Input Parameters }
-	\label{tab:test_B-dep-1}
+	\caption{Test B-const-1 Scenario Input Parameters }
+	\label{tab:test_B-const-1}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -643,16 +646,16 @@ Table \ref{tab:testB-dep-1ana} shows the expected analytical solution based on t
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[scale=0.7]{./images/B-dep-1.png}
+		\includegraphics[scale=0.7]{./images/B-const-1.png}
 	\end{center}
-	\caption{Power demand for test B-dep-1.}
-	\label{fig:B-dep-1}
+	\caption{Power demand for test B-const-1.}
+	\label{fig:B-const-1}
 \end{figure}
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-dep-1 Analytical Solution}
-	\label{tab:testB-dep-1ana}
+	\caption{Test B-const-1 Analytical Solution}
+	\label{tab:testB-const-1ana}
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of \\ Source \\ Deployed}} & \textbf{\shortstack{No. of \\ Reactor \\ Deployed}} & \textbf{\shortstack{No. of \\ Sources \\Exit}} & \textbf{\shortstack{No. of \\ Reactors \\Exit}} \\
@@ -668,8 +671,8 @@ Table \ref{tab:testB-dep-1ana} shows the expected analytical solution based on t
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-dep-1 Base Test Acceptance}
-	\label{tab:testB-dep-1base}
+	\caption{Test B-const-1 Base Test Acceptance}
+	\label{tab:testB-const-1base}
 	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
@@ -680,15 +683,15 @@ Table \ref{tab:testB-dep-1ana} shows the expected analytical solution based on t
 \end{table}
 
 
-\subsection{Test B-dep-2}
-The goal of test B-dep-2 is to determine whether source and reactor facilities are deployed
+\subsection{Test B-grow-1}
+The goal of test B-grow-1 is to determine whether source and reactor facilities are deployed
 to meet the increasing power demand. 
-Table \ref{tab:test-B-dep-2} shows the input parameters of the \texttt{Institution}. Table \ref{tab:test-B-dep-2ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-dep-2base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1.
+Table \ref{tab:test-B-grow-1} shows the input parameters of the \texttt{Institution}. Table \ref{tab:test-B-grow-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-grow-1base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1.
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-dep-2 Scenario Input Parameters }
-	\label{tab:test_B-dep-2}
+	\caption{Test B-grow-1 Scenario Input Parameters }
+	\label{tab:test_B-grow-1}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -702,16 +705,16 @@ Table \ref{tab:test-B-dep-2} shows the input parameters of the \texttt{Instituti
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[scale=0.7]{./images/B-dep-2.png}
+		\includegraphics[scale=0.7]{./images/B-grow-1.png}
 	\end{center}
-	\caption{Power demand for test B-dep-2.}
-	\label{fig:B-dep-2}
+	\caption{Power demand for test B-grow-1.}
+	\label{fig:B-grow-1}
 \end{figure}
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-dep-2 Analytical Solution}
-	\label{tab:testB-dep-2ana}
+	\caption{Test B-grow-1 Analytical Solution}
+	\label{tab:testB-grow-1ana}
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of \\ Source \\ Deployed}} & \textbf{\shortstack{No. of \\ Reactor \\ Deployed}} & \textbf{\shortstack{No. of \\ Sources \\Exit}} & \textbf{\shortstack{No. of \\ Reactors \\Exit}} \\
@@ -728,8 +731,8 @@ Table \ref{tab:test-B-dep-2} shows the input parameters of the \texttt{Instituti
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-dep-2 Base Test Acceptance}
-	\label{tab:test-B-dep-2base}
+	\caption{Test B-grow-1 Base Test Acceptance}
+	\label{tab:test-B-grow-1base}
 	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
@@ -741,15 +744,15 @@ Table \ref{tab:test-B-dep-2} shows the input parameters of the \texttt{Instituti
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Test B-mix-1}
-The goal of test B-mix-1 is to determine whether source and reactor facilities are controlled
+\subsection{Test B-decl-1}
+The goal of test B-decl-1 is to determine whether source and reactor facilities are controlled
 to meet decreasing demand.
-Table \ref{tab:test-B-mix-1} shows the input parameters of the \texttt{Institution}. Table \ref{tab:test-B-mix-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-mix-1base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1.
+Table \ref{tab:test-B-decl-1} shows the input parameters of the \texttt{Institution}. Table \ref{tab:test-B-decl-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-decl-1base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1.
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-mix-1 Scenario Input Parameters }
-	\label{tab:test_B-mix-1}
+	\caption{Test B-decl-1 Scenario Input Parameters }
+	\label{tab:test_B-decl-1}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -763,16 +766,16 @@ Table \ref{tab:test-B-mix-1} shows the input parameters of the \texttt{Instituti
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[scale=0.7]{./images/B-mix-1.png}
+		\includegraphics[scale=0.7]{./images/B-decl-1.png}
 	\end{center}
-	\caption{Power demand for test B-mix-1.}
-	\label{fig:B-dep-2}
+	\caption{Power demand for test B-decl-1.}
+	\label{fig:B-decl-1}
 \end{figure}
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-mix-1 Analytical Solution}
-	\label{tab:testB-mix-1ana}
+	\caption{Test B-decl-1 Analytical Solution}
+	\label{tab:testB-decl-1ana}
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of \\ Source \\ Deployed}} & \textbf{\shortstack{No. of \\ Reactor \\ Deployed}} & \textbf{\shortstack{No. of \\ Sources \\Exit}} & \textbf{\shortstack{No. of \\ Reactors \\Exit}} \\
@@ -789,8 +792,8 @@ Table \ref{tab:test-B-mix-1} shows the input parameters of the \texttt{Instituti
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-mix-1 Base Test Acceptance}
-	\label{tab:test-B-mix-1base}
+	\caption{Test B-decl-1 Base Test Acceptance}
+	\label{tab:test-B-decl-1base}
 	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
@@ -802,15 +805,15 @@ Table \ref{tab:test-B-mix-1} shows the input parameters of the \texttt{Instituti
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Test B-mix-2}
-The goal of test B-mix-2 is to determine whether source and reactor facilities are controlled
+\subsection{Test B-mix-1}
+The goal of test B-mix-1 is to determine whether source and reactor facilities are controlled
 to meet increasing and decreasing demand.
-Table \ref{tab:test-B-mix-2} shows the input parameters of the \texttt{Institution}. Table \ref{tab:test-B-mix-2ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-mix-2base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1.
+Table \ref{tab:test-B-mix-1} shows the input parameters of the \texttt{Institution}. Table \ref{tab:test-B-mix-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-mix-1base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1.
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-mix-2 Scenario Input Parameters }
-	\label{tab:test_B-mix-2}
+	\caption{Test B-mix-1 Scenario Input Parameters }
+	\label{tab:test_B-mix-1}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -828,16 +831,16 @@ Table \ref{tab:test-B-mix-2} shows the input parameters of the \texttt{Instituti
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[scale=0.7]{./images/B-mix-2.png}
+		\includegraphics[scale=0.7]{./images/B-mix-1.png}
 	\end{center}
-	\caption{Power demand for test B-mix-2.}
-	\label{fig:B-dep-2}
+	\caption{Power demand for test B-mix-1.}
+	\label{fig:B-mix-1}
 \end{figure}
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-mix-2 Analytical Solution}
-	\label{tab:testB-mix-2ana}
+	\caption{Test B-mix-1 Analytical Solution}
+	\label{tab:testB-mix-1ana}
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of \\ Source \\ Deployed}} & \textbf{\shortstack{No. of \\ Reactor \\ Deployed}} & \textbf{\shortstack{No. of \\ Sources \\Exit}} & \textbf{\shortstack{No. of \\ Reactors \\Exit}} \\
@@ -858,8 +861,8 @@ Table \ref{tab:test-B-mix-2} shows the input parameters of the \texttt{Instituti
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-mix-2 Base Test Acceptance}
-	\label{tab:test-B-mix-2base}
+	\caption{Test B-mix-1 Base Test Acceptance}
+	\label{tab:test-B-mix-1base}
 	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
