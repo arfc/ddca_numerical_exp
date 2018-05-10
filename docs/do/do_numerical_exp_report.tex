@@ -214,11 +214,6 @@ Wait time & 2 & Wait time for the facility to decommission when no longer needed
 \hline
 Input Commodity & fuel & Name of input commodity\\
 Output Commodity & spent\_uox & Name of output commodity\\
-\hline
-\textbf{Sink Parameters} & \textbf{Value} & \textbf{Description} \\
-\hline
-Input Commodity & spent\_uox & Name of input commodity \\
-Capacity & 3 & Total amount of commodity it can hold \\
 
 Output Power Capacity & 1& \shortstack{MWe of power generated \\by reactor per operational timestep}\\
 Cycle Time & 1 & \shortstack{Duration of a full \\ operational cycle of reactor}\\
@@ -228,7 +223,12 @@ Wait time & 2 & \shortstack{Wait time for the facility to\\ decommission when no
 Assembly Size & 1 & Quantity of commodity per assembly \\
 Num. assemblies per batch & 1 & \shortstack{Number of assemblies discharged\\ and refueled per cycle}\\
 Num. assemblies per core & 3 & \shortstack{Number of assemblies that make\\ up the entire reactor core} \\
-
+\hline
+\textbf{Sink Parameters} & \textbf{Value} & \textbf{Description} \\
+\hline
+Input Commodity & spent\_uox & Name of input commodity \\
+Capacity & 5 & Total amount of commodity it can hold \\
+Lifetime & $\infty$ & Lifetime of the facility \\
 \hline
 	\end{tabular}
 \end{table}
@@ -853,33 +853,30 @@ Table \ref{tab:test-C-const-1} shows the input parameters of the \texttt{Institu
 	\centering
 	\caption{Test C-const-1 Analytical Solution}
 	\label{tab:testC-const-1ana}
-	\begin{tabular}{|l|l|l|l|l|}
+	\begin{tabular}{|l|l|l|l|l|l|}
 		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of \\ Source \\ Deployed}} & \textbf{\shortstack{No. of \\ Reactor \\ Deployed}} & \textbf{\shortstack{No. of \\ Sources \\Exit}} & \textbf{\shortstack{No. of \\ Reactors \\Exit}} \\
+		\textbf{Time Step} & \textbf{\shortstack{No. of \\ Source \\ Deployed}} & \textbf{\shortstack{No. of \\ Reactor \\ Deployed}} & \textbf{No. of Sinks Deployed} & \textbf{\shortstack{No. of \\ Sources \\Exit}} & \textbf{\shortstack{No. of \\ Reactors \\Exit}} \\
 		\hline
-		1 & 3 & 1 & 0 & 0 \\
-		3 & 3 & 1 & 0 & 0 \\
-		5 & 3 & 1 & 0 & 0 \\
-		7 & 0 & 0 & 3 & 1 \\
-		8 & 3 & 1 & 0 & 0 \\
-		9 & 0 & 0 & 3 & 1 \\
-		10 & 3 & 1 & 0 & 0 \\
-		11 & 0 & 0 & 3 & 1 \\
-		14 & 0 & 0 & 3 & 1 \\
-		15 & 3 & 1 & 0 & 0 \\
+		1 & 3 & 1 & 1 & 0 & 0 \\
+		6 & 0 & 0 & 1 & 0 & 0 \\
+		7 & 0 & 0 & 0 & 3 & 1 \\
+		8 & 3 & 1 & 0 & 0 & 0 \\
+		9 & 0 & 0 & 1 & 0 & 0 \\
+		14 & 0 & 0 & 1 & 3 & 1 \\
+
 		\hline
 	\end{tabular}
 \end{table}
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-mix-2 Base Test Acceptance}
-	\label{tab:test-B-mix-2base}
+	\caption{Test C-const-1 Base Test Acceptance}
+	\label{tab:test-C-const-1base}
 	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
 		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
+		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}} & \textbf{\shortstack{Acceptable total No. of Sink \\Facilities Deployed + tolerance}}\\
 		\hline
-		18 $<$ x $<$ 19 & 6 $<$ x $<$ 7\\
+		6 $<$ x $<$ 7 & 2 $<$ x $<$ 3 & 4 $<$ x $<$ 5\\
 		\hline
 	\end{tabular}
 \end{table}
