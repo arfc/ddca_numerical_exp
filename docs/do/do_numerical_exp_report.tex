@@ -243,6 +243,11 @@ The deterministic optimizing prediction method is tested by comparing its output
 
 The tests are in forms of \texttt{[alphabet]-[traj]-[num]}. \texttt{Alphabet} refers to the supply chain of the test scenario,
 \texttt{traj} the demand change in time, and \texttt{num} for tests with the same \texttt{alphabet} and \texttt{traj}.
+\begin{itemize}
+	\item \textbf{A} - source $\rightarrow$ \texttt{End Demand Commodity}
+	\item \textbf{B} - source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity}
+	\item \textbf{C} - source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity} $\rightarrow$ sink(disposal) 
+\end{itemize}
 
  Test A refers to the test scenarios where there are only \texttt{source} facilities. Test B refers to the test scenarios where there are both \texttt{source} and \texttt{reactor} facilities, where a
 source facility supplies fuel for the reactor facility. Tests with a more complex fuel cycle will be categorized as
