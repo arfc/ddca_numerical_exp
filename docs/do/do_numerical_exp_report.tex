@@ -254,12 +254,12 @@ The deterministic optimizing prediction method is tested by comparing its output
 The tests are in forms of \texttt{[alphabet]-[traj]-[num]}. \texttt{Alphabet} refers to the supply chain of the test scenario,
 \texttt{traj} the demand change in time, and \texttt{num} for tests with the same \texttt{alphabet} and \texttt{traj}.
 \begin{itemize}
-	\item \textbf{A} - source $\rightarrow$ \texttt{End Demand Commodity}
-	\item \textbf{B} - source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity}
-	\item \textbf{C} - source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity} $\rightarrow$ sink(disposal) 
+	\item \textbf{A} - Source $\rightarrow$ \texttt{End Demand Commodity}
+	\item \textbf{B} - Source $\rightarrow$ Reactor $\rightarrow$ \texttt{End Demand Commodity}
+	\item \textbf{C} - Source $\rightarrow$ Reactor $\rightarrow$ \texttt{End Demand Commodity} $\rightarrow$ Sink(disposal) 
 \end{itemize}
 
-Note that for test C, the \texttt{End Demand Commodity} is power generated from the reactor. The C-tests additionally
+Note that for test C, the \texttt{End Demand Commodity} is power generated from the reactor. The C tests additionally
 check if the sink is deployed to meet spent fuel disposal demand.
 
 The tests listed below are unique to the deterministic optimizing algorithm. The tests written in the non-optimizing algorithm report will also be used to test the deterministic optimizing algorithm but are not listed in this report.
