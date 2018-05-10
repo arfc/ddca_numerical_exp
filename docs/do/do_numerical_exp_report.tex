@@ -108,8 +108,8 @@ the facilities that lead up to power production, as such:
 <!-- Definition of supply chain leading to power production -->
 <supply_chain>
 	<val> source </val>
-	<val> enrichment </val>
 	<val> reactor </val>
+	<val> sink </val>
 </supply_chain>
 
 <!-- Added definition of supply and demand commodities -->
@@ -334,7 +334,7 @@ Table \ref{tab:test-A-const-1} shows the input parameters of the \texttt{Institu
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
 		\hline
-		3 $<$ x $<$ 4 \\
+		3 $\leq$ x $\leq$ 4 \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -398,7 +398,7 @@ Table \ref{tab:test-A-const-2} shows the input parameters of the \texttt{Institu
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
 		\hline
-		6 $<$ x $<$ 7 \\
+		6 $\leq$ x $\leq$ 7 \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -425,7 +425,7 @@ Table \ref{tab:test-A-grow-1} shows the input parameters of the \texttt{Institut
 		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		End demand commodity & fuel & kg \\
-		Demand Equation & $D = 0.1 \times timestep $& \\
+		Demand Equation & $D = 0.1 * t $& \\
 		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
@@ -458,7 +458,7 @@ Table \ref{tab:test-A-grow-1} shows the input parameters of the \texttt{Institut
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
 		\hline
-		4 $<$ x $<$ 5 \\
+		4 $\leq$ x $\leq$ 5 \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -504,10 +504,12 @@ Table \ref{tab:test-A-decl-1} shows the input parameters of the \texttt{Institut
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\ Deployed}} & \textbf{\shortstack{No. of Source \\ Decommissioned}} & \textbf{\shortstack{No. of Source \\ Expired}} \\
 		\hline
 		1 & 1 & 0 & 0\\
-		5 & 0 & 1 & 0\\
+		4 & 0 & 1 & 0\\
 		\hline
 	\end{tabular}
 \end{table}
+
+Note that the source is decommissioned at timestep 4 and not 2 because the wait time is 2.
 
 \subsection{Test A-decl-2}
 The goal of test A-decl-2 is to determine if a source facilities decommissions as fuel demand decreases while obeying the wait time (defined in Table \ref{tab:reactor}) even if there is over-supply of fuel commodity. Figure \ref{fig:A-decl-2} shows the plot of the fuel demand for test A-decl-2. 
@@ -522,7 +524,7 @@ Table \ref{tab:testA-decl-2} shows the input parameters of the \texttt{Instituti
 		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		End demand commodity & fuel & kg \\
-		Demand Equation & $D = -0.1 \times timestep + 2$ & \\
+		Demand Equation & $D = 2 - (0.1*t)$ & \\
 		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
@@ -569,8 +571,8 @@ Table \ref{tab:testA-mix-1} shows the input parameters of the \texttt{Institutio
 		End demand commodity & fuel & kg \\
 		Demand Equation & $D = \left\{
 		\begin{array}{ll}
-		0.5 \times t , & 0 \leq t \leq  6 \\
-		-0.2 \times t +4.2 , &  6 \leq t \leq  15  \\
+		0.5 * t , & 0 \leq t \leq  6 \\
+		4.2- (0.2*t) , &  6 < t  \\
 		\end{array}\right\}$
 		& \\
 		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
@@ -661,7 +663,7 @@ Table \ref{tab:test-B-const-1ana} shows the expected analytical solution based o
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
 		\hline
-		9 $<$ x $<$ 10 & 3 $<$ x $<$ 4\\
+		9 $\leq$ x $\leq$ 10 & 3 $\leq$ x $\leq$ 4\\
 		\hline
 	\end{tabular}
 \end{table}
@@ -721,7 +723,7 @@ Table \ref{tab:test-B-grow-1} shows the input parameters of the \texttt{Institut
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
 		\hline
-		12 $<$ x $<$ 13 & 4 $<$ x $<$ 5\\
+		12 $\leq$ x $\leq$ 13 & 4 $\leq$ x $\leq$ 5\\
 		\hline
 	\end{tabular}
 \end{table}
@@ -782,7 +784,7 @@ Table \ref{tab:test-B-decl-1} shows the input parameters of the \texttt{Institut
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
 		\hline
-		15 $<$ x $<$ 16 & 5 $<$ x $<$ 6\\
+		15 $\leq$ x $\leq$ 16 & 5 $\leq$ x $\leq$ 6\\
 		\hline
 	\end{tabular}
 \end{table}
@@ -851,7 +853,7 @@ Table \ref{tab:test-B-mix-1} shows the input parameters of the \texttt{Instituti
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
 		\hline
-		18 $<$ x $<$ 19 & 6 $<$ x $<$ 7\\
+		18 $\leq$ x $\leq$ 19 & 6 $\leq$ x $\leq$ 7\\
 		\hline
 	\end{tabular}
 \end{table}
@@ -879,8 +881,7 @@ Table \ref{tab:test-C-const-1} shows the input parameters of the \texttt{Institu
 		\hline
 		End demand commodity & Power & GWe \\
 		Demand Equation & D = 1 & \\
-		Supply Chain & source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity} &  \\
-		Supply Chain 2 & source $\rightarrow$ reactor $\rightarrow$ sink (disposal) & \\
+		Supply Chain & source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity} $\rightarrow$ sink(disposal) &  \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -909,6 +910,7 @@ Table \ref{tab:test-C-const-1} shows the input parameters of the \texttt{Institu
 	\begin{tabular}{|l|l|l|l|l|l|l|l|}
 		\hline
 		\textbf{\shortstack{Time \\ Step}} & \textbf{\shortstack{No. of \\ Source \\ Deployed}} & \textbf{\shortstack{No. of \\ Reactor \\ Deployed}} & \textbf{\shortstack{No. of \\ Sink \\ Deployed}} &  \textbf{\shortstack{No. of \\ Source \\ Decom}}& \textbf{\shortstack{No. of \\ Reactor \\ Decom}}& \textbf{\shortstack{No. of \\ Sources \\Expired}} & \textbf{\shortstack{No. of \\ Reactors \\Expired}} \\
+        \hline
 		1 & 3 & 1 & 1 & 0 & 0 & 0 & 0 \\
 		6 & 0 & 0 & 1 & 0 & 0 & 0 & 0\\
 		7 & 0 & 0 & 0 & 0 & 0 & 3 & 1\\
@@ -929,7 +931,7 @@ Table \ref{tab:test-C-const-1} shows the input parameters of the \texttt{Institu
 		\hline
 		\textbf{\shortstack{Acceptable total No. of \\ Source Deployed + tol}} &\textbf{\shortstack{Acceptable total No. of \\ Reactor Deployed + tol}} & \textbf{\shortstack{Acceptable total No. of \\ Deployed + tol}}\\
 		\hline
-		6 $<$ x $<$ 7 & 2 $<$ x $<$ 3 & 4 $<$ x $<$ 5\\
+		6 $\leq$ x $\leq$ 7 & 2 $\leq$ x $\leq$ 3 & 4 $\leq$ x $\leq$ 5\\
 		\hline
 	\end{tabular}
 \end{table}
