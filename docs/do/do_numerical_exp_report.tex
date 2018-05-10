@@ -243,39 +243,14 @@ The deterministic optimizing prediction method is tested by comparing its output
 
 The tests are in forms of \texttt{[alphabet]-[traj]-[num]}. \texttt{Alphabet} refers to the supply chain of the test scenario,
 \texttt{traj} the demand change in time, and \texttt{num} for tests with the same \texttt{alphabet} and \texttt{traj}.
+\begin{itemize}
+	\item \textbf{A} - source $\rightarrow$ \texttt{End Demand Commodity}
+	\item \textbf{B} - source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity}
+	\item \textbf{C} - source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity} $\rightarrow$ sink(disposal) 
+\end{itemize}
 
- Test A refers to the test scenarios where there are only \texttt{source} facilities. Test B refers to the test scenarios where there are both \texttt{source} and \texttt{reactor} facilities, where a
-source facility supplies fuel for the reactor facility. Tests with a more complex fuel cycle will be categorized as
-C, D, and so on. Each test type is then sub-categorized into \texttt{dep}, \texttt{dec}, and \texttt{mix}.
-\texttt{dep} tests check only the deployment capability, \texttt{dec} tests check only the decommissioning capability,
-and \texttt{mix} tests check both capabilities of the \texttt{Institution}. Figure \ref{fig:sourceflow} and \ref{fig:sourcereactorflow} show the commodity flow for test type A and B respectively. 
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[node distance=4cm]
-	\node (source) [process] {\texttt{Source}};
-	\node (fuel) [cloud, right of=source] {\texttt{Fuel}};
-	\draw [arrow] (source) -- (fuel); 
-	\end{tikzpicture}
-	\caption{Demand flow of Test A type where only source facilities are present. Blue blocks refer to a  facility type and red ellipses refer to a commodity type.}
-	\label{fig:sourceflow}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[node distance=3cm]
-	\node (source) [process] {\texttt{Source}};
-	\node (fuel) [cloud, right of=source] {\texttt{Fuel}};
-	\node (reactor) [process, right of=fuel] {\texttt{Reactor}};
-	\node (power) [cloud, right of=reactor] {\texttt{Power}};	
-
-	\draw [arrow] (source) -- (fuel); 
-	\draw [arrow] (fuel) -- (reactor); 
-	\draw [arrow] (reactor) -- (power); 
-	\end{tikzpicture}
-	\caption{Demand flow of Test B type where source and reactor facilities are present. Blue blocks refer to a  facility type and red ellipses refer to a commodity type.}
-	\label{fig:sourcereactorflow}
-\end{figure}
+Note that for test C, the \texttt{End Demand Commodity} is power generated from the reactor. The C-tests additionally
+check if the sink is deployed to meet spent fuel disposal demand.
 
 The tests listed below are unique to the deterministic optimizing algorithm. The tests written in the non-optimizing algorithm report will also be used to test the deterministic optimizing algorithm but are not listed in this report.
 
