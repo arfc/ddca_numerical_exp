@@ -418,13 +418,11 @@ Table \ref{tab:testA-mix-1} shows the input parameters of the \texttt{Institutio
 		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		End demand commodity & fuel & kg \\
-		Demand Equation & D = 
-		\left\{
-		\begin{array}{ll} 
+		Demand Equation & $D = \left\{
+		\begin{array}{ll}
 			1 , & 0 < t < 2 \\
-			0 , &  2<t  \\
-		\end{array}
-		\right.
+			0 , &  2 \leq t  \\
+		\end{array}\right\}$
 		& \\
 		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
@@ -468,7 +466,7 @@ Table \ref{tab:testB-dep-1ana} shows the expected analytical solution based on t
 		\hline
 		End demand commodity & fuel & kg \\
 		Demand Equation & D = 1 & \\
-		Supply Chain & source \rightarrow \texttt{End Demand Commodity} &  \\
+		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -500,7 +498,7 @@ Table \ref{tab:testB-dep-1ana} shows the expected analytical solution based on t
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-dep-1Base Test Acceptance}
+	\caption{Test B-dep-1 Base Test Acceptance}
 	\label{tab:testa5base}
 	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
 		\hline
