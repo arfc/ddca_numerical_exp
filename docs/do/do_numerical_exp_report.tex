@@ -32,8 +32,7 @@
 
 \bibliographystyle{abbrv}
 \usepackage{tikz}
-
-
+\usepackage{seqsplit}
 \usetikzlibrary{shapes.geometric,arrows}
 \tikzstyle{process} = [rectangle, rounded corners, minimum width=1cm, minimum height=1cm,text centered, draw=black, fill=blue!30]
 \tikzstyle{arrow} = [thick,->,>=stealth]
@@ -54,27 +53,25 @@ minimum height=2em]
 For many fuel cycle simulations, it is currently up to the user to define
 a deploy scheme, or facility parameters, to make sure that there's no gap
 in the supply chain. Or, the same goal is achieved by setting the supply
-\texttt{facility}'s capacity to infinity, which does not reflect real-world
+\texttt{Facility}'s capacity to infinity, which does not reflect real-world
 conditions. 
 
-The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop demand-driven deployment capabilities
-in \Cyclus. To understand the terms used in this report, please read \cite{huff_fundamental_2016}. 
+The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop demand-driven 
+deployment capabilities in \Cyclus. To understand the terms used in this report, please read
+\cite{huff_fundamental_2016}. 
 
 The developed algorithm, in the form of \Cyclus \texttt{Institution}
 agent, deploys \texttt{Facilities} to meet the front-end and back-end demands of the 
 fuel cycle.
 
-This report describes numerical experiments for the deterministic
--optimizing algorithm.
+This report describes numerical experiments for the deterministic-optimizing algorithm.
 
-These prediction models are being developed by the University of South Carolina. The numerical experiments will be designed for both
- the once through nuclear fuel 
-cycle and advanced fuel cycles. 
+These prediction models are being developed by the University of South Carolina. The numerical experiments will be designed for both the once through nuclear fuel cycle and advanced fuel cycles. 
 
 \section{Method}
-This report lists necessary capabilities of the new \Cyclus \texttt{institute}
+This report lists necessary capabilities of the new \Cyclus \texttt{Institution}
 for demand-driven deployment of fuel cycle facilities. 
-Then the report lists tests to check correct implementation of the capabilities,
+The report also lists tests to check correct implementation of the capabilities,
 with a sample fuel cycle with well-defined facility parameters.
 
 
@@ -139,12 +136,10 @@ lists the number of facilities to be deployed at a given timestep.
 \subsection{Time Step Execution in \Cyclus}
 As a reference, the time step execution for \Cyclus is illustrated in figure \ref{diag:time}.
 
-At \texttt{Tock}, the algorithm calculates the demand and supply for the next timestep, and calculates
-the difference. If the difference is bigger than the capacity of one facility, it
-schedules to deploy a new facility, or a decommissioning of an existing facility.
-The decommissioning takes place in the \texttt{Decommission} phase of \Cyclus, and
-the construction takes place in the \texttt{Build} phase of \Cyclus. Thus, all the
-adjustment of facilities occur prior to the next \gls{DRE}.
+At \texttt{Tock}, based on the currently operating facilities, their capacities and the known future shutdown times the algorithm will make a prediction of future production. Based on this information, 
+it will schedule to deploy a new facility, or decommission an existing facility. The decommissioning
+takes place in the \texttt{Decommission} phase of \Cyclus, and the construction takes place in the 
+\texttt{Build} phase of \Cyclus. Thus, all the adjustment of facilities occur prior to the next \gls{DRE}.
 
 \begin{figure}[H]
 \centering
@@ -166,7 +161,6 @@ adjustment of facilities occur prior to the next \gls{DRE}.
          thus unique to each archetype.}
 \label{diag:time}
 \end{figure}
-
 
 \section{Simulation parameter for Test Scenarios}
 Simple parameters are given to fuel cycle facilities for the numerical testing of 
@@ -193,12 +187,11 @@ Table \ref{tab:reactor} provides the parameters for the \texttt{Source},
 \end{table}
 
 \begin{table}[H]
-	\centering
     \caption {Source, Reactor and Sink Parameters}
 	\label{tab:reactor}
-	\begin{tabular}{|l|l|l|p{6.5cm}|}
+	\begin{tabular}{|p{3cm}|p{1.5cm}|l|p{5cm}|}
 \hline
-\textbf{Source  Parameters} & \textbf{Value} & \textbf{Units} & \textbf{Description} \\
+\textbf{\shortstack{Source \\Parameters}} & \textbf{Value} & \textbf{Units} & \textbf{Description} \\
 \hline
 Throughput & 1 & kg & Quantity of output commodity the facility can output in one time step \\
 \hline
@@ -208,7 +201,7 @@ Lifetime & 7 & timesteps & Lifetime of the facility \\
 \hline
 Wait time & 2 & timesteps & Wait time for the facility to decommission when no longer needed \\
 \hline
-\textbf{Reactor Parameters} & \textbf{Value} & \textbf{Units} & \textbf{Description} \\
+\textbf{\shortstack{Reactor \\Parameters}} & \textbf{Value} & \textbf{Units} & \textbf{Description} \\
 \hline
 Input Commodity & fuel & kg & Name of input commodity\\
 \hline
@@ -256,7 +249,7 @@ The tests are in forms of \texttt{[alphabet]-[traj]-[num]}. \texttt{Alphabet} re
 \begin{itemize}
 	\item \textbf{A} - Source $\rightarrow$ \texttt{End Demand Commodity}
 	\item \textbf{B} - Source $\rightarrow$ Reactor $\rightarrow$ \texttt{End Demand Commodity}
-	\item \textbf{C} - Source $\rightarrow$ Reactor $\rightarrow$ \texttt{End Demand Commodity} $\rightarrow$ Sink(disposal) 
+	\item \textbf{C} - Source $\rightarrow$ Reactor $\rightarrow$ \texttt{End Demand Commodity} $\rightarrow$ Sink (disposal) 
 \end{itemize}
 
 Note that for test C, the \texttt{End Demand Commodity} is power generated from the reactor. The C tests additionally
@@ -281,7 +274,7 @@ Additionally, we created base tests that pass when the supply meets the demand w
 In other words, when the supply exceeds the demand by the specified tolerance quantity, the test still passes. For this numerical experiment, the tolerance is set to one facility. 
 
 \subsection{Test A-const-1}
-The goal of test A-const-1 is to determine is a source facility is deployed when the lifetime of another is ending to meet the upcoming loss of power supply. 
+The goal of test A-const-1 is to determine if a source facility is deployed when the lifetime of another is ending to meet the upcoming loss of power supply. 
 Table \ref{tab:test-A-const-1} shows the input parameters of the \texttt{Institution} in the test scenario. Table \ref{tab:test-A-const-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-A-const-1base} shows the accepted range of total number of facilities deployed and decommissioned over the test scenario which will pass the base test, which factors in the facility over or under prediction tolerance of 1.
 
 \begin{figure}[H]
@@ -317,11 +310,11 @@ Table \ref{tab:test-A-const-1} shows the input parameters of the \texttt{Institu
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\ Deployed}} & \textbf{\shortstack{No. of Source \\ Decommissioned}} & \textbf{\shortstack{No. of Source \\ Expired}} \\
 		\hline
-		1 & 0 & 1 & 0 \\
+		1 & 1 & 0 & 0 \\
 		7 & 0 & 0 & 1 \\
-		8 & 0 & 1 & 0 \\
+		8 & 1 & 0 & 0 \\
 		14 & 0 & 0 & 1 \\
-		15 & 0 & 1 & 0 \\
+		15 & 1 & 0 & 0 \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -425,7 +418,7 @@ Table \ref{tab:test-A-grow-1} shows the input parameters of the \texttt{Institut
 		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		End demand commodity & fuel & kg \\
-		Demand Equation & $D = 0.1 * t $& \\
+		Demand Equation & $D = 0.1 \times timestep $& \\
 		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
@@ -478,8 +471,8 @@ Table \ref{tab:test-A-decl-1} shows the input parameters of the \texttt{Institut
 		End demand commodity & fuel & kg \\
 		Demand Equation & $D = \left\{
 		\begin{array}{ll}
-			1 , & 0 < t < 2 \\
-			0 , &  2 \leq t  \\
+			1 , & 0 < timestep < 2 \\
+			0 , &  2 \leq timestep  \\
 		\end{array}\right\}$
 		& \\
 		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
@@ -524,7 +517,7 @@ Table \ref{tab:testA-decl-2} shows the input parameters of the \texttt{Instituti
 		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		End demand commodity & fuel & kg \\
-		Demand Equation & $D = 2 - (0.1*t)$ & \\
+		Demand Equation & $D = 2 - (0.1 \times timestep)$ & \\
 		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
@@ -571,8 +564,8 @@ Table \ref{tab:testA-mix-1} shows the input parameters of the \texttt{Institutio
 		End demand commodity & fuel & kg \\
 		Demand Equation & $D = \left\{
 		\begin{array}{ll}
-		0.5 * t , & 0 \leq t \leq  6 \\
-		4.2- (0.2*t) , &  6 < t  \\
+		0.5 \times timestep , & 0 \leq t \leq  6 \\
+		4.2- (0.2 \times timestep) , &  6 < t  \\
 		\end{array}\right\}$
 		& \\
 		Supply Chain & source $\rightarrow$ \texttt{End Demand Commodity} &  \\
@@ -683,7 +676,7 @@ Table \ref{tab:test-B-grow-1} shows the input parameters of the \texttt{Institut
 		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		End demand commodity & Power & GWe \\
-		Demand Equation & D = 0.1 * t & \\
+		Demand Equation & D = $0.1 \times timestep $ & \\
 		Supply Chain & source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
@@ -744,7 +737,7 @@ Table \ref{tab:test-B-decl-1} shows the input parameters of the \texttt{Institut
 		\textbf{Input Parameter} & \textbf{Value} & \textbf{Units} \\
 		\hline
 		End demand commodity & Power & GWe \\
-		Demand Equation & D = 2 - (0.1 * t) & \\
+		Demand Equation & D = 2 - ($0.1 \times timestep$) & \\
 		Supply Chain & source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
 	\end{tabular}
@@ -807,8 +800,8 @@ Table \ref{tab:test-B-mix-1} shows the input parameters of the \texttt{Instituti
 		End demand commodity & Power & GWe \\
 		Demand Equation & $D = \left\{
 		\begin{array}{ll}
-		0.5 * t , & 0 < t \leq 6 \\
-		4.2 - 0.2 *t, &  6 < t  \\
+		0.5 \times timestep , & 0 < t \leq 6 \\
+		4.2 - 0.2 \times timestep, &  6 < t  \\
 		\end{array}\right\}$ & \\
 		Supply Chain & source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity} &  \\
 		\hline
@@ -881,7 +874,7 @@ Table \ref{tab:test-C-const-1} shows the input parameters of the \texttt{Institu
 		\hline
 		End demand commodity & Power & GWe \\
 		Demand Equation & D = 1 & \\
-		Supply Chain & source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity} $\rightarrow$ sink(disposal) &  \\
+		Supply Chain & source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity}& \\ &$\rightarrow$ sink(disposal) &  \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -938,10 +931,10 @@ Table \ref{tab:test-C-const-1} shows the input parameters of the \texttt{Institu
 
 \section{Numerical Test Results}
 
-
-\section{References}
+\pagebreak 
 \bibliography{bibliography}
 
+\pagebreak
 \section*{Appendix A - parameter configuration}
 
 \section*{Appendix B - Sample Test Code }
