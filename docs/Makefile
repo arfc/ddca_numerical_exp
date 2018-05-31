@@ -1,6 +1,6 @@
 manuscript = no_numerical_exp_report
 references = $(wildcard *.bib)
-latexopt   = -shell-escape
+latexopt   = -shell-escape -halt-on-error -file-line-error
 
 all: all-via-pdf
 
