@@ -1,6 +1,6 @@
 manuscript = no_numerical_exp_report
 references = $(wildcard *.bib)
-latexopt   = -halt-on-error -file-line-error
+latexopt   = -shell-escape
 
 all: all-via-pdf
 
@@ -24,7 +24,7 @@ epub:
 	ebook-convert $(manuscript).html $(manuscript).epub
 
 clean:
-	rm -f *.dvi *.toc *.aux *.gz *.out *.log *.bbl *.blg *.log *.spl *~ *.spl *.zip *.acn *.glo *.ist *.epub
+	rm -f *.pdf *.dvi *.toc *.aux *.gz *.out *.log *.bbl *.blg *.log *.spl *~ *.spl *.zip *.acn *.glo *.ist *.epub
 
 realclean: clean
 	rm -rf $(manuscript).dvi
