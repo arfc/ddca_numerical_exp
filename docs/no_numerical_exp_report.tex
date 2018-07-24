@@ -2,7 +2,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage{caption} % for table captions
 \usepackage{amsmath} % for multi-line equations and piecewises
+\DeclareMathOperator{\sign}{sign}
 \usepackage{graphicx}
+\usepackage{relsize}
 %\usepackage{textcomp}
 \usepackage{xspace}
 \usepackage{verbatim} % for block comments
@@ -12,6 +14,8 @@
 \newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
 \usepackage{tabularx}
 \usepackage{color}
+\usepackage[acronym,toc]{glossaries}
+\include{acros}
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
 \newcolumntype{b}{X}
 \newcolumntype{f}{>{\hsize=.15\hsize}X}
@@ -26,6 +30,7 @@
 \SetupFloatingEnvironment{listing}{name=Code}
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
+\bibliographystyle{abbrv}
 \usepackage{tikz}
 
 
@@ -35,8 +40,8 @@
 
 
 \graphicspath{{images/}}
- 
-\title{Numerical Experiments for Verifying Demand Driven Deployment Algorithms}
+\title{Numerical Experiments for Verifying Demand Driven Deployment Algorithms 
+        \\ \vspace{0.5em} Non-Optimizing Algorithm}
 \author{Jin Whan Bae, Gwendolyn Chee, Kathryn Huff}
 
 
@@ -56,12 +61,10 @@ The developed algorithm, in the form of \Cyclus \texttt{Institution}
 agent, deploys \texttt{Facilities} to meet the front-end and back-end demands of the 
 fuel cycle.
 
-This report describes numerical tests for non-optimizing, deterministic-optimizing and stochastic-optimizing prediction algorithms.
+This report describes numerical experiments for the non-optimizing algorithm, namely \gls{ARMA} and \gls{ARCH}.
 
-These prediction models are being developed by the University of South Carolina. 
-In this report, we discuss numerical experiments for testing the non-optimizing, 
-deterministic optimizing and stochastic optimizing methods. The numerical 
-experiments will be designed for both the once through nuclear fuel 
+These prediction models are being developed by the University of South Carolina. The numerical experiments will be designed for both
+ the once through nuclear fuel 
 cycle and advanced fuel cycles. 
 
 \section{Method}
@@ -72,17 +75,89 @@ with a sample fuel cycle with well-defined facility parameters.
 
 
 \section{Configuration}
-The user defines prototypes to be deployed for fuel facilities,
-and reactor deployment scheme.  The reactor deployment causes the demand of fuel
+The user defines what prototypes are to be deployed, the initial demand, and the 
+growth rate for one of the commodities. For example, if the user
+chooses a positive demand growth equation for power, this triggers reactor deployment.
+The reactor deployment then causes an increase in the demand of fuel, which triggers fuel facility deployment.
+The reactor deployment causes the demand of fuel
 which triggers fuel facility deployment. The detailed input file XML input schema
 is shown in Appendix A. 
 
 \section{Algorithm Flow}
 
-The algorithm, upon entering, creates a supply chain with the fuel facilities and
-the reactor. Then, at every timestep it calculates the expected demand from each fuel cycle
-facility and makes decisions to deploy or decommission. As a reference, the time step
-execution for \Cyclus is illustrated in figure \ref{diag:time}.
+The algorithm is an \texttt{Institution}, which is a \Cyclus agent type
+that deploys and decommissions facilities. 
+
+The algorithm predicts the demand of a commodity by looking at the previous demand and supply values.
+This is done through the \texttt{TimeSeries} toolkit in \Cyclus. To implement
+this functionality, every \Cycamore archetype is configured to record their
+demand and supply whenever they occur (usually, at every \texttt{Tick} or \texttt{Tock},
+discussed later). The algorithm accesses this timeseries and makes a prediction to
+what the demand will be in the future. If the algorithm sees a lack or excess of supply,
+it deploys new facilities or decommissions existing facilities.
+
+\subsection{Autoregressive Moving Average (ARMA)}
+
+\gls{ARMA} is a combination of two models, the Autoregressive
+and the Moving Average model. The Autoregressive model 
+predicts future values with a linear curve fit of the latest
+datasets, and the Moving Average method does so by fitting the 
+errors \cite{stine_introduction_2011}.
+
+The model is referred to as ARMA(p,q), where the p and q represent 
+the order (number of previous time step values fitted) of the autoregressive,
+and the moving average parts,
+respectively. 
+The \gls{ARMA} model can be represented by the following equation:
+
+\begin{align}
+    X_i&=c + \epsilon_t + {\mathlarger{\sum}}_{i=1}^{p}\theta_i \cdot X_{t-i}+
+     {\mathlarger{\sum}}_{j=1}^{q}\phi_j\cdot\epsilon_{t-j}\\
+    X_i&= \mbox{next predicted value of the time series}\\
+    c&= \mbox{adjustable constant}\\
+    \theta_i&=i^{th} \mbox{parameter}\\
+    \phi_i&=j^{th} \mbox{parameter of the moving average system}\\
+    \epsilon &= \mbox{white noise}
+\end{align}
+
+\gls{ARMA} is applied to a `well behaved' set of time series data,
+where there is little volatility. This makes \gls{ARMA} a suitable
+candidate for demand prediction in the case of slowly changing power demand and 
+corresponding reactor deployment.
+
+
+\subsection{Autoregressive Conditional Heteroskedastic (ARCH)}
+The \gls{ARCH} model is similar to the \gls{ARMA} model, except that
+it uses previous variance terms to calculate current error terms, instead
+of the value itself. This allows the model to be used in highly volatile 
+time series (e.g. prediction of inflation or stock prices over time 
+\cite{bollerslev_generalized_1986}).
+The \gls{ARCH} model can be represented by the following equation:
+
+\begin{align}
+    \epsilon_t^2 &= \alpha_0+{\mathlarger{\sum}}_{i=1}^{q}\alpha_i\cdot\epsilon_{t-1}^2\\
+    \alpha_i&= i^{th} \mbox{parameter of the conditional heteroskedastic model}
+\end{align}
+
+A comprehensive fuel cycle simulator must have predictive capabilities which 
+can deploy fuel cycle support facilities intelligently even in the face of 
+volatile dynamics. Such volatility may arise during transitions between 
+technologies, from upsets related to unexpected facility shutdowns, due to the variability 
+of an increasingly renewable electric grid, or other nonlinear economic 
+drivers.  In these cases, the \gls{ARCH} model is more generically applicable 
+and should therefore be preferred over the \gls{ARMA} 
+model.
+
+\subsection{Time Step Execution in \Cyclus}
+As a reference, the time step execution for \Cyclus is illustrated in figure \ref{diag:time}.
+
+At \texttt{Tock}, the algorithm calculates the demand and supply for the next timestep, and calculates
+the difference. If the difference is bigger than the capacity of one facility, it
+schedules to deploy a new facility, or a decommissioning of an existing facility.
+The decommissioning takes place in the \texttt{Decommission} phase of \Cyclus, and
+the construction takes place in the \texttt{Build} phase of \Cyclus. Thus, all the
+adjustment of facilities occur prior to the next \gls{DRE}.
+
 
 \begin{figure}[H]
 \centering
@@ -105,35 +180,6 @@ execution for \Cyclus is illustrated in figure \ref{diag:time}.
 \label{diag:time}
 \end{figure}
 
-\subsection{Upon Entering (\texttt{Enternotify})}
-
-The algorithm creates a supply chain with the fuel facilities,
-then calculates the demand for each facility for a unit quantity of fuel
-(example in figure \ref{diag:dem}). It also orders to build fuel cycle
-facilities for the reactors at timestep 1.
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=3.5cm]
-\node (source) [process] {\texttt{Source}};
-\node (reactor) [process, right of=source]{\texttt{Reactor}};
-\node (sink) [process, right of=reactor]{\texttt{Sink}};
-
-\draw [arrow] (source) -- (reactor) node[midway,fill=white] {$[x]$}; 
-\draw [arrow] (reactor) -- (sink) node[midway,fill=white] {$[x]$}; 
-\end{tikzpicture}
-\caption{Simple demand flow of materials. The values in the bracket are demands calculated
-         by the algorithm. The \texttt{Reactor} demands $x$ amount of fuel,
-         which translates into demands of $x$ from  \texttt{Sink}.}
-\label{diag:dem}
-\end{figure}
-
-\subsection{Tick}
-The algorithm calculates the fuel demand
-from the fleet of reactors at one timestep ahead, and the corresponding demand for fuel facilities.
-The current capacity of each fuel cycle facility is also calculated. If the capacity
-is smaller than the demand, the algorithm orders to build more facilities to meet the demand,
-so that the fuel demand is met for the next timestep.
 
 \section{Simulation parameter for Test Scenarios}
 Simple parameters are given to fuel cycle facilities for the numerical testing of 
@@ -192,7 +238,15 @@ Input Commodity & spent uox & kg\\
 \section{Numerical Tests for the Non-optimizing prediction method}
 The non-optimizing prediction method is tested by comparing its output for various scenarios against their analytical solutions . In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
 
-The tests are split into test A types and test B types. Test A refers to the test scenarios where facilities are expected to be deployed. Test B refers to the test scenarios where facilities are expected to be decommissioned. 
+The tests are in forms of \texttt{[alphabet]-[traj]-[num]}. \texttt{Alphabet} refers to the supply chain of the test scenario,
+\texttt{traj} the demand change in time, and \texttt{num} for tests with the same \texttt{alphabet} and \texttt{traj}.
+\begin{itemize}
+	\item \textbf{A} - source $\rightarrow$ \texttt{End Demand Commodity}
+	\item \textbf{B} - source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity}
+\end{itemize}
+
+Note that for test C, the \texttt{End Demand Commodity} is power generated from the reactor. The C-tests additionally
+check if the sink is deployed to meet spent fuel disposal demand.
 
 The prediction algorithm for the non-optimizing method has three user-defined input parameters. The aim of the various test scenarios are to check if the non-optimizing method archetype will deploy or decommission facilities correctly when there is a variation in the combination of the three input parameters.  The input parameters are: 
 \begin{enumerate}
@@ -213,12 +267,12 @@ Where $D_f$ is demand of resource at specific time step, $D_i$ is initial demand
 
 Additionally, we created base tests for each A-type test scenario that passes when the supply meets the demand within a given facility number tolerance. In other words, when the supply exceeds the demand by the specified tolerance quantity, the test still passes. For this report, the tolerance is set to one facility. For example in test A-1, the expected total number facilities deployed is 1, and since the facility over-prediction tolerance is 1, the acceptable range of total number of facilities $(x)$ deployed in the entire test scenario is $1<x<2$. If the total number of facilities deployed is within this range, the base case test will pass.  
 
-\subsection{Test A-1}
-In test A-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testa1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
+\subsection{Test A-const-1}
+In test A-const-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-const-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-const-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-A-const-1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
 \begin{table}[H]
 	\centering
-	\caption{Test A-1 Scenario Input Parameters }
-	\label{tab:testa1}
+	\caption{Test A-const-1 Scenario Input Parameters }
+	\label{tab:test-A-const-1}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -232,8 +286,8 @@ In test A-1, only a \texttt{source} facility is present in the test scenario. Ta
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-1 Analytical Solution}
-	\label{tab:testa1ana}
+	\caption{Test A-const-1 Analytical Solution}
+	\label{tab:test-A-const-1ana}
 	\begin{tabular}{|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
@@ -246,8 +300,8 @@ In test A-1, only a \texttt{source} facility is present in the test scenario. Ta
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-1 Base Test Acceptance}
-	\label{tab:testa1base}
+	\caption{Test A-const-1 Base Test Acceptance}
+	\label{tab:test-A-const-1base}
 	\begin{tabular}{|P{6.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
@@ -257,13 +311,13 @@ In test A-1, only a \texttt{source} facility is present in the test scenario. Ta
 	\end{tabular}
 \end{table}
 
-\subsection{Test A-2}
-In test A-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa2ana} shows the expected analytical solution based on the test scenario.Table \ref{tab:testa2base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
+\subsection{Test A-const-2}
+In test A-const-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-const-2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-const-2ana} shows the expected analytical solution based on the test scenario.Table \ref{tab:test-A-const-2base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-2 Scenario Input Parameters }
-	\label{tab:testa2}
+	\caption{Test A-const-2 Scenario Input Parameters }
+	\label{tab:test-A-const-2}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -277,8 +331,8 @@ In test A-2, only a \texttt{source} facility is present in the test scenario. Ta
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-2 Analytical Solution}
-	\label{tab:testa2ana}
+	\caption{Test A-const-2 Analytical Solution}
+	\label{tab:test-A-const-2ana}
 	\begin{tabular}{|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
@@ -291,8 +345,8 @@ In test A-2, only a \texttt{source} facility is present in the test scenario. Ta
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-2 Base Test Acceptance}
-	\label{tab:testa2base}
+	\caption{Test A-const-2 Base Test Acceptance}
+	\label{tab:test-A-const-2base}
 	\begin{tabular}{|P{6.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
@@ -302,13 +356,13 @@ In test A-2, only a \texttt{source} facility is present in the test scenario. Ta
 	\end{tabular}
 \end{table}
 
-\subsection{Test A-3}
-In test A-3, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa3} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa3ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testa3base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
+\subsection{Test A-grow-1}
+In test A-grow-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-grow-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-grow-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-A-grow-1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-3 Scenario Input Parameters}
-	\label{tab:testa3}
+	\caption{Test A-grow-1 Scenario Input Parameters}
+	\label{tab:test-A-grow-1}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -322,8 +376,8 @@ In test A-3, only a \texttt{source} facility is present in the test scenario. Ta
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-3 Analytical Solution}
-	\label{tab:testa3ana}
+	\caption{Test A-grow-1 Analytical Solution}
+	\label{tab:test-A-grow-1ana}
 	\begin{tabular}{|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
@@ -338,8 +392,8 @@ In test A-3, only a \texttt{source} facility is present in the test scenario. Ta
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-3 Base Test Acceptance}
-	\label{tab:testa3base}
+	\caption{Test A-grow-1 Base Test Acceptance}
+	\label{tab:test-A-grow-1base}
 	\begin{tabular}{|P{6.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
@@ -349,13 +403,13 @@ In test A-3, only a \texttt{source} facility is present in the test scenario. Ta
 	\end{tabular}
 \end{table}
 
-\subsection{Test A-4}
-In test A-4, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testa4} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa4ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testa4base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
+\subsection{Test A-grow-2}
+In test A-grow-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-grow-2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-grow-2ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-A-grow-2base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-4 Scenario Input Parameters }
-	\label{tab:testa4}
+	\caption{Test A-grow-2 Scenario Input Parameters }
+	\label{tab:test-A-grow-2}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -369,8 +423,8 @@ In test A-4, only a \texttt{source} facility is present in the test scenario. Ta
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-4 Analytical Solution}
-	\label{tab:testa4ana}
+	\caption{Test A-grow-2 Analytical Solution}
+	\label{tab:test-A-grow-2ana}
 	\begin{tabular}{|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
@@ -385,8 +439,8 @@ In test A-4, only a \texttt{source} facility is present in the test scenario. Ta
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-4 Base Test Acceptance}
-	\label{tab:testa4base}
+	\caption{Test A-grow-2 Base Test Acceptance}
+	\label{tab:test-A-grow-2base}
 	\begin{tabular}{|P{6.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
@@ -396,13 +450,13 @@ In test A-4, only a \texttt{source} facility is present in the test scenario. Ta
 	\end{tabular}
 \end{table}
 
-\subsection{Test A-5}
-In test A-5, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:testa5} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa5ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testa5base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
+\subsection{Test B-const-1}
+In test B-const-1, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:test-B-const-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-B-const-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-const-1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-5 Scenario Input Parameters}
-	\label{tab:testa5}
+	\caption{Test B-const-1 Scenario Input Parameters}
+	\label{tab:test-B-const-1}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -422,8 +476,8 @@ In test A-5, both a \texttt{source} and \texttt{reactor} facility is present in 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-5 Analytical Solution}
-	\label{tab:testa5ana}
+	\caption{Test B-const-1 Analytical Solution}
+	\label{tab:test-B-const-1ana}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
@@ -436,8 +490,8 @@ In test A-5, both a \texttt{source} and \texttt{reactor} facility is present in 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-5 Base Test Acceptance}
-	\label{tab:testa5base}
+	\caption{Test B-const-1 Base Test Acceptance}
+	\label{tab:test-B-const-1base}
 	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
@@ -447,13 +501,13 @@ In test A-5, both a \texttt{source} and \texttt{reactor} facility is present in 
 	\end{tabular}
 \end{table}
 
-\subsection{Test A-6}
-In test A-6, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:testa6} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa6ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testa6base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
+\subsection{Test B-const-2}
+In test B-const-2, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:test-B-const-2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-B-const-2ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-const-2base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-6 Scenario Input Parameters }
-	\label{tab:testa6}
+	\caption{Test B-const-2 Scenario Input Parameters }
+	\label{tab:test-B-const-2}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -473,8 +527,8 @@ In test A-6, both a \texttt{source} and \texttt{reactor} facility is present in 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-6 Analytical Solution}
-	\label{tab:testa6ana}
+	\caption{Test B-const-2 Analytical Solution}
+	\label{tab:test-B-const-2ana}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
@@ -487,8 +541,8 @@ In test A-6, both a \texttt{source} and \texttt{reactor} facility is present in 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-6 Base Test Acceptance}
-	\label{tab:testa6base}
+	\caption{Test B-const-2 Base Test Acceptance}
+	\label{tab:test-B-const-2base}
 	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
@@ -498,14 +552,14 @@ In test A-6, both a \texttt{source} and \texttt{reactor} facility is present in 
 	\end{tabular}
 \end{table}
 
-\subsection{Test A-7}
-In test A-7, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:testa7} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testa7ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:testa7base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
+\subsection{Test B-grow-1}
+In test B-grow-1, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:test-B-grow-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-B-grow-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-grow-1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-7 Scenario Input Parameters }
-	\label{tab:testa7}
+	\caption{Test B-grow-1 Scenario Input Parameters }
+	\label{tab:test-B-grow-1}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -525,8 +579,8 @@ In test A-7, both a \texttt{source} and \texttt{reactor} facility is present in 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-7 Analytical Solution}
-	\label{tab:testa7ana}
+	\caption{Test B-grow-1 Analytical Solution}
+	\label{tab:testB-grow-1ana}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
@@ -541,8 +595,8 @@ In test A-7, both a \texttt{source} and \texttt{reactor} facility is present in 
 
 \begin{table}[H]
 	\centering
-	\caption{Test A-7 Base Test Acceptance}
-	\label{tab:testa6base}
+	\caption{Test B-grow-1 Base Test Acceptance}
+	\label{tab:test-B-grow-1base}
 	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
 		\hline
 		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
@@ -552,13 +606,13 @@ In test A-7, both a \texttt{source} and \texttt{reactor} facility is present in 
 	\end{tabular}
 \end{table}
 
-\subsection{Test B-1}
-In test B-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testb1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testb1ana} shows the expected analytical solution based on the test scenario. 
+\subsection{Test A-const-3}
+In test A-const-3, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-const-3} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-const-3ana} shows the expected analytical solution based on the test scenario. 
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-1 Scenario Input Parameters }
-	\label{tab:testb1}
+	\caption{Test A-const-3 Scenario Input Parameters }
+	\label{tab:test-A-const-3}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -572,8 +626,8 @@ In test B-1, only a \texttt{source} facility is present in the test scenario. Ta
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-1 Analytical Solution}
-	\label{tab:testb1ana}
+	\caption{Test A-const-3 Analytical Solution}
+	\label{tab:test-A-const-3ana}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}& \textbf{\shortstack{No. of Source \\Facilities Decomissioned}}\\
@@ -585,13 +639,13 @@ In test B-1, only a \texttt{source} facility is present in the test scenario. Ta
 	\end{tabular}
 \end{table}
 
-\subsection{Test B-2}
-In test B-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:testb2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:testb2ana} shows the expected analytical solution based on the test scenario.
+\subsection{Test A-decl-1}
+In test A-decl-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-decl-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-decl-1ana} shows the expected analytical solution based on the test scenario.
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-2 Scenario Input Parameters }
-	\label{tab:testb2}
+	\caption{Test A-decl-1 Scenario Input Parameters }
+	\label{tab:test-A-decl-1}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
@@ -605,8 +659,8 @@ In test B-2, only a \texttt{source} facility is present in the test scenario. Ta
 
 \begin{table}[H]
 	\centering
-	\caption{Test B-2 Analytical Solution}
-	\label{tab:testb2ana}
+	\caption{Test A-decl-1 Analytical Solution}
+	\label{tab:test-A-decl-1ana}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}& \textbf{\shortstack{No. of Source \\Facilities Decomissioned}}\\
@@ -624,7 +678,7 @@ The failures are attributed to three reasons:
 
 \begin{enumerate}
 	\item There is a test failure when there is no initial facility present. An initial condition must be given for the algorithm to understand the capacity of the facility it deploys.
-	\item There is a test failure when there is growth in the demandhe algorithm failed to deploy facilities to meet the increase in demand.
+	\item There is a test failure when there is growth in the demand. The algorithm failed to deploy facilities to meet the increase in demand.
 	\item There is a test failure when facilities are expected to be decommissioned. There is yet to be an implementation on decommissioning behavior.
 \end{enumerate}
 
@@ -639,6 +693,12 @@ upon oversupply will be added.
 Appendix C reflects the numerical experiment solution output by the non-optimizing prediction algorithm for each test scenario defined in section 6. 
 
 \pagebreak
+
+\section{References}
+\bibliography{bibliography}
+
+\pagebreak
+
 \section*{Appendix A - parameter configuration}
 Appendix A shows the json file that contains the simulation parameters that are common between all the test scenarios discussed in Section 6.  
 
@@ -702,10 +762,10 @@ template = {
 
 \pagebreak
 \section*{Appendix B - Sample Test Code }
-\subsection*{Sample test code for test A-1}
-Appendix B shows the python file that contains the a segment of the simulation parameters that are unique to test A-1 and the code for test A-1. 
+\subsection*{Sample test code for test A-const-1}
+Appendix B shows the python file that contains the a segment of the simulation parameters that are unique to test A-const-1 and the code for test A-const-1. 
 \begin{minted}{python}
-# Test A_1
+# Test A_const_1
 INIT_DEMAND = copy.deepcopy(TEMPLATE)
 INIT_DEMAND["simulation"].update({"region": {
 "config": {"NullRegion": "\n      "},
@@ -759,11 +819,11 @@ assert(source_exact[0] == 1)
 \pagebreak
 
 \section*{Appendix C - Numerical Experiment Solution for test scenarios}
-\subsection*{Test A-1}
+\subsection*{Test A-const-1}
 \begin{table}[H]
 	\centering
-	\caption{Test A-1 Numerical Experiment Solution}
-	\label{tab:testa1num}
+	\caption{Test A-const-1 Numerical Experiment Solution}
+	\label{tab:test-A-const-1num}
 	\begin{tabular}{|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
@@ -773,11 +833,11 @@ assert(source_exact[0] == 1)
 	\end{tabular}
 \end{table}
 
-\subsection*{Test A-2}
+\subsection*{Test A-const-2}
 \begin{table}[H]
 	\centering
-	\caption{Test A-2 Numerical Experiment Solution}
-	\label{tab:testa2num}
+	\caption{Test A-const-2 Numerical Experiment Solution}
+	\label{tab:test-A-const-2a2num}
 	\begin{tabular}{|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
@@ -793,11 +853,11 @@ assert(source_exact[0] == 1)
 	\end{tabular}
 \end{table}
 
-\subsection*{Test A-3}
+\subsection*{Test A-grow-1}
 \begin{table}[H]
 	\centering
-	\caption{Test A-3 Numerical Experiment Solution}
-	\label{tab:testa3num}
+	\caption{Test A-grow-1 Numerical Experiment Solution}
+	\label{tab:test-A-grow-1num}
 	\begin{tabular}{|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
@@ -807,11 +867,11 @@ assert(source_exact[0] == 1)
 	\end{tabular}
 \end{table}
 
-\subsection*{Test A-4}
+\subsection*{Test A-grow-2}
 \begin{table}[H]
 	\centering
-	\caption{Test A-4 Numerical Experiment Solution}
-	\label{tab:testa4num}
+	\caption{Test A-grow-2 Numerical Experiment Solution}
+	\label{tab:test-A-grow-2num}
 	\begin{tabular}{|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
@@ -821,11 +881,11 @@ assert(source_exact[0] == 1)
 	\end{tabular}
 \end{table}
 
-\subsection*{Test A-5}
+\subsection*{Test B-const-1}
 \begin{table}[H]
 	\centering
-	\caption{Test A-5 Numerical Experiment Solution}
-	\label{tab:testa5num}
+	\caption{Test B-const-1 Numerical Experiment Solution}
+	\label{tab:test-B-const-1num}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
@@ -835,11 +895,11 @@ assert(source_exact[0] == 1)
 	\end{tabular}
 \end{table}
 
-\subsection*{Test A-6}
+\subsection*{Test B-const-2}
 \begin{table}[H]
 	\centering
-	\caption{Test A-6 Numerical Experiment Solution}
-	\label{tab:testa6num}
+	\caption{Test B-const-2 Numerical Experiment Solution}
+	\label{tab:test-B-const-2num}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
@@ -855,11 +915,11 @@ assert(source_exact[0] == 1)
 	\end{tabular}
 \end{table}
 
-\subsection*{Test A-7}
+\subsection*{Test B-grow-1}
 \begin{table}[H]
 	\centering
-	\caption{Test A-7 Numerical Experiment Solution}
-	\label{tab:testa7num}
+	\caption{Test B-grow-1 Numerical Experiment Solution}
+	\label{tab:test-B-grow-1num}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
@@ -869,11 +929,11 @@ assert(source_exact[0] == 1)
 	\end{tabular}
 \end{table}
 
-\subsection*{Test B-1}
+\subsection*{Test A-const-3}
 \begin{table}[H]
 	\centering
-	\caption{Test B-1 Numerical Experiment Solution}
-	\label{tab:testb1num}
+	\caption{Test A-const-3 Numerical Experiment Solution}
+	\label{tab:test-A-const-3num}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}& \textbf{\shortstack{No. of Source \\Facilities Decomissioned}}\\
@@ -883,11 +943,11 @@ assert(source_exact[0] == 1)
 	\end{tabular}
 \end{table}
 
-\subsection*{Test B-2}
+\subsection*{Test A-decl-1}
 \begin{table}[H]
 	\centering
-	\caption{Test B-2 Numerical Experiment Solution}
-	\label{tab:testb2num}
+	\caption{Test A-decl-1 Numerical Experiment Solution}
+	\label{tab:test-A-decl-1num}
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}& \textbf{\shortstack{No. of Source \\Facilities Decomissioned}}\\
