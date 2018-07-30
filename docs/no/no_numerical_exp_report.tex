@@ -49,34 +49,52 @@
 	\maketitle
 	\hrule
 
-\section{Introduction}
+\section{Project Objective}
+The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cycamore demand-driven deployment capabilities. The developed algorithm, in the form of \Cyclus \texttt{Institution}
+agent, deploys \texttt{Facilities} to meet the front-end and back-end demands of the 
+fuel cycle.
+
+\section{Motivation}
 For many fuel cycle simulations, it is currently up to the user to define
 a deploy scheme, or facility parameters, to make sure that there's no gap
 in the supply chain. Or, the same goal is achieved by setting the
 \texttt{facility} capacity to infinity, which does not reflect real-world
 conditions. 
 
-The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cycamore demand-driven deployment capabilities.
-The developed algorithm, in the form of \Cyclus \texttt{Institution}
-agent, deploys \texttt{Facilities} to meet the front-end and back-end demands of the 
-fuel cycle.
-
-Three types of algorithms will be developed: non-optimizing, deterministic-optimizing and stochastic-optimizing. This report will focus on the non-optimizing algorithm. 
+\section{Method}
+The project objective is met by developing three types of predictive algorithms: non-optimizing, deterministic-optimizing and stochastic-optimizing. Each algorithm aims to improve on the previous 
+to provide more accurate results. 
 
 These prediction algorithms are being developed by the University of South Carolina. Numerical experiments will be designed for both the once through nuclear fuel cycle and advanced fuel cycles. 
 
-\section{Method}
-This report lists capability requirements of the new \Cyclus \texttt{institute}
+This report focuses on the non-optimizing algorithm. 
+It lists capability requirements of the non-optimizing case of the new \Cyclus \texttt{institute}
 for demand-driven deployment of fuel cycle facilities. 
-Then the report lists tests to check correct implementation of the capabilities,
+It also discusses the tests to check correct implementation of the capabilities,
 with a sample fuel cycle with well-defined facility parameters.
 
-\section{Scope}
-Expectations for the non-optimizing algorithm are different from the deterministic-optimizing and stochastic-optimizing. In this section, the scope for the non-optimizing algorithm is specified. 
+\section{Archetype Requirements}
+Subsections \ref{subsection-user} to \ref{subsection-error} state the requirements for all 3 predictive algorithms. Expectations for the non-optimizing algorithm are different than for the deterministic-optimizing and stochastic-optimizing. Therefore, in subsections 3 to 5, the requirements unique to the non-optimizing algorithm are specified. 
+
+\subsection{User Configuration}
+\label{subsection-user}
+The archetype must allow the user to define the following parameters: 
+\begin{enumerate}
+	\item A commodity whose demand drives deployment
+	\item Initial amount of that demand
+	\item Growth rate of that demand
+	\item The facilities in the simulation able to meet that demand
+	\item Type of algorithm: non-optimizing, deterministic optimizing or stochastic optimizing
+\end{enumerate}
+
+\subsection{Informing User about Input Errors}
+\label{subsection-error}
+The archetype must inform the user when the facilities specified do not produce appropriate commodities 
+to form a supply chain to meet the demand of the commodity whose demand drives deployment.
 
 \subsection{} 
 
-\section{Requirements}
+
 
 \section{Configuration}
 The user defines what prototypes are to be deployed, the initial demand, and the 
@@ -89,7 +107,7 @@ is shown in Appendix A.
 
 \section{Algorithm Flow}
 
-The algorithm is an \texttt{Institution}, which is a \Cyclus agent type
+The algorithm is an \texttt{Institution}, which is a \Cyclus agent type 
 that deploys and decommissions facilities. 
 
 The algorithm predicts the demand of a commodity by looking at the previous demand and supply values.
