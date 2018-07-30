@@ -51,7 +51,7 @@
 
 \section{Introduction}
 For many fuel cycle simulations, it is currently up to the user to define
-a deployment scheme, or facility parameters, to make sure that there's no gap
+a deploy scheme, or facility parameters, to make sure that there's no gap
 in the supply chain. Or, the same goal is achieved by setting the
 \texttt{facility} capacity to infinity, which does not reflect real-world
 conditions. 
@@ -61,18 +61,22 @@ The developed algorithm, in the form of \Cyclus \texttt{Institution}
 agent, deploys \texttt{Facilities} to meet the front-end and back-end demands of the 
 fuel cycle.
 
-This report describes numerical experiments for the non-optimizing algorithm, namely \gls{ARMA} and \gls{ARCH}.
+Three types of algorithms will be developed: non-optimizing, deterministic-optimizing and stochastic-optimizing. This report will focus on the non-optimizing algorithm. 
 
-These prediction models are being developed by the University of South Carolina. The numerical experiments will be designed for both
- the once through nuclear fuel 
-cycle and advanced fuel cycles. 
+These prediction algorithms are being developed by the University of South Carolina. Numerical experiments will be designed for both the once through nuclear fuel cycle and advanced fuel cycles. 
 
 \section{Method}
-This report lists necessary capabilities of the new \Cyclus \texttt{institution}
+This report lists capability requirements of the new \Cyclus \texttt{institute}
 for demand-driven deployment of fuel cycle facilities. 
 Then the report lists tests to check correct implementation of the capabilities,
 with a sample fuel cycle with well-defined facility parameters.
 
+\section{Scope}
+Expectations for the non-optimizing algorithm are different from the deterministic-optimizing and stochastic-optimizing. In this section, the scope for the non-optimizing algorithm is specified. 
+
+\subsection{} 
+
+\section{Requirements}
 
 \section{Configuration}
 The user defines what prototypes are to be deployed, the initial demand, and the 
