@@ -49,137 +49,64 @@
 	\maketitle
 	\hrule
 
-\section{Introduction}
-For many fuel cycle simulations, it is currently up to the user to define
-a deployment scheme, or facility parameters, to make sure that there's no gap
-in the supply chain. Or, the same goal is achieved by setting the
-\texttt{facility} capacity to infinity, which does not reflect real-world
-conditions. 
+\section{Project Objective}
+The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cycamore's demand-driven deployment capabilities. The developed algorithm will be in the form of a \Cyclus \texttt{Institution} agent, and will deploy \texttt{Facilities} to meet the front-end and back-end demands of the fuel cycle.
 
-The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cycamore demand-driven deployment capabilities.
-The developed algorithm, in the form of \Cyclus \texttt{Institution}
-agent, deploys \texttt{Facilities} to meet the front-end and back-end demands of the 
-fuel cycle.
-
-This report describes numerical experiments for the non-optimizing algorithm, namely \gls{ARMA} and \gls{ARCH}.
-
-These prediction models are being developed by the University of South Carolina. The numerical experiments will be designed for both
- the once through nuclear fuel 
-cycle and advanced fuel cycles. 
+\section{Motivation}
+The current \Cyclus fuel cycle simulation code relies on the user to define
+a deployment scheme or set the supporting \texttt{facilities} capacities to infinity
+to ensure that there's no gap in the nuclear fuel cycle supply chain. These user-defined assumptions 
+are not an accurate reflection of the real world. 
 
 \section{Method}
-This report lists necessary capabilities of the new \Cyclus \texttt{institution}
+The project objective is met by developing three types of predictive algorithms: non-optimizing, deterministic-optimizing and stochastic-optimizing. Each algorithm aims to improve on the previous 
+to provide more accurate prediction results.  
+
+The prediction algorithms are being developed by the team at University of South Carolina. While the numerical experiments are being designed by the team at University of Illinois at Urbana-Champaign.
+
+This report will focus on the non-optimizing algorithm. 
+It lists capability requirements of the non-optimizing case of the new \Cyclus \texttt{institute}
 for demand-driven deployment of fuel cycle facilities. 
-Then the report lists tests to check correct implementation of the capabilities,
-with a sample fuel cycle with well-defined facility parameters.
+It also discusses the tests to check correct implementation of the capabilities,
+using a sample fuel cycle with well-defined facility parameters.
 
+\section{Archetype Requirements}
+Subsections \ref{subsection-user} to \ref{subsection-rate} state the requirements that apply to all three predictive algorithms. Expectations for the non-optimizing algorithm are different than for the deterministic-optimizing and stochastic-optimizing. Therefore, in subsections \ref{subesction-deploy} to \ref{subsection-volatile}, the requirements unique to the non-optimizing algorithm are specified. 
 
-\section{Configuration}
-The user defines what prototypes are to be deployed, the initial demand, and the 
-growth rate for one of the commodities. For example, if the user
-chooses a positive demand growth equation for power, this triggers reactor deployment.
-The reactor deployment then causes an increase in the demand of fuel, which triggers fuel facility deployment.
-The reactor deployment causes the demand of fuel
-which triggers fuel facility deployment. The detailed input file XML input schema
-is shown in Appendix A. 
+\subsection{User Configuration}
+\label{subsection-user}
+The archetype should allow the user to define the following parameters: 
+\begin{enumerate}
+	\item A commodity whose demand drives deployment
+	\item Initial amount of that demand
+	\item Rate of growth or decline of that demand
+	\item The facilities in the simulation able to meet that demand
+	\item Algorithm type: non-optimizing, deterministic optimizing or stochastic optimizing
+\end{enumerate}
 
-\section{Algorithm Flow}
+\subsection{Create a supply chain}
+\label{subsection-supplychain}
+The archetype should be able to access the user defined parameters for the facilities in the simulation and evaluate if the commodities supplied by these facilities produce an appropriate supply chain to meet the demand of the commodity whose demand drives deployment. If not, the archetype should inform the user by throwing an error.  
 
-The algorithm is an \texttt{Institution}, which is a \Cyclus agent type
-that deploys and decommissions facilities. 
+\subsection{High-level Functionality}
+If the user chooses a positive demand growth equation for power and the facilities present in the simulation to include reactors and supporting fuel facilities. The demand for power will trigger reactor deployment which will cause an increase in the demand for fuel, which will in turn trigger fuel facility deployment.
 
-The algorithm predicts the demand of a commodity by looking at the previous demand and supply values.
-This is done through the \texttt{TimeSeries} toolkit in \Cyclus. To implement
-this functionality, every \Cycamore archetype is configured to record their
-demand and supply whenever they occur (usually, at every \texttt{Tick} or \texttt{Tock},
-discussed later). The algorithm accesses this timeseries and makes a prediction to
-what the demand will be in the future. If the algorithm sees a lack or excess of supply,
-it deploys new facilities or decommissions existing facilities.
+\subsection{Growth or Decline Rate}
+\label{subsection-rate}
+The archetype should give the user options for different types of growth or decline rate curves. Possible examples could be linear, exponential or piece-wise. 
 
-\subsection{Autoregressive Moving Average (ARMA)}
-
-\gls{ARMA} is a combination of two models, the Autoregressive
-and the Moving Average model. The Autoregressive model 
-predicts future values with a linear curve fit of the latest
-datasets, and the Moving Average method does so by fitting the 
-errors \cite{stine_introduction_2011}.
-
-The model is referred to as ARMA(p,q), where the p and q represent 
-the order (number of previous time step values fitted) of the autoregressive,
-and the moving average parts,
-respectively. 
-The \gls{ARMA} model can be represented by the following equation:
-
-\begin{align}
-    X_i&=c + \epsilon_t + {\mathlarger{\sum}}_{i=1}^{p}\theta_i \cdot X_{t-i}+
-     {\mathlarger{\sum}}_{j=1}^{q}\phi_j\cdot\epsilon_{t-j}\\
-    X_i&= \mbox{next predicted value of the time series}\\
-    c&= \mbox{adjustable constant}\\
-    \theta_i&=i^{th} \mbox{parameter}\\
-    \phi_i&=j^{th} \mbox{parameter of the moving average system}\\
-    \epsilon &= \mbox{white noise}
-\end{align}
-
-\gls{ARMA} is applied to a `well behaved' set of time series data,
-where there is little volatility. This makes \gls{ARMA} a suitable
-candidate for demand prediction in the case of slowly changing power demand and 
-corresponding reactor deployment.
-
-
-\subsection{Autoregressive Conditional Heteroskedastic (ARCH)}
-The \gls{ARCH} model is similar to the \gls{ARMA} model, except that
-it uses previous variance terms to calculate current error terms, instead
-of the value itself. This allows the model to be used in highly volatile 
-time series (e.g. prediction of inflation or stock prices over time 
-\cite{bollerslev_generalized_1986}).
-The \gls{ARCH} model can be represented by the following equation:
-
-\begin{align}
-    \epsilon_t^2 &= \alpha_0+{\mathlarger{\sum}}_{i=1}^{q}\alpha_i\cdot\epsilon_{t-1}^2\\
-    \alpha_i&= i^{th} \mbox{parameter of the conditional heteroskedastic model}
-\end{align}
-
+\subsection{Facility Deployment and Decommissioning }
+\label{subesction-deploy}
+ The non-optimizing algorithm's deployment and decommissioning capabilities should be based on previous demand and supply values. At each time step, the algorithm should evaluate the demand for each commodity against its corresponding supply. If there is a shortage or surplus, the algorithm should deploy new facilities or decommission existing facilities. With an exception to the situation where decommissioning of a facility due to surplus of a commodity will result in the shortage of the commodity. This is a reflection of reality, since it is acceptable to have some surplus in storage as opposed to shortage of a commodity that could result in non-maximum capacity of a nuclear reactor. 
+ 
+ \subsection{Dealing with volatility}
+ \label{subsection-volatile}
 A comprehensive fuel cycle simulator must have predictive capabilities which 
 can deploy fuel cycle support facilities intelligently even in the face of 
-volatile dynamics. Such volatility may arise during transitions between 
-technologies, from upsets related to unexpected facility shutdowns, due to the variability 
-of an increasingly renewable electric grid, or other nonlinear economic 
-drivers.  In these cases, the \gls{ARCH} model is more generically applicable 
-and should therefore be preferred over the \gls{ARMA} 
-model.
-
-\subsection{Time Step Execution in \Cyclus}
-As a reference, the time step execution for \Cyclus is illustrated in figure \ref{diag:time}.
-
-At \texttt{Tock}, the algorithm calculates the demand and supply for the next timestep, and calculates
-the difference. If the difference is bigger than the capacity of one facility, it
-schedules to deploy a new facility, or a decommissioning of an existing facility.
-The decommissioning takes place in the \texttt{Decommission} phase of \Cyclus, and
-the construction takes place in the \texttt{Build} phase of \Cyclus. Thus, all the
-adjustment of facilities occur prior to the next \gls{DRE}.
-
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=1.5cm]
-\node (Build) [process] {Build (kernel)};
-\node (Tick) [process, below of=Build] {Tick (agent)};
-\node (DRE) [process, below of=Tick]{Dynamic Resource Exchange (kernel) };
-\node (Tock) [process, below of=DRE]{Tock (agent)};
-\node (Decom) [process, below of=Tock] {Decommission (kernel)};
-
-\draw [arrow] (Build) -- (Tick); 
-\draw [arrow] (Tick) -- (DRE);
-\draw [arrow] (DRE) -- (Tock);
-\draw [arrow] (Tock) -- (Decom);
-\end{tikzpicture}
-\caption{Each timestep in \Cyclus follows the five steps in order. Processes labeled
-         kernel are executed by the \Cyclus framework, whereas processes labeled agent
-         are executed by individual agents. What happens in the `Tick' and `Tock' is
-         thus unique to each archetype.}
-\label{diag:time}
-\end{figure}
-
+volatile dynamics. In the situation where the commodity whose demand 
+drives deployment changes in a volatile manner, the archetype should
+be able to recognize this and not deploy and decommission the same facility across
+short time periods due to volatile changes in commodity demand. 
 
 \section{Simulation parameter for Test Scenarios}
 Simple parameters are given to fuel cycle facilities for the numerical testing of 
