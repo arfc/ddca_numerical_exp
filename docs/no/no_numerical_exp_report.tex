@@ -42,7 +42,7 @@
 \graphicspath{{images/}}
 \title{Numerical Experiments for Verifying Demand Driven Deployment Algorithms 
         \\ \vspace{0.5em} Non-Optimizing Algorithm}
-\author{Jin Whan Bae, Gwendolyn Chee, Kathryn Huff}
+\author{Jin Whan Bae, Gwendolyn J. Chee, Kathryn D. Huff}
 
 
 \begin{document}
@@ -118,7 +118,7 @@ Table \ref{tab:testscenario} provides basic parameters for each test scenario. T
 		\hline
 		\textbf{Test Scenario Parameters} & \textbf{Value} & \textbf{Units} \\
 		\hline
-		Duration & 120 & timesteps \\
+		Duration & 1000 & timesteps \\
 		Timestep & 1 & month \\
 		Start Month & 1 & month \\
 		Start Year & 2000 & year \\
@@ -134,24 +134,24 @@ Table \ref{tab:testscenario} provides basic parameters for each test scenario. T
 \hline
 \textbf{Source Parameters} & \textbf{Value} & \textbf{Units} \\
 \hline
-Throughput & 1 & kg \\
-Output Commodity & fuel & kg\\
+Throughput & 1000 & kg \\
+Output Commodity & fresh fuel & kg\\
 \hline
 \textbf{Reactor Parameters} & \textbf{Value} & \textbf{Units} \\
 \hline
-Cycle Time & 1 & timesteps \\
-Refuel Time & 0 & timesteps \\
-Lifetime & 1 & timesteps \\
-Power Capacity & 1& MWe \\
-Assembly Size & 1 & kg \\
-\# assemblies per core & 1 & \\
+Cycle Time & 18 & timesteps \\
+Refuel Time & 1 & timesteps \\
+Lifetime & 500 & timesteps \\
+Power Capacity & 1000 & MWe \\
+Assembly Size & 1000 & kg \\
+\# assemblies per core & 3 & \\
 \# assemblies per batch & 1 & \\
-Input Commodity & fuel & kg\\
-Output Commodity & power & MW\\
+Input Commodity & fresh fuel & kg\\
+Output Commodities & power, spent fuel & MWe, kg\\
 \hline
 \textbf{Sink Parameters} & \textbf{Value} & \textbf{Units} \\
-Throughput & 1 & kg \\
-Input Commodity & spent uox & kg\\
+Throughput & 1000,000 & kg \\
+Input Commodity & spent fuel & kg\\
 \hline
 	\end{tabular}
 \end{table}
@@ -193,7 +193,7 @@ Figure \ref{fig:test-a-constant-1-demand} shows the demand of the demand-driving
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[scale=0.7]{./figures/a-constant-1.png}
+%		\includegraphics[scale=0.7]{./figures/a-constant-1.png}
 	\end{center}
         \caption{Fresh fuel demand for test A-const-1 and acceptable range for its supply.}
 	\label{fig:A-const-1}
