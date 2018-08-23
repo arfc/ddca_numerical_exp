@@ -105,9 +105,8 @@ the archetype should recognize this. If it fails, the archetype would pathologic
 deploy and decommission the same facility across short time periods due to volatile changes in commodity demand,
 which is undesirable. 
 
-\section{Simulation parameter for Test Scenarios}
-Simple fuel cycle facilities populate the numerical testing of 
-the algorithm.  Only \texttt{source} and \texttt{reactor} facilities are used in the test scenarios. 
+\section{Simulation parameters for Test Scenarios}
+Simple fuel cycle facilities populate the numerical testing of the algorithm.   
 
 Table \ref{tab:testscenario} provides basic parameters for each test scenario. Table \ref{tab:reactor} provides the parameters for the \texttt{Source}, \texttt{Reactor} and \texttt{Sink} in the test scenarios.
 
@@ -119,7 +118,7 @@ Table \ref{tab:testscenario} provides basic parameters for each test scenario. T
 		\hline
 		\textbf{Test Scenario Parameters} & \textbf{Value} & \textbf{Units} \\
 		\hline
-		Duration & 15 & timesteps \\
+		Duration & 120 & timesteps \\
 		Timestep & 1 & month \\
 		Start Month & 1 & month \\
 		Start Year & 2000 & year \\
@@ -160,80 +159,37 @@ Input Commodity & spent uox & kg\\
 \pagebreak
 
 \section{Numerical Tests for the Non-optimizing prediction method}
-The non-optimizing prediction method is tested by comparing its output for various scenarios against their analytical solutions . In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
+The tests are described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor}. Every test is given facility and catch-up tolerances. Both tolerances are adjustable variables within the test script. Facility tolerance is the percentage difference that is considered acceptable for supply to differ from demand.  Catch-up tolerance is the number of time steps at the start of simulation that is considered acceptable for the supply of a commodity to not be within the acceptable range of it's demand. 
 
-The tests are in forms of \texttt{[alphabet]-[traj]-[num]}. \texttt{Alphabet} refers to the supply chain of the test scenario,
-\texttt{traj} the demand change in time, and \texttt{num} for tests with the same \texttt{alphabet} and \texttt{traj}.
-\begin{itemize}
-	\item \textbf{A} - source $\rightarrow$ \texttt{End Demand Commodity}
-	\item \textbf{B} - source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity}
-\end{itemize}
+Therefore, each test is considered passed if the supply for every demanded commodity in the test scenario is within the facility tolerance of their demand at every time step, with exception to the initial catch-up tolerance.   
 
-Note that for test C, the \texttt{End Demand Commodity} is power generated from the reactor. The C-tests additionally
-check if the sink is deployed to meet spent fuel disposal demand.
+\subsection{Naming Convention for the numerical tests}
 
-The prediction algorithm for the non-optimizing method has three user-defined input parameters. The aim of the various test scenarios are to check if the non-optimizing method archetype will deploy or decommission facilities correctly when there is a variation in the combination of the three input parameters.  The input parameters are: 
-\begin{enumerate}
-	\item Initial demand value  
-	\item Number of initial facilities (initial supply)
-	\item Growth rate of initial demand
-\end{enumerate}
-
-The growth in demand is governed by the Equation \ref{eq:growth}. 
-
-\begin{align}
-\label{eq:growth}
-D_f(timestep) &= D_i(1+g)^{(\frac{timestep}{12})}
-\end{align}
-Where $D_f$ is demand of resource at specific time step, $D_i$ is initial demand and g is growth rate. 
-
-\texttt{Source} and \texttt{reactor} facilities are used in the test scenarios. Test scenarios A1 to A4 and B1 to B2 only have a \texttt{source} facility and test scenarios A5 to A7 have both \texttt{source} and \texttt{reactor} facilities. For each test scenario, there is one table that states the test scenario's input parameters and another table that states the exact analytical solution. The analytical solution table does not include deployment of the initial facility that is stated in the first table.
-
-Additionally, we created base tests for each A-type test scenario that passes when the supply meets the demand within a given facility number tolerance. In other words, when the supply exceeds the demand by the specified tolerance quantity, the test still passes. For this report, the tolerance is set to one facility. For example in test A-1, the expected total number facilities deployed is 1, and since the facility over-prediction tolerance is 1, the acceptable range of total number of facilities $(x)$ deployed in the entire test scenario is $1<x<2$. If the total number of facilities deployed is within this range, the base case test will pass.  
-
-\subsection{Test A-const-1}
-In test A-const-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-const-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-const-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-A-const-1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
+The naming convention of the numerical tests are in the form of \texttt{[Alphabet]}-\texttt{[Demand]}-\texttt{[Number]}. Each \texttt{Alphabet} refers to a scenario with a unique combination of \texttt{Facilities} and the commodity that drives deployment. Examples of scenarios that correspond to specific \texttt{Alphabets} is given in table \ref{tab:alphabet}. 
 \begin{table}[H]
 	\centering
-	\caption{Test A-const-1 Scenario Input Parameters }
-	\label{tab:test-A-const-1}
+	\caption {An \texttt{Alphabet} corresponding to each test scenario's \texttt{Facilities} and demand-driving commodity combination}
+	\label{tab:alphabet}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\texttt{Alphabet} & \textbf{Facilities in test scenario} & \textbf{\shortstack{Demand-driving \\ commodity}} \\
 		\hline
-		Initial demand & 1 & kg \\
-		Initial facilities & 0 & \#\\
-		Growth Rate & 0 & \\
-\hline
+		A & 1. Fresh fuel producing source facility & Fresh fuel \\
+		\hline 
+		B & \shortstack{1. Fresh fuel producing source facility \\ 2. Reactor facility } & Power \\
+		\hline
+		C & \shortstack{1. Fresh fuel producing source facility \\ 2. Reactor facility \\ 3. Sink facility } & Power \\
+		\hline 
 	\end{tabular}
 \end{table}
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-const-1 Analytical Solution}
-	\label{tab:test-A-const-1ana}
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
-		\hline
-		1 & 1\\
-		2 to 15& 0 \\
-		\hline
-	\end{tabular}
-\end{table}
+The \texttt{Demand} component refers to the how the demand-driving commodity's demand changes over time. Examples of \texttt{Demand} types are \texttt{Constant}, \texttt{Growth} and \texttt{Decline}. The \texttt{Number} component refers to tests with the same \texttt{Alphabet} and \texttt{Demand}, but with other varying parameters.
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-const-1 Base Test Acceptance}
-	\label{tab:test-A-const-1base}
-	\begin{tabular}{|P{6.5cm}|}
-		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
-		\hline
-		1 $<$ x $<$ 2 \\
-		\hline
-	\end{tabular}
-\end{table}
+\subsection{Numerical Tests}
+\subsubsection{Test \texttt{[A]-[Constant]-[1]}}
+The purpose of test \texttt{[A]-[Constant]-[1]} is to check if the non-optimizing algorithm works for the simplest scenario where there is only one \texttt{Source} facility available in the simulation to meet the constant demand of the demand-driving commodity: fresh fuel. 
+
+
 
 \subsection{Test A-const-2}
 In test A-const-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-const-2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-const-2ana} shows the expected analytical solution based on the test scenario.Table \ref{tab:test-A-const-2base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
