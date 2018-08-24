@@ -1,6 +1,7 @@
 """
-Plots for Numerical Experiments for Verifying Demand Driven Deployment Algorithms
-Non-Optimizing Algorithm Report
+Plots for Report:
+Numerical Experiments for Verifying Demand Driven Deployment Algorithms
+Non-Optimizing Algorithm
 """
 
 from matplotlib import pyplot as plt
@@ -14,13 +15,16 @@ def demand_curve_type(x_vals, type, input1, input2, input3):
     ----------
     x_vals: list of timestep values
     type: string of type of demand curve (i.e. linear, exponential, step-wise)
-    input 1: exponential -- initial demand, linear -- gradient, stepwise -- y-value of first segment
-    input 2: exponential -- growth rate, linear -- y intercept, stepwise -- y-value of second segment
+    input 1: exponential -- initial demand, linear -- gradient,
+             stepwise -- y-value of first segment
+    input 2: exponential -- growth rate, linear -- y intercept,
+             stepwise -- y-value of second segment
     input 3: stepwise -- timestep it changes from first to second segment
 
     Returns
     -------
-    returns a plot of demand and acceptable supply range amount for a specified commodity
+    returns a plot of demand and acceptable supply range amount for a
+    specified commodity
 
     """
 
@@ -60,13 +64,15 @@ def plot_demand_supply(duration, demand_curve, input1,
     Parameters
     ----------
     duration: int of number of timesteps in scenario
-    demand_curve: string of type of demand curve (i.e. linear, exponential, step-wise)
+    demand_curve: string of type of demand curve (i.e. linear, exponential,
+                  step-wise)
     gradient: int of gradient of demand curve (m of y = mx+c)
     intercept: int of intercept of demand curve (c of y = mx+c)
 
     Returns
     -------
-    returns a plot of demand and acceptable supply range amount for a specified commodity
+    returns a plot of demand and acceptable supply range amount for a specified
+    commodity
 
     """
     x_vals = np.linspace(0, duration, duration + 1)
