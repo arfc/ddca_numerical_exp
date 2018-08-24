@@ -134,7 +134,7 @@ Table \ref{tab:testscenario} provides basic parameters for each test scenario. T
 \hline
 \textbf{Source Parameters} & \textbf{Value} & \textbf{Units} \\
 \hline
-Throughput & 1000 & kg \\
+Throughput & 3000 & kg \\
 Output Commodity & fresh fuel & kg\\
 \hline
 \textbf{Reactor Parameters} & \textbf{Value} & \textbf{Units} \\
@@ -159,9 +159,9 @@ Input Commodity & spent fuel & kg\\
 \pagebreak
 
 \section{Numerical Tests for the Non-optimizing prediction method}
-The tests are described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor}. Every test is given facility and catch-up tolerances. Both tolerances are adjustable variables within the test script. Facility tolerance is the percentage difference that is considered acceptable for supply to differ from demand.  Catch-up tolerance is the number of time steps at the start of simulation that is considered acceptable for the supply of a commodity to not be within the acceptable range of it's demand. 
+The tests are described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor}. Every test is given facility and catch-up tolerances. Both tolerances are adjustable variables within the test script. \texttt{Facility tolerance} is the percentage difference that is considered acceptable for supply to differ from demand.  \texttt{Catch-up tolerance} is the number of time steps at the start of simulation that is considered acceptable for the supply of a commodity to not be within the acceptable range of it's demand. 
 
-Therefore, each test is considered passed if the supply for every demanded commodity in the test scenario is within the facility tolerance of their demand at every time step, with exception to the initial catch-up tolerance.   
+Therefore, each test is considered passed if the supply for every demanded commodity in the test scenario is within the \texttt{Facility tolerance} of their demand at every time step, with exception to the initial \texttt{Catch-up tolerance}.   
 
 \subsection{Naming Convention for the numerical tests}
 
@@ -186,6 +186,8 @@ The naming convention of the numerical tests are in the form of \texttt{[Alphabe
 The \texttt{Demand} component refers to the how the demand-driving commodity's demand changes over time. Examples of \texttt{Demand} types are \texttt{Constant}, \texttt{Growth} and \texttt{Decline}. The \texttt{Number} component refers to tests with the same \texttt{Alphabet} and \texttt{Demand}, but with other varying parameters.
 
 \subsection{Numerical Tests}
+For the following test scenarios, \texttt{Facility tolerance} is set at 10\% and \texttt{Catch-up tolerance} is set at 12 timesteps. 
+
 \subsubsection{Test \texttt{[A]-[Constant]-[1]}}
 The purpose of test \texttt{[A]-[Constant]-[1]} is to check if the non-optimizing algorithm works for the simplest scenario where there is only \texttt{Source} facilities available in the simulation to meet the constant demand of the demand-driving commodity: fresh fuel. 
 
@@ -193,7 +195,7 @@ Figure \ref{fig:test-a-constant-1-demand} shows the demand of the demand-driving
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[scale=0.4]{./figures/demand_supply_A-Constant-1.png}
+		\includegraphics[scale=0.4]{./figures/Fresh_Fuel_A-Constant-1_demand_supply.png}
 	\end{center}
         \caption{Fresh fuel demand for test A-const-1 and acceptable range for its supply.}
 	\label{fig:test-a-constant-1-demand}
@@ -206,7 +208,7 @@ Figure \ref{fig:test-a-growth-1-demand} shows the demand of the demand-driving c
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[scale=0.4]{./figures/demand_supply_A-Growth-1.png}
+		\includegraphics[scale=0.4]{./figures/Power_A-Growth-1_demand_supply.png}
 	\end{center}
         \caption{Power demand for test A-growth-1 and acceptable range for its supply.}
 	\label{fig:test-a-growth-1-demand}
@@ -219,7 +221,7 @@ Figure \ref{fig:test-a-growth-2-demand} shows the demand of the demand-driving c
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[scale=0.4]{./figures/demand_supply_A-Growth-2.png}
+		\includegraphics[scale=0.4]{./figures/Power_A-Growth-2_demand_supply.png}
 	\end{center}
         \caption{Power demand for test A-growth-2 and acceptable range for its supply.}
 	\label{fig:test-a-growth-2-demand}

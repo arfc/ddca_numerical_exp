@@ -9,8 +9,10 @@ import numpy as np
 def demand_curve_type(x_vals,type,input1,input2): 
 
     if type == 'exponential':
-        initial_demand = input1
+        initial_demand = input1 
+        print(initial_demand)
         growth_rate = input2
+        print(growth_rate)
         y_vals = [(initial_demand*(1+growth_rate)**(x/12)) for x in x_vals]
 
     elif type =="linear":
@@ -21,7 +23,7 @@ def demand_curve_type(x_vals,type,input1,input2):
     return y_vals
 
 
-def plot_demand_supply(duration,demand_curve,input1,input2,commodity,test_name): 
+def plot_demand_supply(duration,demand_curve,input1,input2,commodity,test_name,demand_driving): 
     """ Plots demand and acceptable supply range amount for a commodity 
     
     Parameters 
@@ -50,16 +52,19 @@ def plot_demand_supply(duration,demand_curve,input1,input2,commodity,test_name):
     handles,labels = ax.get_legend_handles_labels()
     ax.legend(handles, labels, fontsize=13,loc='upper center',bbox_to_anchor=(0.85,1.2),fancybox=True)
     ax.set_xlim(0,duration)
-    ax.set_ylim(0,100000)
+    ax.set_ylim(0,y_vals[-1]*1.2)
     plt.xticks(fontsize=14)
     plt.yticks(fontsize=14)
     ax.set_xlabel('Timestep (month)',fontsize=14)
     ax.set_ylabel('%s Amount (kg)' % commodity,fontsize=14)
-    ax.set_title('Test %s : %s (Demand-driving Commodity) demand and acceptable range for its supply' %(test_name,commodity) ,fontsize=16)
-    plt.savefig('demand_supply_%s' %test_name, bbox_inches="tight")
+    if demand_driving: 
+        ax.set_title('Test %s : %s (Demand-driving Commodity) demand and acceptable range for its supply' %(test_name,commodity) ,fontsize=16)
+    else: 
+        ax.set_title('Test %s : %s demand and acceptable range for its supply' %(test_name,commodity) ,fontsize=16)
+    plt.savefig('%s_%s_demand_supply' %(commodity,test_name), bbox_inches="tight")
 
     return 
 
-plot_demand_supply(1000,'exponential',10000,0,'Fresh Fuel','A-Constant-1')
-plot_demand_supply(1000,'linear',10,0,'Fresh Fuel','A-Growth-1')
-plot_demand_supply(1000,'exponential',10,1,'Fresh Fuel','A-Growth-2')
+plot_demand_supply(1000,'exponential',10000,0,'Fresh_Fuel','A-Constant-1',True)
+plot_demand_supply(1000,'linear',100,0,'Power','A-Growth-1',True)
+plot_demand_supply(1000,'exponential',10,0.1,'Power','A-Growth-2',True)
