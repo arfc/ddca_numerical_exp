@@ -66,8 +66,12 @@ def plot_demand_supply(duration, demand_curve, input1,
     duration: int of number of timesteps in scenario
     demand_curve: string of type of demand curve (i.e. linear, exponential,
                   step-wise)
-    gradient: int of gradient of demand curve (m of y = mx+c)
-    intercept: int of intercept of demand curve (c of y = mx+c)
+    input 1: int, depending on which demand_curve, see func demand_curve_type
+    input 2: int, depending on which demand_curve, see func demand_curve_type
+    input 3: int, depending on which demand_curve, see func demand_curve_type
+    commodity: string of tracked commodity
+    test_name: string of test name 
+    demand_driving: True/False boolean, True if the commodity is the demand-driving commodity  
 
     Returns
     -------
