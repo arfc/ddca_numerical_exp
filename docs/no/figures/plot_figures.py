@@ -50,7 +50,7 @@ def plot_demand_supply(duration,demand_curve,input1,input2,commodity,test_name):
     handles,labels = ax.get_legend_handles_labels()
     ax.legend(handles, labels, fontsize=13,loc='upper center',bbox_to_anchor=(0.85,1.2),fancybox=True)
     ax.set_xlim(0,duration)
-    ax.set_ylim(0,(y_vals[-1]*1.2))
+    ax.set_ylim(0,100000)
     plt.xticks(fontsize=14)
     plt.yticks(fontsize=14)
     ax.set_xlabel('Timestep (month)',fontsize=14)
@@ -62,4 +62,4 @@ def plot_demand_supply(duration,demand_curve,input1,input2,commodity,test_name):
 
 plot_demand_supply(1000,'exponential',10000,0,'Fresh Fuel','A-Constant-1')
 plot_demand_supply(1000,'linear',10,0,'Fresh Fuel','A-Growth-1')
-plot_demand_supply(1000,'linear',10,1000,'Fresh Fuel','A-Growth-2')
+plot_demand_supply(1000,'exponential',10,1,'Fresh Fuel','A-Growth-2')
