@@ -71,7 +71,8 @@ def plot_demand_supply(duration, demand_curve, input1,
     input 3: int, depending on which demand_curve, see func demand_curve_type
     commodity: string of tracked commodity
     test_name: string of test name
-    demand_driving: True/False boolean, True if the commodity is the demand-driving commodity
+    demand_driving: True/False boolean, True if the commodity is the 
+                    demand-driving commodity
 
     Returns
     -------
