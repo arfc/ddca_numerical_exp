@@ -42,7 +42,7 @@
 \graphicspath{{images/}}
 \title{Numerical Experiments for Verifying Demand Driven Deployment Algorithms 
         \\ \vspace{0.5em} Non-Optimizing Algorithm}
-\author{Jin Whan Bae, Gwendolyn Chee, Kathryn Huff}
+\author{Jin Whan Bae, Gwendolyn J. Chee, Kathryn D. Huff}
 
 
 \begin{document}
@@ -52,9 +52,9 @@
 \section{Project Objective}
 The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) aims to develop \Cycamore's demand-driven deployment capabilities. The developed algorithm will be in the form of a \Cyclus \texttt{Institution} agent, and will deploy \texttt{Facilities} to meet the front-end and back-end demands of the fuel cycle.
 
-\section{Motivation}
-The current \Cyclus fuel cycle simulation code relies on the user to define
-a deployment scheme or set the supporting \texttt{facilities} capacities to infinity
+\section{Motivation} 
+The current \Cyclus fuel cycle simulation framework relies on the user to define
+a deployment scheme or set the supporting \texttt{Facilities} capacities to infinity
 to ensure that there's no gap in the nuclear fuel cycle supply chain. These user-defined assumptions 
 are not an accurate reflection of the real world. 
 
@@ -62,24 +62,24 @@ are not an accurate reflection of the real world.
 The project objective is met by developing three types of predictive algorithms: non-optimizing, deterministic-optimizing and stochastic-optimizing. Each algorithm aims to improve on the previous 
 to provide more accurate prediction results.  
 
-The prediction algorithms are being developed by the team at University of South Carolina. While the numerical experiments are being designed by the team at University of Illinois at Urbana-Champaign.
+The prediction algorithms are being developed by the team at University of South Carolina. Meanwhile the numerical experiments are being designed by the team at University of Illinois at Urbana-Champaign.
 
 This report will focus on the non-optimizing algorithm. 
-It lists capability requirements of the non-optimizing case of the new \Cyclus \texttt{institute}
+It lists capability requirements of the non-optimizing case of the new \Cyclus \texttt{Institution}
 for demand-driven deployment of fuel cycle facilities. 
 It also discusses the tests to check correct implementation of the capabilities,
 using a sample fuel cycle with well-defined facility parameters.
 
 \section{Archetype Requirements}
-Subsections \ref{subsection-user} to \ref{subsection-rate} state the requirements that apply to all three predictive algorithms. Expectations for the non-optimizing algorithm are different than for the deterministic-optimizing and stochastic-optimizing. Therefore, in subsections \ref{subesction-deploy} to \ref{subsection-volatile}, the requirements unique to the non-optimizing algorithm are specified. 
+Subsections \ref{subsection-user} to \ref{subsection-rate} state the requirements that apply to all three predictive algorithms. Expectations for the non-optimizing algorithm are different from expectations for the deterministic-optimizing and stochastic-optimizing algorithms. Therefore, in subsections \ref{subsection-deploy} to \ref{subsection-volatile}, the requirements unique to the non-optimizing algorithm are specified. 
 
 \subsection{User Configuration}
 \label{subsection-user}
 The archetype should allow the user to define the following parameters: 
 \begin{enumerate}
 	\item A commodity whose demand drives deployment
-	\item Initial amount of that demand
-	\item Rate of growth or decline of that demand
+	\item Initial amount of that commodity's demand
+	\item Rate of growth or decline of that commodity's demand
 	\item The facilities in the simulation able to meet that demand
 	\item Algorithm type: non-optimizing, deterministic optimizing or stochastic optimizing
 \end{enumerate}
@@ -88,31 +88,27 @@ The archetype should allow the user to define the following parameters:
 \label{subsection-supplychain}
 The archetype should be able to access the user defined parameters for the facilities in the simulation and evaluate if the commodities supplied by these facilities produce an appropriate supply chain to meet the demand of the commodity whose demand drives deployment. If not, the archetype should inform the user by throwing an error.  
 
-\subsection{High-level Functionality}
-If the user chooses a positive demand growth equation for power and the facilities present in the simulation to include reactors and supporting fuel facilities. The demand for power will trigger reactor deployment which will cause an increase in the demand for fuel, which will in turn trigger fuel facility deployment.
-
-\subsection{Growth or Decline Rate}
+\subsection{Growth Rate}
 \label{subsection-rate}
-The archetype should give the user options for different types of growth or decline rate curves. Possible examples could be linear, exponential or piece-wise. 
+The archetype should give the user options for different types of growth rate curves. Possible examples could be linear, exponential and piece-wise. 
 
 \subsection{Facility Deployment and Decommissioning }
-\label{subesction-deploy}
- The non-optimizing algorithm's deployment and decommissioning capabilities should be based on previous demand and supply values. At each time step, the algorithm should evaluate the demand for each commodity against its corresponding supply. If there is a shortage or surplus, the algorithm should deploy new facilities or decommission existing facilities. With an exception to the situation where decommissioning of a facility due to surplus of a commodity will result in the shortage of the commodity. This is a reflection of reality, since it is acceptable to have some surplus in storage as opposed to shortage of a commodity that could result in non-maximum capacity of a nuclear reactor. 
+\label{subsection-deploy}
+ The non-optimizing algorithm's deployment and decommissioning capabilities should be based on previous demand and supply values. At each time step, the algorithm should evaluate the demand for each commodity against its corresponding supply. If there is a shortage, the algorithm should deploy new facilities. If there is a surplus or more than one facility's capacity, the algorithm should decommission existing facilities. 
  
  \subsection{Dealing with volatility}
  \label{subsection-volatile}
 A comprehensive fuel cycle simulator must have predictive capabilities which 
 can deploy fuel cycle support facilities intelligently even in the face of 
-volatile dynamics. In the situation where the commodity whose demand 
-drives deployment changes in a volatile manner, the archetype should
-be able to recognize this and not deploy and decommission the same facility across
-short time periods due to volatile changes in commodity demand. 
+volatile dynamics. If demand for the deployment-driving commodity is volatile, 
+the archetype should recognize this. If it fails, the archetype would pathologically
+deploy and decommission the same facility across short time periods due to volatile changes in commodity demand,
+which is undesirable. 
 
-\section{Simulation parameter for Test Scenarios}
-Simple parameters are given to fuel cycle facilities for the numerical testing of 
-the algorithm.  Only \texttt{source} and \texttt{reactor} facilities are used in the test scenarios. 
+\section{Simulation parameters for Test Scenarios}
+Simple fuel cycle facilities populate the numerical testing of the algorithm.   
 
-Table \ref{tab:testscenario} provides basic parameters for each test scenario. Table \ref{tab:reactor} provides the parameters for the \texttt{source}, \texttt{reactors} and \texttt{sink} in the test scenarios.
+Table \ref{tab:testscenario} provides basic parameters for each test scenario. Table \ref{tab:reactor} provides the parameters for the \texttt{Source}, \texttt{Reactor} and \texttt{Sink} in the test scenarios.
 
 \begin{table}[H]
 	\centering
@@ -122,7 +118,7 @@ Table \ref{tab:testscenario} provides basic parameters for each test scenario. T
 		\hline
 		\textbf{Test Scenario Parameters} & \textbf{Value} & \textbf{Units} \\
 		\hline
-		Duration & 15 & timesteps \\
+		Duration & 1000 & timesteps \\
 		Timestep & 1 & month \\
 		Start Month & 1 & month \\
 		Start Year & 2000 & year \\
@@ -138,24 +134,24 @@ Table \ref{tab:testscenario} provides basic parameters for each test scenario. T
 \hline
 \textbf{Source Parameters} & \textbf{Value} & \textbf{Units} \\
 \hline
-Throughput & 1 & kg \\
-Output Commodity & fuel & kg\\
+Throughput & 3000 & kg \\
+Output Commodity & fresh fuel & kg\\
 \hline
 \textbf{Reactor Parameters} & \textbf{Value} & \textbf{Units} \\
 \hline
-Cycle Time & 1 & timesteps \\
-Refuel Time & 0 & timesteps \\
-Lifetime & 1 & timesteps \\
-Power Capacity & 1& MWe \\
-Assembly Size & 1 & kg \\
-\# assemblies per core & 1 & \\
+Cycle Time & 18 & timesteps \\
+Refuel Time & 1 & timesteps \\
+Lifetime & 500 & timesteps \\
+Power Capacity & 1000 & MWe \\
+Assembly Size & 1000 & kg \\
+\# assemblies per core & 3 & \\
 \# assemblies per batch & 1 & \\
-Input Commodity & fuel & kg\\
-Output Commodity & power & MW\\
+Input Commodity & fresh fuel & kg\\
+Output Commodities & power, spent fuel & MWe, kg\\
 \hline
 \textbf{Sink Parameters} & \textbf{Value} & \textbf{Units} \\
-Throughput & 1 & kg \\
-Input Commodity & spent uox & kg\\
+Throughput & 1000,000 & kg \\
+Input Commodity & spent fuel & kg\\
 \hline
 	\end{tabular}
 \end{table}
@@ -163,728 +159,88 @@ Input Commodity & spent uox & kg\\
 \pagebreak
 
 \section{Numerical Tests for the Non-optimizing prediction method}
-The non-optimizing prediction method is tested by comparing its output for various scenarios against their analytical solutions . In this section, the tests that must be met is described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor} and analytical solution of a defined simple scenario. Unit test examples are included in Appendix B.
+The tests are described based on the parameters defined in table \ref{tab:testscenario} and \ref{tab:reactor}. Every test is given facility and catch-up tolerances. Both tolerances are adjustable variables within the test script. \texttt{Facility tolerance} is the percentage difference that is considered acceptable for supply to differ from demand.  \texttt{Catch-up tolerance} is the number of time steps at the start of simulation that is considered acceptable for the supply of a commodity to not be within the acceptable range of it's demand. 
 
-The tests are in forms of \texttt{[alphabet]-[traj]-[num]}. \texttt{Alphabet} refers to the supply chain of the test scenario,
-\texttt{traj} the demand change in time, and \texttt{num} for tests with the same \texttt{alphabet} and \texttt{traj}.
-\begin{itemize}
-	\item \textbf{A} - source $\rightarrow$ \texttt{End Demand Commodity}
-	\item \textbf{B} - source $\rightarrow$ reactor $\rightarrow$ \texttt{End Demand Commodity}
-\end{itemize}
+Therefore, each test is considered passed if the supply for every demanded commodity in the test scenario is within the \texttt{Facility tolerance} of their demand at every time step, with exception to the initial \texttt{Catch-up tolerance}.   
 
-Note that for test C, the \texttt{End Demand Commodity} is power generated from the reactor. The C-tests additionally
-check if the sink is deployed to meet spent fuel disposal demand.
+\subsection{Naming Convention for the numerical tests}
 
-The prediction algorithm for the non-optimizing method has three user-defined input parameters. The aim of the various test scenarios are to check if the non-optimizing method archetype will deploy or decommission facilities correctly when there is a variation in the combination of the three input parameters.  The input parameters are: 
-\begin{enumerate}
-	\item Initial demand value  
-	\item Number of initial facilities (initial supply)
-	\item Growth rate of initial demand
-\end{enumerate}
-
-The growth in demand is governed by the Equation \ref{eq:growth}. 
-
-\begin{align}
-\label{eq:growth}
-D_f(timestep) &= D_i(1+g)^{(\frac{timestep}{12})}
-\end{align}
-Where $D_f$ is demand of resource at specific time step, $D_i$ is initial demand and g is growth rate. 
-
-\texttt{Source} and \texttt{reactor} facilities are used in the test scenarios. Test scenarios A1 to A4 and B1 to B2 only have a \texttt{source} facility and test scenarios A5 to A7 have both \texttt{source} and \texttt{reactor} facilities. For each test scenario, there is one table that states the test scenario's input parameters and another table that states the exact analytical solution. The analytical solution table does not include deployment of the initial facility that is stated in the first table.
-
-Additionally, we created base tests for each A-type test scenario that passes when the supply meets the demand within a given facility number tolerance. In other words, when the supply exceeds the demand by the specified tolerance quantity, the test still passes. For this report, the tolerance is set to one facility. For example in test A-1, the expected total number facilities deployed is 1, and since the facility over-prediction tolerance is 1, the acceptable range of total number of facilities $(x)$ deployed in the entire test scenario is $1<x<2$. If the total number of facilities deployed is within this range, the base case test will pass.  
-
-\subsection{Test A-const-1}
-In test A-const-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-const-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-const-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-A-const-1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
+The naming convention of the numerical tests are in the form of \texttt{[Alphabet]}-\texttt{[Demand]}-\texttt{[Number]}. Each \texttt{Alphabet} refers to a scenario with a unique combination of \texttt{Facilities} and the commodity that drives deployment. Examples of scenarios that correspond to specific \texttt{Alphabets} is given in table \ref{tab:alphabet}. 
 \begin{table}[H]
 	\centering
-	\caption{Test A-const-1 Scenario Input Parameters }
-	\label{tab:test-A-const-1}
+	\caption {An \texttt{Alphabet} corresponding to each test scenario's \texttt{Facilities} and demand-driving commodity combination}
+	\label{tab:alphabet}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
+		\texttt{Alphabet} & \textbf{Facilities in test scenario} & \textbf{\shortstack{Demand-driving \\ commodity}} \\
 		\hline
-		Initial demand & 1 & kg \\
-		Initial facilities & 0 & \#\\
-		Growth Rate & 0 & \\
-\hline
+		A & 1. Fresh fuel producing source facility & Fresh fuel \\
+		\hline 
+		B & \shortstack{1. Fresh fuel producing source facility \\ 2. Reactor facility } & Power \\
+		\hline
+		C & \shortstack{1. Fresh fuel producing source facility \\ 2. Reactor facility \\ 3. Sink facility } & Power \\
+		\hline 
 	\end{tabular}
 \end{table}
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-const-1 Analytical Solution}
-	\label{tab:test-A-const-1ana}
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
-		\hline
-		1 & 1\\
-		2 to 15& 0 \\
-		\hline
-	\end{tabular}
-\end{table}
+The \texttt{Demand} component refers to the how the demand-driving commodity's demand changes over time. Examples of \texttt{Demand} types are \texttt{Constant}, \texttt{Growth} and \texttt{Decline}. The \texttt{Number} component refers to tests with the same \texttt{Alphabet} and \texttt{Demand}, but with other varying parameters.
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-const-1 Base Test Acceptance}
-	\label{tab:test-A-const-1base}
-	\begin{tabular}{|P{6.5cm}|}
-		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
-		\hline
-		1 $<$ x $<$ 2 \\
-		\hline
-	\end{tabular}
-\end{table}
+\subsection{Numerical Tests}
+For the following test scenarios, \texttt{Facility tolerance} is set at 10\% and \texttt{Catch-up tolerance} is set at 12 timesteps. 
 
-\subsection{Test A-const-2}
-In test A-const-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-const-2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-const-2ana} shows the expected analytical solution based on the test scenario.Table \ref{tab:test-A-const-2base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
+\subsubsection{Test \texttt{[A]-[Constant]-[1]}}
+The purpose of test \texttt{[A]-[Constant]-[1]} is to check if the non-optimizing algorithm works for the simplest scenario where there is only \texttt{Source} facilities available in the simulation to meet the constant demand of the demand-driving commodity: fresh fuel. 
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-const-2 Scenario Input Parameters }
-	\label{tab:test-A-const-2}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 2 & kg \\
-		Initial facilities & 1 & \#\\
-		Growth Rate & 0 & \\
-		\hline
-	\end{tabular}
-\end{table}
+Figure \ref{fig:test-a-constant-1-demand} shows the demand of the demand-driving commodity, fresh fuel, and the acceptable range for its supply during the entire simulation time.  
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-const-2 Analytical Solution}
-	\label{tab:test-A-const-2ana}
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
-		\hline
-		1 & 1\\
-		2 to 15& 0 \\
-		\hline
-	\end{tabular}
-\end{table}
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.4]{./figures/Fresh_Fuel_A-Constant-1_demand_supply.png}
+	\end{center}
+        \caption{Fresh fuel demand for test A-const-1 and acceptable range for its supply.}
+	\label{fig:test-a-constant-1-demand}
+\end{figure}
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-const-2 Base Test Acceptance}
-	\label{tab:test-A-const-2base}
-	\begin{tabular}{|P{6.5cm}|}
-		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
-		\hline
-		2 $<$ x $<$ 3 \\
-		\hline
-	\end{tabular}
-\end{table}
+\subsubsection{Test \texttt{[A]-[Growth]-[1]}}
+The purpose of test \texttt{[A]-[Growth]-[1]} is to check if the non-optimizing algorithm works for a scenario where there are both \texttt{Source} and \texttt{Reactor} facilities available in the simulation to meet the linear growth of the demand-driving commodity: power. 
 
-\subsection{Test A-grow-1}
-In test A-grow-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-grow-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-grow-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-A-grow-1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
+Figure \ref{fig:test-a-growth-1-demand} shows the demand of the demand-driving commodity, power, and the acceptable range for its supply during the entire simulation time.  
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-grow-1 Scenario Input Parameters}
-	\label{tab:test-A-grow-1}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 1 & kg \\
-		Initial facilities & 0 & \#\\
-		Growth Rate & 1 &  \\
-		\hline
-	\end{tabular}
-\end{table}
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.4]{./figures/Power_A-Growth-1_demand_supply.png}
+	\end{center}
+        \caption{Power demand for test A-growth-1 and acceptable range for its supply.}
+	\label{fig:test-a-growth-1-demand}
+\end{figure}
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-grow-1 Analytical Solution}
-	\label{tab:test-A-grow-1ana}
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
-		\hline
-		1 & 2\\
-		2 to 12 & 0 \\
-		13 & 1 \\
-		14 to 15 & 0 \\
-		\hline
-	\end{tabular}
-\end{table}
+\subsubsection{Test \texttt{[A]-[Growth]-[2]}}
+The purpose of test \texttt{[A]-[Growth]-[2]} is to check if the non-optimizing algorithm works for a scenario where there are both \texttt{Source} and \texttt{Reactor} facilities available in the simulation to meet the exponential growth of the demand-driving commodity: power. 
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-grow-1 Base Test Acceptance}
-	\label{tab:test-A-grow-1base}
-	\begin{tabular}{|P{6.5cm}|}
-		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
-		\hline
-		3 $<$ x $<$ 4 \\
-		\hline
-	\end{tabular}
-\end{table}
+Figure \ref{fig:test-a-growth-2-demand} shows the demand of the demand-driving commodity, power, and the acceptable range for its supply during the entire simulation time.  
 
-\subsection{Test A-grow-2}
-In test A-grow-2, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-grow-2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-grow-2ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-A-grow-2base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.4]{./figures/Power_A-Growth-2_demand_supply.png}
+	\end{center}
+        \caption{Power demand for test A-growth-2 and acceptable range for its supply.}
+	\label{fig:test-a-growth-2-demand}
+\end{figure}
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-grow-2 Scenario Input Parameters }
-	\label{tab:test-A-grow-2}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 1 & kg \\
-		Initial facilities & 1 & \#\\
-		Growth Rate & 1 &  \\
-		\hline
-	\end{tabular}
-\end{table}
+\subsubsection{Test \texttt{[A]-[Growth]-[3]}}
+The purpose of test \texttt{[A]-[Growth]-[3]} is to check if the non-optimizing algorithm works for a scenario where there are both \texttt{Source} and \texttt{Reactor} facilities available in the simulation to meet the step-wise growth of the demand-driving commodity: power. 
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-grow-2 Analytical Solution}
-	\label{tab:test-A-grow-2ana}
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
-		\hline
-		1 & 1\\
-		2 to 12 & 0 \\
-		13 & 1 \\
-		14 to 15 & 0 \\
-		\hline
-	\end{tabular}
-\end{table}
+Figure \ref{fig:test-a-growth-3-demand} shows the demand of the demand-driving commodity, power, and the acceptable range for its supply during the entire simulation time.  
 
-\begin{table}[H]
-	\centering
-	\caption{Test A-grow-2 Base Test Acceptance}
-	\label{tab:test-A-grow-2base}
-	\begin{tabular}{|P{6.5cm}|}
-		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}}\\
-		\hline
-		3 $<$ x $<$ 4 \\
-		\hline
-	\end{tabular}
-\end{table}
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.4]{./figures/Power_A-Growth-3_demand_supply.png}
+	\end{center}
+        \caption{Power demand for test A-growth-3 and acceptable range for its supply.}
+	\label{fig:test-a-growth-3-demand}
+\end{figure}
 
-\subsection{Test B-const-1}
-In test B-const-1, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:test-B-const-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-B-const-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-const-1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
-
-\begin{table}[H]
-	\centering
-	\caption{Test B-const-1 Scenario Input Parameters}
-	\label{tab:test-B-const-1}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 1 & kg \\
-		Initial facilities & 0 & \#\\
-		Growth Rate & 0 &  \\
-		\hline
-		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 1 & MW \\
-		Initial facilities & 0 & \#\\
-		Growth Rate & 0 &  \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\begin{table}[H]
-	\centering
-	\caption{Test B-const-1 Analytical Solution}
-	\label{tab:test-B-const-1ana}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
-		\hline
-		1 & 1 & 1\\
-		2 to 15 & 0 & 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\begin{table}[H]
-	\centering
-	\caption{Test B-const-1 Base Test Acceptance}
-	\label{tab:test-B-const-1base}
-	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
-		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
-		\hline
-		1 $<$ x $<$ 2 & 1 $<$ x $<$ 2\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection{Test B-const-2}
-In test B-const-2, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:test-B-const-2} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-B-const-2ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-const-2base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
-
-\begin{table}[H]
-	\centering
-	\caption{Test B-const-2 Scenario Input Parameters }
-	\label{tab:test-B-const-2}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 1 & kg \\
-		Initial facilities & 1 & \#\\
-		Growth Rate & 0 &  \\
-		\hline
-		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 1 & MW \\
-		Initial facilities & 1 & \#\\
-		Growth Rate & 0 &  \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\begin{table}[H]
-	\centering
-	\caption{Test B-const-2 Analytical Solution}
-	\label{tab:test-B-const-2ana}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
-		\hline
-		1 & 1 & 1\\
-		2 to 15 & 0 & 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\begin{table}[H]
-	\centering
-	\caption{Test B-const-2 Base Test Acceptance}
-	\label{tab:test-B-const-2base}
-	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
-		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
-		\hline
-		1 $<$ x $<$ 2 & 1 $<$ x $<$ 2\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection{Test B-grow-1}
-In test B-grow-1, both a \texttt{source} and \texttt{reactor} facility is present in the test scenario. Table \ref{tab:test-B-grow-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-B-grow-1ana} shows the expected analytical solution based on the test scenario. Table \ref{tab:test-B-grow-1base} shows the accepted range of total number of facilities deployed over the test scenario which will pass the base test, which factors in the facility over-prediction tolerance of 1. 
-
-
-\begin{table}[H]
-	\centering
-	\caption{Test B-grow-1 Scenario Input Parameters }
-	\label{tab:test-B-grow-1}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 1 & kg \\
-		Initial facilities & 0 & \#\\
-		Growth Rate & 1 &  \\
-		\hline
-		\textbf{Reactor Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 1 & MW \\
-		Initial facilities & 0 & \#\\
-		Growth Rate & 1 &  \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\begin{table}[H]
-	\centering
-	\caption{Test B-grow-1 Analytical Solution}
-	\label{tab:testB-grow-1ana}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
-		\hline
-		1 & 2 & 2\\
-		2 to 12 & 0 & 0\\
-		13 & 1 & 1\\
-		14 to 15 & 0 & 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\begin{table}[H]
-	\centering
-	\caption{Test B-grow-1 Base Test Acceptance}
-	\label{tab:test-B-grow-1base}
-	\begin{tabular}{|P{6.5cm}|P{6.5cm}|}
-		\hline
-		\textbf{\shortstack{Acceptable total No. of Source \\Facilities Deployed + tolerance}} &\textbf{\shortstack{Acceptable total No. of Reactor \\Facilities Deployed + tolerance}}\\
-		\hline
-		3 $<$ x $<$ 4 & 3 $<$ x $<$ 4\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection{Test A-const-3}
-In test A-const-3, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-const-3} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-const-3ana} shows the expected analytical solution based on the test scenario. 
-
-\begin{table}[H]
-	\centering
-	\caption{Test A-const-3 Scenario Input Parameters }
-	\label{tab:test-A-const-3}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 0 & kg \\
-		Initial facilities & 1 & \#\\
-		Growth Rate & 0 &  \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\begin{table}[H]
-	\centering
-	\caption{Test A-const-3 Analytical Solution}
-	\label{tab:test-A-const-3ana}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}& \textbf{\shortstack{No. of Source \\Facilities Decomissioned}}\\
-		\hline
-		1 & 1 & 0\\
-		2 & 0 & 1\\
-		3 to 15 & 0 & 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection{Test A-decl-1}
-In test A-decl-1, only a \texttt{source} facility is present in the test scenario. Table \ref{tab:test-A-decl-1} shows the input parameters of the source facility in the test scenario. Table \ref{tab:test-A-decl-1ana} shows the expected analytical solution based on the test scenario.
-
-\begin{table}[H]
-	\centering
-	\caption{Test A-decl-1 Scenario Input Parameters }
-	\label{tab:test-A-decl-1}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Source Parameter} & \textbf{Value} & \textbf{Units} \\
-		\hline
-		Initial demand & 1 & kg \\
-		Initial facilities & 1 & \#\\
-		Growth Rate & -1 &  \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\begin{table}[H]
-	\centering
-	\caption{Test A-decl-1 Analytical Solution}
-	\label{tab:test-A-decl-1ana}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}& \textbf{\shortstack{No. of Source \\Facilities Decomissioned}}\\
-		\hline
-		1 to 12 & 1 & 0\\
-		13 & 0 & 1\\
-		14 to 15 & 0 & 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\section{Numerical Test Results}
-It was found that none of the exact tests and base case tests passed. 
-The failures are attributed to three reasons:
-
-\begin{enumerate}
-	\item There is a test failure when there is no initial facility present. An initial condition must be given for the algorithm to understand the capacity of the facility it deploys.
-	\item There is a test failure when there is growth in the demand. The algorithm failed to deploy facilities to meet the increase in demand.
-	\item There is a test failure when facilities are expected to be decommissioned. There is yet to be an implementation on decommissioning behavior.
-\end{enumerate}
-
-Despite failures in these situations, the non-optimizing method proved to have commissioning capabilities
-to meet demand. Because of the limitation in the algorithm, it is hard to predict demand with precision
-in such a short time. However, the same numerical experiments can be applied to the deterministic
-optimizing algorithm, which holds more promise. The goal is that the deterministic optimization method
-will be able to overcome the issues faced by the non-optimizing method with reference to the
-requirement of an initial condition, growth in demand. Also, the capability to decommission facilities
-upon oversupply will be added.
-
-Appendix C reflects the numerical experiment solution output by the non-optimizing prediction algorithm for each test scenario defined in section 6. 
-
-\pagebreak
-
-\section{References}
-\bibliography{bibliography}
-
-\pagebreak
-
-\section*{Appendix A - parameter configuration}
-Appendix A shows the json file that contains the simulation parameters that are common between all the test scenarios discussed in Section 6.  
-
-\begin{minted}{json}
-template = {
-"simulation": {
-"archetypes": {
-"spec": [
-{"lib": "agents", "name": "NullRegion"}, 
-{"lib": "cycamore", "name": "Source"}, 
-{"lib": "cycamore", "name": "Reactor"},
-{"lib": "cycamore", "name": "Sink"},
-{"lib": "d3ploy.no_inst", "name": "NOInst"}
-]
-}, 
-"control": {"duration": "15", "startmonth": "1", "startyear": "2000"}, 
-"recipe": [
-{
-"basis": "mass", 
-"name": "fresh_uox", 
-"nuclide": [{"comp": "0.711", "id": "U235"}, {"comp": "99.289", "id": "U238"}]
-}, 
-{
-"basis": "mass", 
-"name": "spent_uox", 
-"nuclide": [{"comp": "50", "id": "Kr85"}, {"comp": "50", "id": "Cs137"}]
-}
-], 
-"facility": [{
-"config": {"Source": {"outcommod": "fuel",
-"outrecipe": "fresh_uox",
-"throughput": "1",
-"source_record_supply": "fuel"}}, 
-"name": "source"
-},
-{
-"config": {"Sink": {"in_commods": {"val":"spent_uox"},
-"max_inv_size": 1,
-"sink_record_demand": "fuel_cap"}}, 
-"name": "sink"
-},
-{
-"config": {
-"Reactor":{
-"assem_size":"1",
-"cycle_time": "1", 
-"fuel_incommods": {"val": "fuel"}, 
-"fuel_inrecipes": {"val": "fresh_uox"}, 
-"fuel_outcommods": {"val": "spent_uox"}, 
-"fuel_outrecipes": {"val": "spent_uox"}, 
-"n_assem_batch": "1", 
-"n_assem_core": "1", 
-"power_cap": "1", 
-"refuel_time": "0",
-"reactor_fuel_demand": "fuel_reactor"
-}
-},
-"name": "reactor"
-}]}}
-\end{minted}
-
-\pagebreak
-\section*{Appendix B - Sample Test Code }
-\subsection*{Sample test code for test A-const-1}
-Appendix B shows the python file that contains the a segment of the simulation parameters that are unique to test A-const-1 and the code for test A-const-1. 
-\begin{minted}{python}
-# Test A_const_1
-INIT_DEMAND = copy.deepcopy(TEMPLATE)
-INIT_DEMAND["simulation"].update({"region": {
-"config": {"NullRegion": "\n      "},
-"institution": {
-"config": {
-"NOInst": {
-"calc_method": "arma",
-"demand_commod": "POWER",
-"demand_std_dev": "0.0",
-"growth_rate": "0.0",
-"initial_demand": "1",
-"prototypes": {"val": "source"},
-"steps": "1",
-"supply_commod": "fuel"
-}
-},
-"name": "source_inst"
-},
-"name": "SingleRegion"
-}})
-
-@pytest.mark.base
-def test_a1_init_demand():
-# tests if NOInst deploys a source
-# given initial demand and no initial facilities
-output_file = 'init_file.sqlite'
-input_file = output_file.replace('.sqlite', '.json')
-with open(input_file, 'w') as f:
-json.dump(INIT_DEMAND, f)
-s = subprocess.check_output(['cyclus', '-o', output_file, input_file],
-universal_newlines=True, env=ENV)
-# check if ran successfully
-assert("Cyclus run successful!" in s)
-
-# getting the sqlite file
-cur = get_cursor(output_file)
-
-# check base solution
-source_base = cur.execute(query).fetchone()
-assert(1 <= source_base[0] <= (1 + tol))
-
-@pytest.mark.exact
-def test_a1_init_demand_exact():
-output_file = 'init_file.sqlite'
-cur = get_cursor(output_file)
-# check exact solution
-source_exact = cur.execute(query + " AND EnterTime = 1").fetchone()
-assert(source_exact[0] == 1)
-\end{minted}
-
-\pagebreak
-
-\section*{Appendix C - Numerical Experiment Solution for test scenarios}
-\subsection*{Test A-const-1}
-\begin{table}[H]
-	\centering
-	\caption{Test A-const-1 Numerical Experiment Solution}
-	\label{tab:test-A-const-1num}
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
-		\hline
-		1 to 15& 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection*{Test A-const-2}
-\begin{table}[H]
-	\centering
-	\caption{Test A-const-2 Numerical Experiment Solution}
-	\label{tab:test-A-const-2a2num}
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
-		\hline
-		1 & 0\\
-		2 & 1\\
-		3 & 1\\
-		4 & 1 \\
-		5 & 0 \\
-		6 & 1 \\
-		7 to 15 & 0 \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection*{Test A-grow-1}
-\begin{table}[H]
-	\centering
-	\caption{Test A-grow-1 Numerical Experiment Solution}
-	\label{tab:test-A-grow-1num}
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
-		\hline
-		1 to 15& 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection*{Test A-grow-2}
-\begin{table}[H]
-	\centering
-	\caption{Test A-grow-2 Numerical Experiment Solution}
-	\label{tab:test-A-grow-2num}
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}\\
-		\hline
-		1 to 15& 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection*{Test B-const-1}
-\begin{table}[H]
-	\centering
-	\caption{Test B-const-1 Numerical Experiment Solution}
-	\label{tab:test-B-const-1num}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
-		\hline
-		1 to 15 & 0 & 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection*{Test B-const-2}
-\begin{table}[H]
-	\centering
-	\caption{Test B-const-2 Numerical Experiment Solution}
-	\label{tab:test-B-const-2num}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
-		\hline
-		1 & 0 & 0\\
-		2 & 1 & 0\\
-		3 & 1 & 0\\
-		4 & 1 & 0\\
-		5 & 0 & 0\\
-		6 & 1 & 0\\
-		7 to 15 & 0 & 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection*{Test B-grow-1}
-\begin{table}[H]
-	\centering
-	\caption{Test B-grow-1 Numerical Experiment Solution}
-	\label{tab:test-B-grow-1num}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}} & \textbf{\shortstack{No. of Reactor \\Facilities Deployed}}\\
-		\hline
-		1 to 15 & 0 & 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection*{Test A-const-3}
-\begin{table}[H]
-	\centering
-	\caption{Test A-const-3 Numerical Experiment Solution}
-	\label{tab:test-A-const-3num}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}& \textbf{\shortstack{No. of Source \\Facilities Decomissioned}}\\
-		\hline
-		1 to 15 & 0 & 0\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection*{Test A-decl-1}
-\begin{table}[H]
-	\centering
-	\caption{Test A-decl-1 Numerical Experiment Solution}
-	\label{tab:test-A-decl-1num}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Time Step} & \textbf{\shortstack{No. of Source \\Facilities Deployed}}& \textbf{\shortstack{No. of Source \\Facilities Decomissioned}}\\
-		\hline
-		1 to 15 & 0 & 0\\
-		\hline
-	\end{tabular}
-\end{table}
 
 \end{document}
-
 
 
