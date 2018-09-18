@@ -58,7 +58,7 @@ def plot_demand_supply(duration,demand_curve,input1,input2,commodity,test_name):
     ax.set_title('Test %s : %s (Demand-driving Commodity) demand and acceptable range for its supply' %(test_name,commodity) ,fontsize=16)
     plt.savefig('demand_supply_%s' %test_name, bbox_inches="tight")
 
-    return 
+    return fig
 
 plot_demand_supply(1000,'exponential',10000,0,'Fresh Fuel','A-Constant-1')
 plot_demand_supply(1000,'linear',10,0,'Fresh Fuel','A-Growth-1')
