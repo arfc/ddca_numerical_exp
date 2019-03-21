@@ -26,7 +26,6 @@
 \usepackage{titling}
 \usepackage[hang,flushmargin]{footmisc}
 \renewcommand*\footnoterule{}
-\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 \usepackage[newfloat]{minted}
 \newenvironment{code}{\captionsetup{type=listing}}{}
 \SetupFloatingEnvironment{listing}{name=Code}
@@ -34,16 +33,16 @@
 
 \bibliographystyle{abbrv}
 \usepackage{tikz}
-\usepackage{seqsplit}
+
+
 \usetikzlibrary{shapes.geometric,arrows}
 \tikzstyle{process} = [rectangle, rounded corners, minimum width=1cm, minimum height=1cm,text centered, draw=black, fill=blue!30]
 \tikzstyle{arrow} = [thick,->,>=stealth]
-\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
-minimum height=2em]
+
 
 \graphicspath{{images/}}
 \title{Final Report}
-\author{Gwendolyn Chee, Roberto Fairhurst, Robert Flanagan, Kathryn Huff}
+\author{Gwendolyn J. Chee, Roberto E. Fairhurst, Robert R. Flanagan, Kathryn D. Huff}
 
 
 \begin{document}
@@ -174,6 +173,5 @@ closed fuel cycle and transition scenario.
 \bibliography{bibliography}
 
 \end{document}
-
 
 
