@@ -26,12 +26,6 @@
 \usepackage{titling}
 \usepackage[hang,flushmargin]{footmisc}
 \renewcommand*\footnoterule{}
-\usepackage[newfloat]{minted}
-\newenvironment{code}{\captionsetup{type=listing}}{}
-\SetupFloatingEnvironment{listing}{name=Code}
-\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
-
-\bibliographystyle{abbrv}
 \usepackage{tikz}
 
 
@@ -59,7 +53,7 @@ The objectives are systemic demands such as "1\% power growth",
 while the constraints are availability of new nuclear technology.
 To effectively simulate a nuclear fuel cycle, \gls{NFC} simulators 
 must bring demand responsive deployment decisions into the dynamics
-of the simulation logic \cite{huff_current_2017}.
+of the simulation logic \cite{huff_current_2017}. 
 
 ** Why? 
 
@@ -101,6 +95,18 @@ Hello I am \Cyclus. What am I?
 To meet the project objective, an algorithm that deploys 
 facilities to meet demand for any commodity while 
 minimizing oversupply was developed. 
+The \texttt{Institution} agent accepts input variables that instructs
+the algorithm. 
+
+\subsection{Input Variables}
+Explain the notion of demand and supply driven deployment 
+and all the specific input variables. 
+
+\subsection{Algorithm Flow}
+Describe how the algorithm flows in terms of deploy solver function, 
+check constraint etc. 
+
+\subsection{Prediction Methods}
 At each time step, the demand and supply for each commodity is 
 predicted for the following time step. 
 Based on the prediction, \deploy deploys facilities to meet the 
@@ -110,16 +116,16 @@ of algorithms: non-optimizing, time series forecasting,
 deterministic optimizing and machine learning. 
 The choice of which prediction algorithm to use is a user input. 
 
-\subsection{Non-Optimizing}
+\subsubsection{Non-Optimizing}
 List and describe each algorithm 
 
-\subsection{Time Series Forecasting}
+\subsubsection{Time Series Forecasting}
 List and describe each algorithm 
 
-\subsection{Deterministic Optimizing}
+\subsubsection{Deterministic Optimizing}
 List and describe each algorithm 
 
-\subsection{Machine Learning}
+\subsubsection{Machine Learning}
 List and describe each algorithm 
 
 %----------------------------------------------------------------%
@@ -146,28 +152,56 @@ closed fuel cycle and transition scenario.
 
 \subsection{Front-end Deployment}
 
-\begin{table}[H]
+\begin{table}[h]
 	\centering
 	\caption {Front-end Deployment Numerical Experiments}
 	\label{tab:fenum}
-	\begin{tabular}{|l|p{2.6cm}|p{2.5cm}|p{2cm}|p{2.6cm}|}
+	\begin{tabular}{|l|p{2.75cm}|p{2.5cm}|p{2.1cm}|l|}
 		\hline
-		\textbf{\shortstack{Test \\ Scenario}} & \textbf{\shortstack{Facilities \\ Present}} & \textbf{\shortstack{Reactor \\ Parameters}} & \textbf{\shortstack{Driving \\ commodity}} & \textbf{\shortstack{Demand \\ Equation}}\\
+		\textbf{\shortstack{Test \\ Scenario}} & \textbf{\shortstack{Facilities \\ Present}} & \textbf{\shortstack{Reactor \\ Parameters}} & \textbf{\shortstack{Driving \\ Commodity}} & \textbf{\shortstack{Demand \\ Equation}}\\
 		\hline
-		1 & \texttt{Source}, \texttt{Sink} & - & Fuel & 1000*t\\
+		1 & \texttt{Source}, \texttt{Sink} & - & Fuel & 1000t\\
 		\hline
-		2 & \texttt{Source}, \texttt{Reactor} & Cycle time: 1, Refuel time: 0 & Power & 1000*t\\
+		2 & \texttt{Source}, \texttt{Reactor} & Cycle time: 1, Refuel time: 0 & Power & 1000t\\
 		\hline
-		3 & \texttt{Source}, \texttt{Reactor} & Cycle time: 3, Refuel time: 1 & Power & 1000*t\\
+		3 & \texttt{Source}, \texttt{Reactor} & Cycle time: 3, Refuel time: 1 & Power & 1000t\\
 		\hline
-		4 & \texttt{Source}, \texttt{Reactor}, \texttt{Sink} & Cycle time: 1, Refuel time: 0 & Power & $10(1+1.5)^{t/12}$\\
+		4 & \texttt{Source}, \texttt{Reactor}, \texttt{Sink} & Cycle time: 1, Refuel time: 0 & Power & $10(2.5)^{t/12}$\\
 		\hline
 	\end{tabular}
 \end{table}
 
 \subsection{Back-end Deployment}
 
+\begin{table}[h]
+	\centering
+	\caption {Back-end Deployment Numerical Experiments}
+	\label{tab:benum}
+	\begin{tabular}{|l|p{2.75cm}|p{2.5cm}|p{2.1cm}|l|}
+		\hline
+		\textbf{\shortstack{Test \\ Scenario}} & \textbf{\shortstack{Facilities \\ Present}} & \textbf{\shortstack{Reactor \\ Parameters}} & \textbf{\shortstack{Driving \\ Commodity}} & \textbf{\shortstack{Demand \\ Equation}}\\
+		\hline
+		5 & \texttt{Source}, \texttt{Reactor}, \texttt{Sink} & Cycle time: 1, Refuel time: 0 & Power & 1000t\\
+		\hline
+		6 & \texttt{Source}, \texttt{Reactor}, \texttt{Storage}, \texttt{Sink} & Cycle time: 1, Refuel time: 0 & Power & 1000t\\
+		\hline
+	\end{tabular}
+\end{table}
+
 \subsection{Closed Fuel Cycle}
+
+\begin{table}[h]
+	\centering
+	\caption {Closed Fuel Cycle Deployment Numerical Experiment}
+	\label{tab:cfcnum}
+	\begin{tabular}{|l|p{2.75cm}|p{2.5cm}|p{2.1cm}|l|}
+		\hline
+		\textbf{\shortstack{Test \\ Scenario}} & \textbf{\shortstack{Facilities \\ Present}} & \textbf{\shortstack{Reactor \\ Parameters}} & \textbf{\shortstack{Driving \\ Commodity}} & \textbf{\shortstack{Demand \\ Equation}}\\
+		\hline
+		7 & \texttt{Source}, \texttt{Reactors}, \texttt{Separation Facilities}, \texttt{Mixer Facilities} & Cycle time: 1, Refuel time: 0 & Power & 1000t\\
+		\hline
+	\end{tabular}
+\end{table}
 
 \subsection{Transition Scenario}
 
