@@ -36,19 +36,21 @@
 
 
 \usetikzlibrary{shapes.geometric,arrows}
-\tikzstyle{process} = [rectangle, rounded corners, minimum width=1cm, minimum height=1cm,text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, rounded corners, 
+minimum width=1cm, minimum height=1cm,text centered, draw=black, 
+fill=blue!30]
 \tikzstyle{arrow} = [thick,->,>=stealth]
 
 
-\graphicspath{{images/}}
-\title{Final Report}
-\author{Gwendolyn J. Chee, Roberto E. Fairhurst, Robert R. Flanagan, Kathryn D. Huff}
+\graphicspath{{figures/}}
+\title{DDCA: Final Report}
+\author{Gwendolyn J. Chee, Roberto E. Fairhurst, 
+\\ \vspace{0.5em} Robert R. Flanagan, Kathryn D. Huff}
 
 
 \begin{document}
 	\maketitle
 	\hrule
-
 
 %----------------------------------------------------------------%
 \section{Introduction}
@@ -57,7 +59,7 @@ The objectives are systemic demands such as "1\% power growth",
 while the constraints are availability of new nuclear technology.
 To effectively simulate a nuclear fuel cycle, \gls{NFC} simulators 
 must bring demand responsive deployment decisions into the dynamics
-of the simulation logic \cite{huff_current_2017}. 
+of the simulation logic \cite{huff_current_2017}.
 
 ** Why? 
 
@@ -148,14 +150,17 @@ closed fuel cycle and transition scenario.
 	\centering
 	\caption {Front-end Deployment Numerical Experiments}
 	\label{tab:fenum}
-	\begin{tabular}{|l|p{2.5cm}|p{2.5cm}|l|p{2.8cm}|}
+	\begin{tabular}{|l|p{2.6cm}|p{2.5cm}|p{2cm}|p{2.6cm}|}
 		\hline
-		\textbf{Test Scenario} & \textbf{Facilities Present} & \textbf{\shortstack{Reactor \\ Parameters}} & \textbf{\shortstack{Demand-driving \\ commodity}} & \textbf{\shortstack{Demand \\ Equation}}\\
+		\textbf{\shortstack{Test \\ Scenario}} & \textbf{\shortstack{Facilities \\ Present}} & \textbf{\shortstack{Reactor \\ Parameters}} & \textbf{\shortstack{Driving \\ commodity}} & \textbf{\shortstack{Demand \\ Equation}}\\
 		\hline
-		1 & \texttt{Source} and \texttt{Sink} & - & fuel & 1000*t\\
-		2 & \texttt{Source} and \texttt{Reactor} & Cycle time: 1, Refuel time: 0 & Power & 1000*t\\
-		3 & \texttt{Source} and \texttt{Reactor} & Cycle time: 3, Refuel time: 1 & Power & 1000*t\\
-		4 & \texttt{Source}, \texttt{Reactor} and \texttt{Sink} & Cycle time: 1, Refuel time: 0 & Power & 10*(1+1.5)**(t/12)\\
+		1 & \texttt{Source}, \texttt{Sink} & - & Fuel & 1000*t\\
+		\hline
+		2 & \texttt{Source}, \texttt{Reactor} & Cycle time: 1, Refuel time: 0 & Power & 1000*t\\
+		\hline
+		3 & \texttt{Source}, \texttt{Reactor} & Cycle time: 3, Refuel time: 1 & Power & 1000*t\\
+		\hline
+		4 & \texttt{Source}, \texttt{Reactor}, \texttt{Sink} & Cycle time: 1, Refuel time: 0 & Power & $10(1+1.5)^{t/12}$\\
 		\hline
 	\end{tabular}
 \end{table}
