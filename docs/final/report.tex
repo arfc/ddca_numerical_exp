@@ -1,0 +1,179 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{caption} % for table captions
+\usepackage{amsmath} % for multi-line equations and piecewises
+\DeclareMathOperator{\sign}{sign}
+\usepackage{graphicx}
+\usepackage{relsize}
+%\usepackage{textcomp}
+\usepackage{xspace}
+\usepackage{verbatim} % for block comments
+%\usepackage{subfig} % for subfigures
+\usepackage{enumitem} % for a) b) c) lists
+\newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
+\newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
+\newcommand{\deploy}{\texttt{d3ploy}\xspace}%
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage[acronym,toc]{glossaries}
+\include{acros}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newcolumntype{b}{X}
+\newcolumntype{f}{>{\hsize=.15\hsize}X}
+\newcolumntype{s}{>{\hsize=.5\hsize}X}
+\newcolumntype{m}{>{\hsize=.75\hsize}X}
+\newcolumntype{r}{>{\hsize=1.1\hsize}X}
+\usepackage{titling}
+\usepackage[hang,flushmargin]{footmisc}
+\renewcommand*\footnoterule{}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\usepackage[newfloat]{minted}
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Code}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+\bibliographystyle{abbrv}
+\usepackage{tikz}
+\usepackage{seqsplit}
+\usetikzlibrary{shapes.geometric,arrows}
+\tikzstyle{process} = [rectangle, rounded corners, minimum width=1cm, minimum height=1cm,text centered, draw=black, fill=blue!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
+minimum height=2em]
+
+\graphicspath{{images/}}
+\title{Final Report}
+\author{Gwendolyn Chee, Roberto Fairhurst, Robert Flanagan, Kathryn Huff}
+
+
+\begin{document}
+	\maketitle
+	\hrule
+
+
+%----------------------------------------------------------------%
+\section{Introduction}
+\gls{NFC} simulation scenarios are constrained objective functions. 
+The objectives are systemic demands such as "1\% power growth", 
+while the constraints are availability of new nuclear technology.
+To effectively simulate a nuclear fuel cycle, \gls{NFC} simulators 
+must bring demand responsive deployment decisions into the dynamics
+of the simulation logic \cite{huff_current_2017}. 
+
+** Why? 
+
+Thus, a \gls{NFC} simulator should have the capability to deploy 
+supporting fuel cycle facilities to meet a user-defined commodity
+demand. 
+While automated power production deployment is common in most fuel
+cycle simulators, automated deployment of supportive fuel cycle 
+facilities is non-existent. 
+Instead, the user must detail the deployment timeline of all 
+supporting facilities or have infinite capacity support facilities
+to ensure that there is no gap in the nuclear fuel cycle supply 
+chain. 
+These user-defined assumptions are not an accurate reflection 
+of the real world. 
+This shortcoming exists also in the fuel cycle simulator, \Cyclus. 
+Therefore, there is a need to develop demand-driven deployment 
+capability in \Cyclus to deploy facilities to meet front-end and 
+back-end demands of the fuel cycle.
+
+The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) 
+aims to develop \Cyclus's demand-driven deployment capabilities. 
+The developed algorithm will be in the form of a \Cyclus 
+\texttt{Institution} agent, and will deploy \texttt{Facilities} 
+to meet the front-end and back-end demands of the fuel cycle.
+This demand-driven deployment capability is referred to as 
+\deploy. 
+Its goal is to meet demand for any commodity while minimizing 
+oversupply. 
+
+** Description of using \deploy to run transition scenarios more effectively ** 
+
+%----------------------------------------------------------------%
+\section{Background}
+Hello I am \Cyclus. What am I? 
+
+%----------------------------------------------------------------%
+\section{Method}
+To meet the project objective, an algorithm that deploys 
+facilities to meet demand for any commodity while 
+minimizing oversupply was developed. 
+At each time step, the demand and supply for each commodity is 
+predicted for the following time step. 
+Based on the prediction, \deploy deploys facilities to meet the 
+predicted demand. 
+The demand and supply predictions are governed by four types
+of algorithms: non-optimizing, time series forecasting, 
+deterministic optimizing and machine learning. 
+The choice of which prediction algorithm to use is a user input. 
+
+\subsection{Non-Optimizing}
+List and describe each algorithm 
+
+\subsection{Time Series Forecasting}
+List and describe each algorithm 
+
+\subsection{Deterministic Optimizing}
+List and describe each algorithm 
+
+\subsection{Machine Learning}
+List and describe each algorithm 
+
+%----------------------------------------------------------------%
+\section{Demonstration of \deploy capabilities}
+The \deploy capabilities will be demonstrated through numerical
+experiments. 
+The numerical experiments are in the form of fuel cycle scenarios 
+where the demand driving commodity, its demand curve and the 
+combination of facilities in the scenario are varied. 
+Each numerical experiment will be run for each prediction
+algorithm. 
+The prediction algorithms will be compared to determine each 
+of their strengths and weaknesses. 
+And how their overall performance demonstrates \deploy's 
+capabilities. 
+
+The basis of comparison for the numerical experiments are: 
+the number of time steps where demand exceeds supply, residuals
+and $\chi^2$ goodness of fit test. 
+
+The numerical experiments are broken down into four types: 
+front-end facility deployment, back-end facility deployment, 
+closed fuel cycle and transition scenario. 
+
+\subsection{Front-end Deployment}
+
+\begin{table}[H]
+	\centering
+	\caption {Front-end Deployment Numerical Experiments}
+	\label{tab:fenum}
+	\begin{tabular}{|l|p{2.5cm}|p{2.5cm}|l|p{2.8cm}|}
+		\hline
+		\textbf{Test Scenario} & \textbf{Facilities Present} & \textbf{\shortstack{Reactor \\ Parameters}} & \textbf{\shortstack{Demand-driving \\ commodity}} & \textbf{\shortstack{Demand \\ Equation}}\\
+		\hline
+		1 & \texttt{Source} and \texttt{Sink} & - & fuel & 1000*t\\
+		2 & \texttt{Source} and \texttt{Reactor} & Cycle time: 1, Refuel time: 0 & Power & 1000*t\\
+		3 & \texttt{Source} and \texttt{Reactor} & Cycle time: 3, Refuel time: 1 & Power & 1000*t\\
+		4 & \texttt{Source}, \texttt{Reactor} and \texttt{Sink} & Cycle time: 1, Refuel time: 0 & Power & 10*(1+1.5)**(t/12)\\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection{Back-end Deployment}
+
+\subsection{Closed Fuel Cycle}
+
+\subsection{Transition Scenario}
+
+\section{Transition Scenarios}
+
+
+\pagebreak 
+\bibliography{bibliography}
+
+\end{document}
+
+
+
