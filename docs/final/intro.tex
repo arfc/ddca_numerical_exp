@@ -1,0 +1,38 @@
+\section{Introduction}
+\gls{NFC} simulation scenarios are constrained objective functions. 
+The objectives are systemic demands such as "1\% power growth", 
+while the constraints are availability of new nuclear technology.
+To effectively simulate a nuclear fuel cycle, \gls{NFC} simulators 
+must bring demand responsive deployment decisions into the dynamics
+of the simulation logic \cite{huff_current_2017}. 
+
+** Why? 
+
+Thus, a \gls{NFC} simulator should have the capability to deploy 
+supporting fuel cycle facilities to meet a user-defined commodity
+demand. 
+While automated power production deployment is common in most fuel
+cycle simulators, automated deployment of supportive fuel cycle 
+facilities is non-existent. 
+Instead, the user must detail the deployment timeline of all 
+supporting facilities or have infinite capacity support facilities
+to ensure that there is no gap in the nuclear fuel cycle supply 
+chain. 
+These user-defined assumptions are not an accurate reflection 
+of the real world. 
+This shortcoming exists also in the fuel cycle simulator, \Cyclus. 
+Therefore, there is a need to develop demand-driven deployment 
+capability in \Cyclus to deploy facilities to meet front-end and 
+back-end demands of the fuel cycle.
+
+The Demand-Driven Cycamore Archetype project (NEUP-FY16-10512) 
+aims to develop \Cyclus's demand-driven deployment capabilities. 
+The developed algorithm will be in the form of a \Cyclus 
+\texttt{Institution} agent, and will deploy \texttt{Facilities} 
+to meet the front-end and back-end demands of the fuel cycle.
+This demand-driven deployment capability is referred to as 
+\deploy. 
+Its goal is to meet demand for any commodity while minimizing 
+oversupply. 
+
+** Description of using \deploy to run transition scenarios more effectively ** 
