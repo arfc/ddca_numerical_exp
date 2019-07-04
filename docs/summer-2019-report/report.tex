@@ -534,7 +534,7 @@ All the analyzed scenarios started at EG01. In EG01 all the reactors were LWR's.
 In EG23 Fast reactors (FR's) produced all the power. The reactors relied on the continuous recycle of U/Pu with the addition of new natural-U to the cycle.
 EG24 was similar to EG23 but its cycle utilized continuous recycling of U/TRU with the addition of new natural-U.
 
-The present work focused on two transition scenarios: EG01-EG23 and EG01-EG24, shown in Figure \ref{fig:flow}. The simulations started with a fleet of LWR's. After 80 years, the simulation decommissioned the LWR's progressively transitioning to FR's. Finally, the FR's produce all the power. The start up of the FR's relies on the reprocessed Pu from the LWR's. After the transition, the FR's are able to produce their own Pu to sustain the cycle.
+The present work focused on two transition scenarios: EG01-EG23 and EG01-EG24, shown in Figure \ref{fig:flow}. The simulations started with a fleet of LWR's. After 80 years, the simulation decommissioned the LWR's progressively transitioning to FR's. Finally, the FR's produced all the power. The start up of the FR's relies on the reprocessed Pu from the LWR's. After the transition, the FR's were able to produce their own Pu to sustain the cycle.
 
 % Add Figure of the Flow
 \begin{figure*}[]
@@ -562,34 +562,13 @@ The present work focused on two transition scenarios: EG01-EG23 and EG01-EG24, s
 
 The following section presents the results for EG01-EG23 and EG01-EG24. The power demand considered was a constant of 60 GW at all times. The transition scenarios used the capability of deploying facilities based on the difference between predicted demand and predicted supply. The supply buffer of power was 2000 MW. 
 
-There is also a sensitivity analysis of the buffer size. Another sensitivity analysis shows the dependency of the undersupply on the number of previous time steps used to calculate the predicted demand and supply.
+This section counts also with a sensitivity analysis of the buffer size. Another sensitivity analysis shows the dependency of the undersupply on the number of previous time steps used to calculate the predicted demand and supply.
 
 \subsection{EG01-EG23}
 
-Figure \ref{fig:23power} shows the power demand and supply obtained using different prediction methods. Following, the tables \ref{tab:23-power} and \ref{tab:23-commod} display a comparison of the different algorithms. The table \ref{tab:23-power} has the Cumulative Undersupply and the Cumulative Oversupply magnitudes. These values represent the summation of the difference between the power supplied and the power demanded for all the time steps in the simulation.
+Figure \ref{fig:23power} shows the power demand and supply obtained using different prediction methods. Following, the tables \ref{tab:23-power} and \ref{tab:23-commod} display a comparison of the different algorithms. The table \ref{tab:23-power} has the Cumulative Undersupply and the Cumulative Oversupply magnitudes. These values represent the summation of the difference between the power supplied and the power demanded for all the time steps in the simulation. This magnitude could be thought as Energy. For the undersupply, it would be the lack of Energy provided during the time steps where the supply did not meet the demand. On the contrary, the oversupply would be the extra energy produced.
 
-% Change figures and add SO
-\begin{figure*}[]
-	\centering
-	\begin{subfigure}[t]{\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{23-power-bufferB20001.png} 
-		\caption{NO algorithms.}
-		\label{fig:23powerNO}
-	\end{subfigure}
-	\vspace{1cm}
-	\begin{subfigure}[t]{\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{23-power-bufferB20002.png} 
-		\caption{DO algorithms.}
-		\label{fig:23powerDO}
-	\end{subfigure}
-	\hfill
-	\caption{Plot of the power demand and supply of EG01-EG23 for a constant power demand of 60GW for different prediction algorithms.}
-	\label{fig:23power}
-\end{figure*}
-
-%Add SO
+%Add SO to the tables
 \begin{table*}[]
 	\centering
 	\caption {Undersupply and oversupply of Power for the different algorithms used to calculate EG01-EG23.}
@@ -627,74 +606,119 @@ Figure \ref{fig:23power} shows the power demand and supply obtained using differ
 	\end{tabular}
 \end{table*}
 
-
-
-
-
-
-
-\subsection{EG01-EG24}
-
-% Change Figures!!!
+% Add SO to the figures
 \begin{figure*}[]
 	\centering
 	\begin{subfigure}[t]{\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{24-power1.png} 
-		\caption{Plot of the power demand and supply for NO.}
+		\includegraphics[width=\linewidth]{23-power-bufferB20001.png} 
+		\caption{NO algorithms.}
+		\label{fig:23powerNO}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{23-power-bufferB20002.png} 
+		\caption{DO algorithms.}
+		\label{fig:23powerDO}
+	\end{subfigure}
+	\hfill
+	\caption{Plot of the power demand and supply of EG01-EG23 for a constant power demand of 60GW for different prediction algorithms.}
+	\label{fig:23power}
+\end{figure*}
+
+\subsection{EG01-EG24}
+
+Figure \ref{fig:24power} shows the power demand and supply obtained using different prediction methods. Following, the tables \ref{tab:24-power} and \ref{tab:24-commod} display a comparison of the different algorithms.
+
+%Add SO to the tables
+\begin{table*}[]
+	\centering
+	\caption {Undersupply and oversupply of Power for the different algorithms used to calculate EG01-EG24.}
+	\label{tab:24-power}
+	\begin{tabular}{|l|c|c|c|}
+		\hline
+		& \multicolumn{3}{c|}{Power} \\ \hline
+		Algorithm & \shortstack{No. of time steps\\of undersupply}  & 
+		\shortstack{Cumulative\\Undersupply[GW]}  & \shortstack{Cumulative\\Oversupply[GW]} \\ \hline
+		MA        & 20 	& 20.0  &  920.5   \\ \hline
+		ARMA      & 18 	&  7.7  &  1036.5  \\ \hline
+		ARCH      &  0 	&   0  	&  1320.1  \\ \hline
+		POLY      &  1 	&  0.3 	&  1783.5  \\ \hline
+		EXP\_SMOOTHING 	& 20 	& 11.0 & 1473.5 \\ \hline
+		HOLT-WINTERS  	& 20 	& 11.0 & 1473.5 \\ \hline
+		FFT       & 2 	& 60.3 	& 1751.9	\\ \hline
+	\end{tabular}
+\end{table*}
+
+\begin{table*}[]
+	\centering
+	\caption {No. of time steps with undersupply and under capacity of various commodities for the different algorithms used to calculate EG01-EG24.}
+	\label{tab:24-commod}
+	\begin{tabular}{|l|c|c|c|c|c|}
+		\hline
+		& \multicolumn{3}{c|}{Undersupply} & \multicolumn{2}{c|}{Undercapcity} \\ \hline
+		Algorithm & Sourceout & Enrichmentout & FR fuel & LWR PU & FR PU \\ \hline
+		MA        & 0 & 0 & 0 & 1 & 1 \\ \hline
+		ARMA      & 0 & 0 & 0 & 1 & 1 \\ \hline
+		ARCH      & 0 & 0 & 0 & 1 & 1 \\ \hline
+		POLY      & 0 & 0 & 0 & 1 & 1 \\ \hline
+		EXP\_SMOOTHING & 0 & 0 & 0 & 1 & 1 \\ \hline
+		HOLT\_WINTERS  & 0 & 0 & 0 & 1 & 1 \\ \hline
+		FFT       & 0 & 1 & 0 & 1 & 1 \\ \hline
+	\end{tabular}
+\end{table*}
+
+% Add SO to the figures
+\begin{figure*}[]
+	\centering
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{24-power-bufferB20001.png} 
+		\caption{NO algorithms.}
 		\label{fig:24powerNO}
 	\end{subfigure}
 	\vspace{1cm}
 	\begin{subfigure}[t]{\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{24-power2.png} 
-		\caption{Plot of the power demand and supply for DO.}
+		\includegraphics[width=\linewidth]{24-power-bufferB20002.png} 
+		\caption{DO algorithms.}
 		\label{fig:24powerDO}
 	\end{subfigure}
 	\hfill
-	\caption{Transition Scenario EG01-EG24 for a Constant Power Demand of 60GW}
+	\caption{Plot of the power demand and supply of EG01-EG24 for a constant power demand of 60GW for different prediction algorithms.}
+	\label{fig:24power}
 \end{figure*}
 
-\begin{table*}[]
-	\centering
-	\caption {Undersupply and oversupply of Power for the different algorithms implemented in EG01-EG24.}
-	\label{tab:24-power}
-	\begin{tabular}{|l|c|c|c|}
-		\hline
-		& \multicolumn{3}{c|}{Power} \\ \hline
-		Algorithm & \begin{tabular}[c]{@{}l@{}}Timesteps of\\Undersupply\end{tabular}  & Undersupply [GW] & Oversupply [GW] \\ \hline
-		MA        & 21 & 120.0 &  0.5    \\ \hline
-		ARMA      & 61 & 147.3 &  241.1  \\ \hline
-		ARCH      & 41 & 127.3 &  446.4  \\ \hline
-		POLY      & 78 & 114.9 &  900.8  \\ \hline
-		EXP\_SMOOTHING & 31 & 128.3 & 196.8 \\ \hline
-		HOLT\_WINTERS  & 31 & 128.3 & 196.8 \\ \hline
-		FFT       & 42 & 155.6 & 863.8 \\ \hline
-	\end{tabular}
-\end{table*}
+\subsection{Buffer Size}
+
+This section focuses on EG01-EG23 for analyzing the dependency of the undersupply on the buffer size. Table \ref{tab:buff_size} shows number of time steps of undersupply and the cumulative undersupply for different buffer sizes using some of the prediction methods.
 
 \begin{table*}[]
 	\centering
-	\caption {Timesteps of undersupply and undercapacity of different commodities for the different algorithms implemented in EG01-EG24.}
-	\label{tab:24-overunder}
-	\begin{tabular}{|l|c|c|c|c|c|}
+	\caption {Dependency of the undersupply of Power on the buffer size.}
+	\label{tab:buff_size}
+	\begin{tabular}{|l|c|c|c|c|c|c|}
 		\hline
-		& \multicolumn{3}{c|}{Undersupply} & \multicolumn{2}{c|}{Undercapcity} \\ \hline
-		Algorithm & Sourceout & Enrichmentout & Mixerout & LWR PU & FR PU \\ \hline
-		MA        & 0 & 0 & 0 & 1 & 0 \\ \hline
-		ARMA      & 0 & 0 & 0 & 1 & 0 \\ \hline
-		ARCH      & 0 & 0 & 0 & 1 & 0 \\ \hline
-		POLY      & 0 & 0 & 0 & 1 & 0 \\ \hline
-		EXP\_SMOOTHING & 0 & 0 & 0 & 1 & 0 \\ \hline
-		HOLT\_WINTERS  & 0 & 0 & 0 & 1 & 0 \\ \hline
-		FFT       & 0 & 1 & 0 & 1 & 0 \\ \hline
+		& \multicolumn{6}{c|}{Buffer Size} \\ \hline
+		& \multicolumn{2}{c|}{0}&\multicolumn{2}{c|}{0}&\multicolumn{2}{c|}{0} \\ \hline
+		Algorithm & \shortstack{No. of time steps\\of undersupply}  & 
+		\shortstack{Cumulative\\Undersupply[GW]}  & \shortstack{No. of time steps\\of undersupply}  & 
+		\shortstack{Cumulative\\Undersupply[GW]}  &\shortstack{No. of time steps\\of undersupply}  & 
+		\shortstack{Cumulative\\Undersupply[GW]}  \\ \hline
+		MA       		&		&		& 	20 	& 20.0  &  	&   \\ \hline
+		ARMA      		& 		&		&	18 	&  7.7  &  	&  	\\ \hline
+		POLY      		& 		&		& 	1 	&  0.3 	&  	&	\\ \hline
+		EXP\_SMOOTHING 	&		&		& 	20 	& 11.0 	& 	& 	\\ \hline
+		FFT       		&		&		& 	2 	& 60.3 	&  	&	\\ \hline
 	\end{tabular}
 \end{table*}
 
+\subsection{Number of Back Steps}
 
 
 
-\section{Conclusion and Future Work}
+\section{Conclusion and Next Steps}
 This paper describes the capabilities of \deploy, demonstrates 
 the use of \deploy for an assortment of transition scenarios: 
 constant power demand, linearly increasing power demand and
