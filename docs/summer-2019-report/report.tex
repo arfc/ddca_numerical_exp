@@ -52,7 +52,7 @@ fill=blue!30]
 The objectives are systemic demands such as "1\% power growth", 
 while an example of a constraint is the availability of new nuclear 
 technology. 
-To add ease in setting up nuclear fuel cycle simulations, \gls{NFC}
+To aid in the setup of nuclear fuel cycle simulations, \gls{NFC}
 simulators should bring demand responsive deployment decisions into 
 the dynamics of the simulation logic \cite{huff_current_2017}. 
 While automated power production deployment is common in most fuel 
@@ -149,9 +149,9 @@ The effectiveness of a prediction algorithm depends on the type
 of power demand in a scenario and the type of commodity. 
 For example, the triple exponential smoothing method is most effective
 for predicting demand and supply for the power commodity in a scenario  
-with a sinusoidal power demand compared to a linearly increasing power 
+with a sinusoidal power demand as opposed to a linearly increasing power 
 demand.
-Whereas, the fast fourier transform method is more effective than triple 
+Likewise, the fast fourier transform method is more effective than triple 
 exponential smoothing for the non-power commodities in the same 
 scenario.  
 
@@ -160,9 +160,9 @@ Within \deploy, there are two institutions: \texttt{DemandDrivenDeploymentInst} 
 The prior is used for the front-end of the fuel cycle and the latter is used 
 for the back-end. 
 Front-end facilities are those that exist before the reactor 
-in a nuclear fuel cycle such as a fuel fabrication facility. 
+in a nuclear fuel cycle, such as a fuel fabrication facility. 
 Back-end facilities go after the reactor in a nuclear 
-fuel cycle such as a reprocessing facility. 
+fuel cycle; one example would be a reprocessing facility. 
 The reason for this separation is to let facilities have the choice 
 to demand for supply or demand for capacity. 
 For example, in the front-end facilities, the reactor has a demand for 
@@ -174,10 +174,10 @@ spent fuel. This triggers the deployment of a waste repository that
 will create a capacity to receive the available supply of spent fuel.
 
 \subsection{\textbf{Installed Capacity}}
-The user can choose between deploying facilities based on the difference 
-between predicted demand and predicted supply or predicted demand and 
+The user can choose between two distinct methods for deploying facilities: based on the difference 
+between predicted demand and predicted supply, or the difference between predicted demand and 
 installed capacity. 
-There are two reasons for wanting to use installed capacity over predicted 
+There are two main reasons for wanting to use installed capacity over predicted 
 supply. 
 The first is for facilities that provide intermittent supply, such as a 
 reactor facility that has a designated refueling time. 
@@ -185,30 +185,28 @@ During time steps where a reactor is refueling, the user might not
 want \deploy to deploy more facilities to make up for the lack of supply
 caused by this one time step gap in supply. 
 The second is for situations where the input commodity for a facility has
-run out in a simulation and the facility that produces the input commodity 
+run out in a simulation, and the facility that produces the input commodity 
 is no longer commissionable. 
 Therefore, with the demand for the output commodity of that facility, \deploy
-would deploy that facility to meet the demand, however due to the lack of 
-the input commodity, even if there are infinite numbers of that facility, 
-it will not produce the output commodity. 
+would deploy that facility in an attempt to meet the demand, however due to the lack of 
+available input commodity the facility would be unable to supply its output commodity. 
 For example, in a transition scenario to fast reactors that require plutonium 
-from \gls{LWR}'s \gls{SNF}, if the fast reactor's demand for plutonium exceeds
-the inventory provided by \gls{LWR}s before they were decommissioned, it will 
-result in the deployment of mixer facilities that generate the fast reactor 
-fuel despite the lack of plutonium to generate the fuel. 
+from \gls{LWR}'s \gls{SNF}, if the fast reactors' demand for plutonium exceeds
+the inventory provided by \gls{LWR}s prior to decommissioning, \deploy
+will deploy mixer facilities in an effort to produce fast reactor 
+fuel despite the lack of plutonium with which to make the fuel. 
 This is an example of a poorly set up transition scenario. 
 
 \subsection{\textbf{Supply/Capacity Buffer}}
 In \texttt{DemandDrivenDeploymentInst}, the user can choose to provide a
-buffer for the predicted supply so that \deploy will ensure that 
-the predicted supply will meet the predicted demand with the 
+buffer for the predicted supply; doing so will cause \deploy to ensure that predicted supply meets the predicted demand plus the 
 additional buffer. 
 
-In \texttt{SupplyDrivenDeploymentInst}, the user can choose to 
+Similarly, in \texttt{SupplyDrivenDeploymentInst}, the user can choose to 
 provide a buffer for the predicted capacity so that \deploy will 
 ensure predicted capacity meets the predicted supply with the 
 additional buffer. 
-The buffer can be defined as a percentage value or an absolute value.  
+These buffers can be defined as either a percentage value or an absolute value.  
 
 \section{Demonstration of d3ploy capabilities}
 To demonstrate \deploy's capabilities we run simulations with
@@ -223,14 +221,13 @@ three types of facilities: \texttt{source}, \texttt{reactor} and
 All of the simulations began with ten reactor facilities, 
 \texttt{reactor1} to \texttt{reactor10}.
 These reactors had staggered cycle lengths and lifetimes 
-so that they did not refuel and decommission all at the same
-time step.
-\Deploy deploys reactor facilities of \texttt{new reactor} type
-to meet the power demand that occurred when the ten initial 
+so that they did not perform refuelings or undergo decommissioning simultaneously.
+\Deploy deploys reactor facilities of the \texttt{new reactor} type
+to correct the power undersupply that occurred when the ten initial 
 reactor facilities began to decommission.
 
 All the simulations deployed facilities based on the relationship
-between predicted demand and installed capacity, capability 
+between predicted demand and installed capacity, a capability 
 discussed in the previous section.
 Table \ref{tab:transition-scenario-all} shows the simulation 
 parameters that are consistent across all the discussed 
@@ -293,9 +290,9 @@ $/d3ploy/tests/performance\_tests/algorithm\_performance\_tests\_transitions.py$
 
 Figures \ref{fig:constanttransition-power}, \ref{fig:constanttransition-fuel}
 and \ref{fig:constanttransition-spentfuel} demonstrate the capability 
-of \deploy to deploy reactor and supporting facilities to meet the user 
+of \deploy to deploy reactors and supporting facilities to meet the user 
 determined power demand and subsequently demanded secondary commodities 
-with minimal time steps where there is an undersupply. 
+with the minimal number of time steps that result in an undersupply. 
 
 \begin{table*}[!htbp]
 	\centering
@@ -324,29 +321,27 @@ demand and setting the supply buffer to 3000MW (the capacity of 3 reactors)
 minimized the number of undersupply time steps.
 
 It is important to perform a small sensitivity analysis of the size 
-of buffer to use for each commodity to ensure that there is no 
-undersupply based on the nuances of the facility type: 
-refueling in a reactor etc. 
+of buffer used for each commodity to ensure that there is no 
+undersupply based on the nuances of any given facility type: 
+refueling in a reactor, etc.. 
 
 In figure \ref{fig:constanttransition-fuel},
 a facility with a large throughput of fuel is initially
-deployed to meet the large initial fuel demand for the starting
-up of ten reactors. 
-This is a reflection of reality where reactor manufacturers will 
-accumulate an appropriate amount of fuel inventory before starting 
-up reactors. 
-There is one time step where there is an undersupply after the 
-decommissioning of the large initial facility.  
-This is unavoidable as the prediction methods in \deploy are unable 
-to predict this sudden drop in demand. 
+deployed to meet the large initial fuel demand from the startup of ten reactors. 
+This is a reflection of reality, wherein reactor operators will 
+accumulate an appropriate amount of fuel inventory before bringing reactors online. 
+There is one time step where there is an undersupply following the 
+decommissioning of the large initial fuel production facility.  
+This is unavoidable, as the prediction methods harnessed by \deploy are unable 
+to foresee this sudden drop in demand. 
 
-For simulations where a facility requires a large amount of start up
-commodity such as in this simulation, the user should add an initial
-facility with a large throughput to exist for the first few time steps
-in the simulation, so as to prevent \deploy from deploying a large amount
-of supporting facilities that end up being redundant at the later parts of 
+For simulations such as this, where a facility requires a large initial amount of some
+commodity, the user should add an initial
+facility with a large production capacity that exists for only the first few time steps
+in the simulation; this prevents \deploy from deploying a large number
+of supporting facilities that end up being redundant later in
 the simulation.
-This could also be circumvented by introducing decommissioning 
+Alternatively, this could be circumvented by introducing decommissioning 
 capability into \deploy.  
 
 \begin{figure*}[!htbp]
@@ -376,7 +371,7 @@ capability into \deploy.
 
 \subsection{Transition Scenario: Linearly Increasing Demand}
 
-This section presents a transition scenario where there is a linearly 
+This section presents a transition scenario with a linearly 
 increasing power demand. 
 Table \ref{tab:transition-scenario-growing-power} displays the 
 simulation parameters used in this transition scenario. 
@@ -400,13 +395,13 @@ simulation parameters used in this transition scenario.
 
 Figures \ref{fig:growingtransition-power}, \ref{fig:growingtransition-fuel}
 and \ref{fig:growingtransition-spentfuel} demonstrate the capability 
-of \deploy to deploy reactor and supporting facilities to meet the user 
-determined power demand and subsequently demanded secondary commodities 
+of \deploy to deploy reactors and supporting facilities to meet the user 
+determined power demand and subsequently required secondary commodities 
 for a linearly increasing power demand. 
 
 This scenario made use of the fast fourier transform method for predicting power
 demand, similar to what the constant power demand transition scenario used.
-The supply buffer for power was of 2000MW. 
+The power supply buffer in this case was an absolute value of 2000MW. 
 
 The input file used to generate this simulation can be found in:
 
@@ -447,23 +442,23 @@ $/d3ploy/tests/performance\_tests/algorithm\_performance\_tests\_transitions.py$
 \subsection{\textbf{Transition Scenario: Sinusoidal Demand}}
 This section shows a transition scenario with sinusoidal
 power demand. 
-A sinusoidal power demand is the reflection of power demand in 
-the real world where power usage is higher in the winter and summer
-and it is smaller in the spring and fall. 
+A sinusoidal power demand is a more accurate reflection of
+the real world where consumption is higher in the winter and summer
+and lower in the spring and fall. 
 Table \ref{tab:transition-scenario-sine-power} displays the 
 simulation parameters used in this transition scenario. The power demand
 had an amplitude of 1000MW.
 
 Figures \ref{fig:sinetransition-power}, \ref{fig:sinetransition-fuel}
 and \ref{fig:sinetransition-spentfuel} demonstrate the capability 
-of \deploy to deploy reactor and supporting facilities to meet the user 
-determined power demand and subsequently demanded secondary commodities 
+of \deploy to deploy reactors and supporting facilities to meet the user 
+determined power demand and subsequently required secondary commodities 
 for a sinusoidal power demand. 
 
 For a sinusoidal power demand, the use of the triple exponential method
-(holt winters)
+(Holt-Winters)
 for predicting demand is more effective than the 
-fast fourier transform method which was used for the constant 
+fast fourier transform method previously used in the constant 
 and linearly increasing power demand transition scenarios. 
 This is because the triple exponential smoothing method excels in
 forecasting data points for repetitive seasonal series of data.  
@@ -524,17 +519,17 @@ $/d3ploy/tests/performance\_tests/algorithm\_performance\_tests\_transitions.py$
 \pagebreak
 \section{Transition Scenarios}
 
-The objective of this section was to carry out various simulations to prove 
+The objective of this section was to carry out various simulations to validate 
 \texttt{D3ploy}'s current capabilities for simulating complex cycles.
 The Idaho National Laboratory Nuclear Fuel Cycle Evaluation and Screening Report \cite{wigeland_nuclear_2014} established several fuel cycle scenarios.
 As part of the project NEUP-FY16-10512, the simulations focused on the cases EG01, EG23, EG24. The scenarios started at EG01 -- representing the current U.S. fuel cycle -- and transitioned to advanced fuel cycles.
 The simulations utilized \texttt{d3ploy}'s NO, DO, and SO algorithms.
 
-All the analyzed scenarios started at EG01. In EG01 all the reactors were LWR's. The cycle is once-through and feeds the reactors with enriched-U.
-In EG23 Fast reactors (FR's) produced all the power. The reactors relied on the continuous recycle of U/Pu with the addition of new natural-U to the cycle.
-EG24 was similar to EG23 but its cycle utilized continuous recycling of U/TRU with the addition of new natural-U.
+All the analyzed scenarios started at EG01. In EG01 all reactors were LWRs running a  once-through cycle burning enriched-U.
+In EG23 fast reactors (FRs) produced all the power, relying on the continuous recycle of U/Pu supplemented by the addition of new natural-U to the cycle.
+EG24 was similar to EG23, but its cycle utilized continuous recycling of U/TRU with the addition of new natural-U.
 
-The present work focused on two transition scenarios: EG01-EG23 and EG01-EG24, shown in Figure \ref{fig:flow}. The simulations started with a fleet of LWR's. After 80 years, the simulation decommissioned the LWR's progressively transitioning to FR's. Finally, the FR's produced all the power. The start up of the FR's relies on the reprocessed Pu from the LWR's. After the transition, the FR's were able to produce their own Pu to sustain the cycle.
+The present work focused on two transition scenarios: EG01-EG23 and EG01-EG24,  as shown in Figure \ref{fig:flow}. The simulations started with a fleet of LWRs. After 80 years, the simulation progressively decommissioned the LWRs while transitioning to FRs. By the end of the cycle, all power was produced by FRs. Initial fueling of the FRs relied on  reprocessed Pu from the LWR fleet. Following the transition, the FRs were able to produce their own Pu to sustain the cycle.
 
 \begin{figure*}[]
 	\centering
@@ -559,13 +554,13 @@ The present work focused on two transition scenarios: EG01-EG23 and EG01-EG24, s
 % The input files can be found ... where?
 % I should describe the scenarios a little bit more?
 
-The following section presents the results for EG01-EG23 and EG01-EG24. The power demand considered was a constant of 60 GW at all times. The transition scenarios used the capability of deploying facilities based on the difference between predicted demand and predicted supply. The supply buffer of power was 2000 MW. 
+The following section presents the results for EG01-EG23 and EG01-EG24. The power demand was set at a constant 60 GW at all times. The transition scenarios used the capability of deploying facilities based on the difference between predicted demand and predicted supply, using a power supply buffer of 2000 MW. 
 
-This section counts also with a sensitivity analysis of the buffer size. Another sensitivity analysis shows the dependency of the undersupply on the number of previous time steps used to calculate the predicted demand and supply.
+This section also includes a sensitivity analysis of the buffer size. A separate sensitivity analysis shows the dependency of the undersupply on the number of previous time steps used to calculate the predicted demand and supply.
 
 \subsection{EG01-EG23}
 
-Figure \ref{fig:23power} shows the power demand and supply obtained using different prediction methods. Following, the tables \ref{tab:23-power} and \ref{tab:23-commod} display a comparison of the different algorithms. The table \ref{tab:23-power} has the Cumulative Undersupply and the Cumulative Oversupply magnitudes. These values represent the summation of the difference between the power supplied and the power demanded for all the time steps in the simulation. This magnitude could be thought as Energy. For the undersupply, it would be the lack of Energy provided during the time steps where the supply did not meet the demand. On the contrary, the oversupply would be the extra energy produced.
+Figure \ref{fig:23power} shows the power demand and supply obtained using different prediction methods. Following it, Tables \ref{tab:23-power} and \ref{tab:23-commod} display a comparison of the different algorithms. Table \ref{tab:23-power} displays the Cumulative Undersupply and the Cumulative Oversupply magnitudes. These values represent the summation of the difference between the power supplied and the power demanded for all the time steps in the simulation. This magnitude could best be thought of as energy. For undersupply conditions, the magnitude represents lack of energy provided during the time steps where the supply did not meet the demand. Likewise, the oversupply would be the magnitude of excess energy produced.
 
 \begin{table*}[]
 	\centering
@@ -633,9 +628,9 @@ Figure \ref{fig:23power} shows the power demand and supply obtained using differ
 	\label{fig:23power}
 \end{figure*}
 
-One of the methods that performs the better is ARCH. For this scenario and that method, figure \ref{fig:23-arch-commod} present some of the different supply and demand time series plots for different commodities.
+One of the methods that performs the better is ARCH. For this scenario and said method, Figure \ref{fig:23-arch-commod} presents some of the different supply and demand time series plots for various commodities.
 
-Figure \ref{fig:23-arch-sourceout} presents the number of Source facilities deployed, and the demand and supply of natural-U. For this case, the capacity of supply of natural-U is higher than the demand. It is easy to note that the demand in the beginning of the simulation is higher than in the end. The LWR's use enriched-U that comes from the enrichment of this natural-U, then the FR's require a smaller quantity of U for their fuel. Figure \ref{fig:23-arch-lwrpu} displays the number of LWR Mixers deployed, and the supply and the capacity of LWR Pu (Pu produced by the LWR's). The supply of Pu goes down as the LWR's are decommissioned. Figure \ref{fig:23-arch-frpu} shows the FR Mixers, and the supply and capacity of FR Pu. The supply of Pu increases as \deploy deploys new FR's.
+Figure \ref{fig:23-arch-sourceout} presents the number of Source facilities deployed, and the resultant demand and supply of natural-U. For this case, the capacity of natural-U supply is higher than the demand. It is easy to note that the demand in the beginning of the simulation is higher than in the end. The LWRs use enriched-U produced by the enrichment of natural-U, while the FRs require a smaller quantity of U for their fuel. Figure \ref{fig:23-arch-lwrpu} displays the number of LWR Mixers deployed, and the supply and the capacity of LWR Pu (Pu produced by the LWRs). Logically, the supply of Pu decreases as the LWRs are decommissioned. Figure \ref{fig:23-arch-frpu} shows the FR Mixers, and the supply and capacity of FR Pu. The supply of Pu increases as \deploy deploys new FRs.
 
 \begin{figure*}[]
 	\centering
@@ -665,7 +660,7 @@ Figure \ref{fig:23-arch-sourceout} presents the number of Source facilities depl
 
 \subsection{EG01-EG24}
 
-Figure \ref{fig:24power} shows the power demand and supply obtained using different prediction methods. Following, the tables \ref{tab:24-power} and \ref{tab:24-commod} display a comparison of the different algorithms.
+Figure \ref{fig:24power} shows the power demand and supply obtained using different prediction methods. Following it, Tables \ref{tab:24-power} and \ref{tab:24-commod} display a comparison of the different algorithms.
 
 \begin{table*}[]
 	\centering
@@ -734,7 +729,7 @@ Figure \ref{fig:24power} shows the power demand and supply obtained using differ
 
 \subsection{Buffer Size}
 
-This section focuses on EG01-EG23 for analyzing the dependency of the undersupply on the buffer size. Table \ref{tab:buff_size} shows number of time steps of undersupply and the cumulative undersupply for different buffer sizes for some of the prediction methods. Figure \ref{buffer_dep} displays the cumulative undersupply vs the buffer sizes.
+This section focuses on the analysis of undersupply dependency on buffer size in the EG01-EG23 transition scenario. Table \ref{tab:buff_size} shows the number of time steps that contain undersupply and the cumulative undersupply for different buffer sizes for various prediction methods. Figure \ref{buffer_dep} displays the cumulative undersupply as a function of buffer size.
 
 \begin{table*}[]
 	\centering
@@ -761,7 +756,7 @@ This section focuses on EG01-EG23 for analyzing the dependency of the undersuppl
 
 \subsection{Number of Back Steps}
 
-Still for the case EG01-EG23, this section focuses on the dependency on the number of back steps used by the prediction methods to predict demand and supply. The buffer size was fixed to 2000 MW. Table \ref{tab:back_steps} shows number of time steps of undersupply and the cumulative undersupply for different buffer sizes for some of the prediction methods. Figure \ref{buffer_dep} displays the cumulative undersupply vs the buffer sizes.
+This section focuses on the dependency on the number of back steps used by the prediction methods in scenario EG01-EG23; the buffer size was fixed at 2000 MW. Table \ref{tab:back_steps} shows number of time steps containing undersupply and the cumulative undersupply for different buffer sizes for some of the prediction methods. Figure \ref{buffer_dep} displays the cumulative undersupply as a function of buffer size.
 
 \begin{table*}[]
 	\centering
@@ -787,27 +782,26 @@ Still for the case EG01-EG23, this section focuses on the dependency on the numb
 \end{figure*}
 
 \section{Conclusion and Next Steps}
-This paper describes the capabilities of \deploy, demonstrates 
-the use of \deploy for a simple transition scenario with 
+This paper describes the capabilities of \deploy and demonstrates 
+the use of \deploy for simple transition scenarios with 
 constant, linearly increasing, and sinusoidal power demand.
-The demonstration goes a little bit further with more complex transition
+The demonstration goes further with the more complex transition
 scenarios EG01-EG23 and EG01-EG24. This paper also provides insights on
-parameter inputs to ease the setting up of larger transition scenarios
-that include many facilities.
+parameter inputs to ease the setup of larger transition scenarios
+that may include numerous facilities.
 
-Future work includes setting up similar power demand transition 
-scenarios for extended nuclear fuel cycles that incorporate different types of
-reactors that, consequently, use different types of fuel. Such cases are 
+Future work includes setup of similar power demand transition 
+scenarios for extended nuclear fuel cycles incorporating multiple reactor designs that consequently use different types of fuel. Such cases are 
 currently under study. \cite{wigeland_nuclear_2014} established the transition
-scenarios EG01-EG29 and EG01-EG30. Those scenarios are more complex than the
+scenarios EG01-EG29 and EG01-EG30. These scenarios are more complex than the
 cases presented in this report and the distribution of fuel between different
 reactor technologies play a main role in the transition.
-Additionally, as seen during the demonstration of \deploy capabilities, a Decommissioning capability ends up being useful for the set up of several nuclear fuel cycles. This capability is also currently under development.
+Additionally, as seen during the demonstration of \deploy capabilities, a Decommissioning capability is highly useful for the setup of several NFCs and is currently under development.
 
 \section{Acknowledgements}
 This research is funded by the \gls{DOE} Office of 
 Nuclear Energy's Nuclear Energy University Program (Project 16-10512) 
-"Demand-Driven Cycamore Archetypes". The authors want to thank 
+"Demand-Driven Cycamore Archetypes". The authors would like to thank 
 members of the \gls{ARFC} group at the University of Illinois at 
 Urbana-Champaign. 
 We also thank our colleagues from the \Cyclus community, 
