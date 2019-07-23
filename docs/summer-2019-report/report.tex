@@ -444,10 +444,10 @@ simulation parameters used in this transition scenario.
     \centering
     \caption {Linearly Increasing Power Demand Transition Scenario's Parameters}
 	\label{tab:transition-scenario-growing-power}
-    \begin{tabular}{|p{3.8cm}|l|p{4.5cm}|}
+    \begin{tabular}{|p{3.8cm}|l|p{4.2cm}|}
     \hline
                                      & \textbf{Parameters}    & \textbf{Description} \\ \hline
-    \textbf{Overall}& Demand Equation & Time<40: 10000 MW, $Time > 40$: 250*t MW \\ \hline
+    \textbf{Overall}& Demand Equation & $Time < 40: 10000$ MW, $Time > 40: 250*t$ MW \\ \hline
     \multirow{2}{*}{\textbf{Power Commodity}} & Prediction Method      &  Fast Fourier Transform \\ \cline{2-3} 
                                      & Supply Buffer          &  2000 MW (2 reactor capacities)\\ \hline
     \multirow{2}{*}{\textbf{Fuel Commodity}}  & Prediction Method      &  Moving Average\\ \cline{2-3}
@@ -530,7 +530,7 @@ forecasting data points for repetitive seasonal series of data.
     \centering
     \caption {Sinusoidal Power Demand Transition Scenario's Parameters}
 	\label{tab:transition-scenario-sine-power}
-    \begin{tabular}{|l|l|p{4.5cm}|}
+    \begin{tabular}{|p{3.8cm}|l|p{4.2cm}|}
     \hline
                                      & \textbf{Parameters}    & \textbf{Description} \\ \hline
     \textbf{Overall}& Demand Equation & $1000sin(\frac{\pi*t}{3})+10000$ \\ \hline
@@ -538,7 +538,7 @@ forecasting data points for repetitive seasonal series of data.
                                      & Supply Buffer          &  2000 MW (2 reactor capacities)\\ \hline
     \multirow{2}{*}{\textbf{Fuel Commodity}}  & Prediction Method      &  Moving Average\\ \cline{2-3}
                                      & Supply Buffer & 1000 kg \\ \hline
-    \multirow{2}{*}{\textbf{Spent Fuel Commodity}}  & Prediction Method      & Fast Fourier Transform\\ \cline{2-3}
+    \multirow{2}{*}{\textbf{\shortstack{Spent Fuel \\ Commodity}}}  & Prediction Method      & Fast Fourier Transform\\ \cline{2-3}
                                      & Capacity Buffer & 0 kg \\ \hline
     \end{tabular}
 \end{table*}
