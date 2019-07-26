@@ -156,18 +156,6 @@ power demand.
 
 \Cyclus is an agent-based nuclear fuel cycle simulation framework 
 \cite{huff_fundamental_2016}. 
-<<<<<<< HEAD
-Each entity (i.e. Region, Institution, or Facility) in the fuel 
-cycle is modeled as an agent. 
-Institution agents
-are responsible for deploying and decommissioning facility agents 
-and can represent a legal operating organization such as a 
-utility, government, etc \cite{huff_fundamental_2016}. 
-
-The Demand-Driven \Cycamore Archetypes project (NEUP-FY16-10512)
-aims to develop \Cyclus's demand-driven deployment capabilities. 
-This capability takes the form of a \Cyclus Institution
-=======
 In \Cyclus, each entity (i.e. Region, Institution, or Facility) in the 
 fuel cycle is an agent. 
 Region agents represent geographical or political areas that institution
@@ -185,7 +173,6 @@ facility, reactor).
 The Demand-Driven \Cycamore Archetypes project (NEUP-FY16-10512) 
 aims to develop \Cyclus' demand-driven deployment capabilities. 
 This capability is added as a \Cyclus Institution
->>>>>>> 5f923ae89d9d08669f9da826345276cf031cf07b
 agent that deploys facilities to meet the front-end and back-end 
 fuel cycle demands based on a user-defined commodity demand. 
 This demand-driven deployment capability is called 
@@ -211,12 +198,6 @@ Then, \deploy deploys facilities to meet predicted demand.
 \Deploy's primary objective is minimizing the number of time 
 steps of undersupply of any commodity. 
 
-<<<<<<< HEAD
-When a predicted undersupply of a commodity occurs, \deploy looks 
-at what facilities it has to provide such commodity and 
-will deploy the fewest number of facilities
-to meet the predicted demand. 
-=======
 \begin{figure}[!htb]
 	\centering
 	\begin{tikzpicture}[node distance=2.5cm]
@@ -245,7 +226,6 @@ to meet the predicted demand.
 Where \deploy predicts an undersupply, it responds by deploying 
 the fewest number of available facilities to meet demand with minimal 
 oversupply.  
->>>>>>> 5f923ae89d9d08669f9da826345276cf031cf07b
 This logic is available in \texttt{solver.py}. 
 
 \subsection{\textbf{Basic User-Defined Input Variables}}
@@ -254,21 +234,6 @@ simulation.
 Descriptions of each input variable can be found in the 
 README of the \deploy github repository.
 
-<<<<<<< HEAD
-Essentially, the user must define the facilities for the 
-institution to control and their corresponding capacities. 
-The user must also define the driving commodity, its demand 
-equation and what calculation method the institution predicts 
-demand and supply with. 
-
-Users also have the option to give a time dependent equation that governs
-preferences for that facility compared to other facilities which 
-provide the same commodity. 
-The user also has an option to constrain deployment of a facility 
-until a facility accumulates enough inventory of a specific commodity.
-The user can also define an initial list of facilities to 
-be present in the institution at the beginning of the simulation. 
-=======
 Essentially, the user must define the facilities the 
 \deploy institution controls and can deploy. 
 The user must also define the driving commodity, all facility capacities 
@@ -290,7 +255,6 @@ The user can constrain facility deployment
 until a sizable inventory of a specific commodity is accumulated.  
 The user can also define an initial facility list of facilities that 
 are present in the institution at the beginning of the simulation. 
->>>>>>> 5f923ae89d9d08669f9da826345276cf031cf07b
 
 \subsection{\textbf{Prediction Algorithms}}
 Three interchangeable algorithm types govern demand and supply 
@@ -315,31 +279,6 @@ driving commodity vs non-driving commodity, demand driven
 deployment vs supply driven deployment etc.). 
 For example, the most effective method
 for predicting demand and supply for the power commodity in a scenario  
-<<<<<<< HEAD
-with a sinusoidal power demand as opposed to a linearly increasing power 
-demand.
-Likewise, the fast fourier transform method is more effective than triple 
-exponential smoothing for the non-power commodities in the same 
-scenario.  
-
-\subsection{\textbf{Difference between Demand and Supply Driven Institutions}}
-\Deploy defines two institutions: \texttt{DemandDrivenDeploymentInst} and \texttt{SupplyDrivenDeploymentInst}. 
-The prior exists for the front-end of the fuel cycle and the latter
-for the back-end. 
-Front-end facilities are the ones before the reactor 
-in a nuclear fuel cycle, such as a fuel fabrication facility. 
-Back-end facilities go after the reactor in a nuclear 
-fuel cycle; one example would be a reprocessing facility. 
-The reason for this separation is to let facilities have the choice 
-to demand for supply or demand for capacity. 
-For example, in the front-end facilities, the reactor has a demand for 
-fuel that triggers the deployment of fuel fabrication facilities. Such facilities
-will create a supply to meet the demand.
-Whereas, for the back end facilities, the reactor generates spent fuel, 
-which creates a demand for a waste repository facility to accept the 
-spent fuel. This triggers the deployment of a waste repository that
-will create a capacity to receive the available supply of spent fuel.
-=======
 with a sinusoidal power demand is the triple exponential smoothing method. 
 However, for the non-driving commodities in the same 
 scenario, the fast fourier transform method is more effective than triple 
@@ -361,23 +300,14 @@ For back end facilities, the reactor generates spent fuel
 and \texttt{SupplyDrivenDeploymentInst} triggers the deployment of 
 waste repository facilities to create capacity for storage of the supply 
 of spent fuel. 
->>>>>>> 5f923ae89d9d08669f9da826345276cf031cf07b
 
 \subsection{\textbf{Installed Capacity}}
 The user can choose between deploying facilities based on the difference 
 between predicted demand and predicted supply or predicted demand and 
-installed capacity. 
-<<<<<<< HEAD
-Two main reasons exist for wanting to use installed capacity over predicted 
-supply. 
-The first is for facilities that provide intermittent supply, such as a 
-reactor facility with a designated refueling time. 
-=======
 There are two advantages to use installed capacity over predicted 
 supply. 
 The first is for facilities that provide intermittent supply, such as a 
 reactor facility that has a designated refueling time. 
->>>>>>> 5f923ae89d9d08669f9da826345276cf031cf07b
 During time steps in which a reactor is refueling, the user might not 
 want \deploy to deploy more facilities to make up for the lack of supply
 caused by this one time step gap in supply. 
@@ -448,13 +378,7 @@ between predicted demand and installed capacity.
 This capability was discussed in the previous section.  
 Table \ref{tab:transition-scenario-all} shows the simulation 
 parameters that are consistent across all the discussed 
-<<<<<<< HEAD
-scenarios. Table \ref{tab:transition-scenario-results} displays
-the number of time steps in which there was an undersupply for
-each commodity.
-=======
 scenarios. 
->>>>>>> 5f923ae89d9d08669f9da826345276cf031cf07b
 
 \begin{table*}[!htb]
     \centering
@@ -535,38 +459,6 @@ undersupplied timesteps.
     \end{tabular}
 \end{table*}
 
-<<<<<<< HEAD
-Table \ref{tab:transition-scenario-results} shows the number of time 
-steps in which there was an undersupply for each commodity in this scenario. 
-In figure \ref{fig:constanttransition-power}, the supply of power never falls under demand.
-
-The use of the fast fourier transform method for predicting the
-demand and setting the supply buffer to 3000MW (the capacity of 3 reactors)
-minimized the number of undersupply time steps.
-
-It is helpful to perform a small sensitivity analysis of the size 
-of buffer used for each commodity to ensure that no 
-undersupply occurs based on the nuances of any given facility type: 
-refueling in a reactor, etc.. 
-
-In figure \ref{fig:constanttransition-fuel},
-a facility with a large throughput of fuel is initially
-deployed to meet the large initial fuel demand from the startup of ten reactors. 
-This is a reflection of reality such that reactor operators will 
-accumulate an appropriate amount of fuel inventory before bringing reactors online. 
-After the decommissioning of the large initial fuel production facility we notice an undersypply in one time step.
-This is unavoidable, as the prediction methods harnessed by \deploy are unable 
-to foresee this sudden drop in demand. 
-
-For simulations such as this, such that a facility requires a large initial amount of some
-commodity, the user should add an initial
-facility with a large production capacity that exists for only the first few time steps
-in the simulation; this prevents \deploy from deploying a large number
-of supporting facilities that end up being redundant later in
-the simulation.
-Alternatively, this could be circumvented by introducing decommissioning 
-capability into \deploy.  
-=======
 In figure \ref{fig:constanttransition-power}, there are no time steps
 in which the supply of power falls under demand.
 By using a combination of the fast fourier transform method for predicting 
@@ -701,17 +593,11 @@ $/d3ploy/tests/performance\_tests/algorithm\_performance\_tests\_transitions.py$
 \end{figure*}
 
 \subsection{\textbf{Transition Scenario: Sinusoidal Demand}}
-<<<<<<< HEAD
-This section shows a transition scenario with sinusoidal
-power demand. 
-A sinusoidal power demand is a more accurate reflection of
-the real world such that consumption is higher in winter and summer
-=======
 In this section, a transition scenario with sinusoidal
 power demand is shown. 
 A sinusoidal power demand is the reflection of power demand in 
 the real world where power usage is higher in the winter and summer
->>>>>>> 5f923ae89d9d08669f9da826345276cf031cf07b
+
 and lower in the spring and fall. 
 Table \ref{tab:transition-scenario-sine-power} shows the 
 simulation parameters used in this transition scenario. 
