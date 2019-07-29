@@ -255,16 +255,17 @@ The user must also define the driving commodity, all facility capacities
 for producing that commodity, its demand 
 equation, and which method predicts supply and demand. 
 For example, the user can define a demand equation for power of 
-$1000 \times timestep$ MW and \deploy will deploy available reactor and supporting 
-facilities to meet the defined power demand. 
+$D_p(t) = 1000 t$ MW and \deploy will deploy available reactor and supporting 
+facilities to meet the defined power demand at each timestep, $t$. 
 
 The user can also provide a time-dependent equation that governs
 preference for a particular facility compared to other facilities which 
 provide the same commodity. 
 For example, the user can define a \gls{LWR} and a \gls{SFR} to have
-preferences of $101 - timestep$ and $timestep$ respectively. 
+preferences of $p_{lwr}(t) = 101 - t$ and $p_{sfr}(t) = t$ respectively. 
 The institution will prefer deployment of \gls{LWR} facilities over 
-\gls{SFR} before time step 51. 
+\gls{SFR} before time step 51, when $p_{sfr}(t)$ becomes greater than 
+$p_{lwr}(t)$. 
 
 The user can constrain facility deployment 
 until a facility accumulates enough inventory of a specific commodity.  
