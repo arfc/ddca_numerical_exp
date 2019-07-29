@@ -1,11 +1,11 @@
-\documentclass[11pt,letterpaper]{article}
-\usepackage[utf8]{inputenc}
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
 \usepackage{caption} % for table captions
 \usepackage{amsmath} % for multi-line equations and piecewises
 \DeclareMathOperator{\sign}{sign}
 \usepackage{graphicx}
 \usepackage{relsize}
-%\usepackage{textcomp}
 \usepackage{xspace}
 \usepackage{verbatim} % for block comments
 \usepackage{subcaption} % for subfigures
@@ -45,108 +45,117 @@ fill=blue!30]
 \tikzstyle{arrow} = [thick,->,>=stealth]
 
 \graphicspath{{figures/}}
-\title{DDCA Summer 2019 Report}
-\author{Gwendolyn J. Chee, Roberto E. Fairhurst, Kathryn D. Huff}
+\usepackage{mathpazo} % Palatino font
+\usepackage{graphicx} % For the logo
 
 \begin{document}
-	%\begin{titlepage}
-	%\maketitle
-	%\thispagestyle{empty}
-	%\end{titlepage}
-	
-\begin{titlepage} % Suppresses displaying the page number on the title page and the subsequent page counts as page 1
-	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for horizontal lines, change thickness here
-	
-	\center % Centre everything on the page
-	
-	%------------------------------------------------
-	%	Headings
-	% Full name of the issuing organization and its logo
-	%------------------------------------------------
-	%------------------------------------------------
-	%	Logo
-	%------------------------------------------------
-	
-	\vfill\vfill
-	\includegraphics[width=0.5\textwidth]{figures/logo.png} % Include a department/university logo - this will require the graphicx package
-	
-	%----------------------------------------------------------------------------------------
-	
-	
-	\vspace{1cm}
-	\HRule\\[0.4cm]
-	\textsc{\Large Advanced Reactors and Fuel Cycles Group}\\
-	{\Large Technical Report Series}\\ % Report Series
-	
-	{\large ARFC-NPRE-19-00}\\ % Report number
-	
-	
-	%------------------------------------------------
-	%	Title
-	% Title of the report
-	%------------------------------------------------
-	
-	\HRule\\[0.4cm]
-	
-	{\huge\bfseries Cycamore Demand Driven Capabilities}\\[0.4cm] % Title of your document
-	
-	{\LARGE\textit{SUMMER 2019 Report}}\\[0.4cm] % Subtitle
-	\HRule\\[1.5cm]
-	
-	%------------------------------------------------
-	%	Author(s)
-	%------------------------------------------------
-	
-	\begin{minipage}{0.4\textwidth}
-		\begin{flushleft}
-			\large
-			\textit{Prepared for:}\\
-			\textsc{DOE-NEUP}\\ % 
-			\textsc{Contract} 16-10512\\ % 
-		\end{flushleft}
-	\end{minipage}
-	~
-	\begin{minipage}{0.4\textwidth}
-		\begin{flushright}
-			\large
-			\textit{Prepared by:}\\
-			Gwendolyn \textsc{Chee}\\ %
-			Roberto \textsc{Fairhurst}\\ %
-			Prof. Kathryn \textsc{Huff} %
-		\end{flushright}
-	\end{minipage}
-	
-	% If you don't want a supervisor, uncomment the two lines below and comment the code above
-	%{\large\textit{Author}}\\
-	%John \textsc{Smith} % Your name
-	
-	%------------------------------------------------
-	%	Date
-	%------------------------------------------------
-	
-	\vfill\vfill\vfill % Position the date 3/4 down the remaining page
-	
-	{\large\today}\\ % Date, change the \today to a set date if you want to be precise
-	\vfill
-	%------------------------------------------------
-	%	Place
-	%------------------------------------------------
-	{\large Urbana, IL}\\ % Place
-	{\large Department of Nuclear, Plasma, and Radiological Engineering\\
-		University of Illinois at Urbana-Champaign}\\ % Issuing Instituion
-	
-	
-	
-	\vfill % Push the date up 1/4 of the remaining page
-	
-\end{titlepage}
 
+%----------------------------------------------------------------------------------------
+%    TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage} % Suppresses displaying the page number on the title page and the subsequent page counts as page 1
+    \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for horizontal lines, change thickness here
+
+    \center % Centre everything on the page
+
+    %------------------------------------------------
+    %    Title
+    %------------------------------------------------
+
+    \HRule\\[0.2cm]
+
+     \begin{minipage}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{arfc-logo}
+        \end{minipage}%
+        \begin{minipage}{0.6\textwidth}
+        {\begin{flushright}\huge\bfseries Transition Scenario Demonstrations of 
+                \Cycamore Demand Driven Deployment Capabilities\end{flushright}}
+        %{\begin{flushright}\large\textit{And Equally Convoluted Subtitle}\end{flushright}}
+
+        \end{minipage}
+
+    \vspace{0.2cm}
+    \HRule
+    \vspace{0.5cm}
+
+    %------------------------------------------------
+    %    Author(s)
+    %------------------------------------------------
+
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushleft}
+            \large
+            \textit{Authors}\\
+                Gwendolyn \textsc{Chee}\\
+                Roberto \textsc{Fairhurst}\\
+        \end{flushleft}
+    \end{minipage}
+    ~
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushright}
+            \large
+            \textit{Principal Investigator}\\
+            Kathryn D. \textsc{Huff} % Supervisor's name
+        \end{flushright}
+    \end{minipage}
+
+    % If you don't want a supervisor, uncomment the two lines below and comment the code above
+    %{\large\textit{Author}}\\
+    %John \textsc{Smith} % Your name
+
+    %------------------------------------------------
+    %    Report Number
+    %------------------------------------------------
+    \vspace{1cm}
+    \textsc{\LARGE\bfseries UIUC-ARFC-2019-03} % Replace YYYY with the year, NN with report index
+    \vspace{0.5cm}
+
+    %------------------------------------------------
+    %    Date
+    %------------------------------------------------
+
+    \vspace{0.5cm} % Position the date further down the remaining page
+    {\large June 29, 2019} % Date, change the \today to a set date if you want to be precise
+    \vspace{0.5cm}
+
+%------------------------------------------------
+    %    Headings
+    %------------------------------------------------
+
+    \textsc{\LARGE Advanced Reactors and Fuel Cycles}\\[0.25cm] % Research Group
+
+    \textsc{\large Dept. of Nuclear, Plasma, \& Radiological Engineering}\\% Department
+
+    \textsc{\large University of Illiois at Urbana-Champaign}\\ % University
+
+
+
+    %------------------------------------------------
+    %    Logo
+    %------------------------------------------------
+
+    \vspace{0.5cm}
+    \includegraphics[width=0.8\textwidth]{illinois}\\[1cm] % Include a department/university logo - this will require the graphicx package
+
+    %----------------------------------------------------------------------------------------
+
+    %------------------------------------------------
+    %   Funding
+    %------------------------------------------------
+    % For this section, either use \vfill to fill the space
+    % or insert funding acknowledgement
+    \textit{This research was performed using funding received from the
+    DOE Office of Nuclear Energy's Nuclear Energy University Program under
+    award number 16-10512.}
+
+\end{titlepage}
 
 %----------------------------------------------------------------%
 \section{Introduction}
-For many fuel cycle simulators, it is currently up to the user 
-to define a deployment scheme of supporting facilities to ensure 
-that no gap in the supply chain occurs.
+In many fuel cycle simulators, the user
+must define a deployment scheme for all supporting facilities to avoid supply 
+chain gaps.
 To ease setting up nuclear fuel cycle simulations, \gls{NFC}
 simulators should bring demand responsive deployment decisions into 
 the dynamics of the simulation logic \cite{huff_current_2017}. 
