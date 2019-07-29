@@ -48,6 +48,8 @@ fill=blue!30]
 \usepackage{mathpazo} % Palatino font
 \usepackage{graphicx} % For the logo
 
+\usepackage[hidelinks]{hyperref}
+\urlstyle{tt}
 
 
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
@@ -262,10 +264,10 @@ The user can also provide a time-dependent equation that governs
 preference for a particular facility compared to other facilities which 
 provide the same commodity. 
 For example, the user can define a \gls{LWR} and a \gls{SFR} to have
-preferences of $p_{lwr}(t) = 101 - t$ and $p_{sfr}(t) = t$ respectively. 
+preferences of $p_{LWR}(t) = 101 - t$ and $p_{SFR}(t) = t$ respectively. 
 The institution will prefer deployment of \gls{LWR} facilities over 
-\gls{SFR} before time step 51, when $p_{sfr}(t)$ becomes greater than 
-$p_{lwr}(t)$. 
+\gls{SFR} before time step 51, when $p_{SFR}(t)$ becomes greater than 
+$p_{SFR}(t)$. 
 
 The user can constrain facility deployment 
 until a facility accumulates enough inventory of a specific commodity.  
@@ -354,16 +356,15 @@ provide a buffer for predicted capacity.
 \Deploy will deploy facilities to meet the predicted supply with the 
 additional buffer. 
 The buffer can be defined as a percentage value (equation \ref{eq:perc}) 
-or an absolute value (equation \ref{eq:abs}).  
+or an absolute value (equation \ref{eq:abs}): 
 
-\begin{equation}
-    \label{eq:perc}
-    S_{pwb} = S_{p}(1+d)
-\end{equation}
-\begin{equation}
-    \label{eq:abs}
-    S_{pwb} = S_{p}+a
-\end{equation}
+\begin{align}
+            \label{eq:perc}
+        S_{pwb} &= S_{p}(1+d)\\
+            \label{eq:abs}
+        S_{pwb} &= S_{p}+a
+\end{align}
+
 where $S_{pwb}$ is predicted supply/capacity with buffer, 
 $S_p$ is the predicted supply/capacity without buffer, 
 $d$ is the percentage value in decimal form, 
@@ -426,16 +427,10 @@ demand transition scenarios with many facilities.
 In this section, a constant power transition scenario is shown. 
 Table \ref{tab:transition-scenario-constant-power} shows the 
 simulation parameters used in this transition scenario.  
-The input file used to generate this simulation can be found in:
-
-\noindent
-$/d3ploy/input/constant\_transition.xml$
-
-\noindent
-and the file used to run the simulation and generate the plots can be found in:
-
-\noindent
-$/d3ploy/tests/performance\_tests/algorithm\_performance\_tests\_transitions.py$
+The input file used to generate this simulation can be found in 
+\href{https://github.com/arfc/d3ploy/blob/master/input/constant_transition.xml}{constant\_transition.xml} 
+and the file used to run the simulation and generate the plots can be found in 
+\href{https://github.com/arfc/d3ploy/blob/master/tests/performance_tests/algorithm_performance_tests_transitions.py}{algorithm\_performance\_tests\_transitions.py}.
 
 \begin{table}[!htb]
     \centering
@@ -579,16 +574,10 @@ transition scenario.
 A smaller power buffer of 2000MW could be used while still 
 minimizing under supply. 
 
-The input file used to generate this simulation can be found in:
-
-\noindent
-$/d3ploy/input/growing\_transition.xml$
-
-\noindent
-and the file used to run the simulation and generate the plots can be found in:
-
-\noindent
-$/d3ploy/tests/performance\_tests/algorithm\_performance\_tests\_transitions.py$
+The input file used to generate this simulation can be found in
+\href{https://github.com/arfc/d3ploy/blob/master/input/growning_transition.xml}{growing\_transition.xml} 
+and the file used to run the simulation and generate the plots can be found in
+\href{https://github.com/arfc/d3ploy/blob/master/tests/performance_tests/algorithm_performance_tests_transitions.py}{algorithm\_performance\_tests\_transitions.py}.
 
 \begin{figure*}[!htbp]
     \centering
@@ -653,15 +642,9 @@ forecasting data points for repetitive seasonal series of data.
 \end{table}
 
 The input file used to generate this simulation can be found in:
-
-\noindent
-$/d3ploy/input/sine\_transition.xml$
-
-\noindent
+\href{https://github.com/arfc/d3ploy/blob/master/input/sine_transition.xml}{sine\_transition.xml} 
 and the file used to run the simulation and generate the plots can be found in:
-
-\noindent
-$/d3ploy/tests/performance\_tests/algorithm\_performance\_tests\_transitions.py$
+\href{https://github.com/arfc/d3ploy/blob/master/tests/performance_tests/algorithm_performance_tests_transitions.py}{algorithm\_performance\_tests\_transitions.py}.
 
 \begin{figure*}[!htbp]
     \centering
@@ -977,9 +960,11 @@ reactor technologies play a main role in the transition.
 Additionally, as seen during the demonstration of \deploy capabilities, a Decommissioning capability is highly useful for the setup of several NFCs and is currently under development.
 
 \section{Acknowledgements}
-This research is funded by the \gls{DOE} Office of 
-Nuclear Energy's Nuclear Energy University Program (Project 16-10512) 
-"Demand-Driven Cycamore Archetypes". The authors would like to thank 
+This research is being performed using funding received from the \gls{DOE} Office of 
+Nuclear Energy's Nuclear Energy University Program (Project 16-10512, 
+DE-NE0008567) 'Demand-Driven Cycamore Archetypes'.
+
+The authors would like to thank 
 members of the \gls{ARFC} group at the University of Illinois at 
 Urbana-Champaign. 
 We also thank our colleagues from the \Cyclus community, 
