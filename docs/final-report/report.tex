@@ -1012,4 +1012,28 @@ Table \ref{tab:30-lin-power} records the number of steps whit under supply, the 
 	\end{tabularx}
 \end{table}
 
+\subsection{Buffer}
+
+This section presents a sensitivity analysis for different values of the buffer. Figure \ref{fig:30-buff} shows a comparison of the cumulative under supply for different buffer sizes.
+
+Figure \ref{fig:30-buf-fft} displays a comparison for some of the methods of the power supply for different buffer sizes.
+
+The input files use the installed capacity feature. Buffer takes the values 0, 2000, 4000, 6000, and 8000. Back steps is set to two, and steps takes the default value of one.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{30-figures/30-sens-buffer.png} 
+	\hfill
+	\caption{Sensitivity analysis for different buffer sizes for some prediction algorithms.}
+	\label{fig:30-buff}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{30-figures/30-power-buffer-fft.png} 
+	\hfill
+	\caption{Power supply for different buffer sizes using ma.}
+	\label{fig:30-buf-fft}
+\end{figure}
+
 \end{document}
