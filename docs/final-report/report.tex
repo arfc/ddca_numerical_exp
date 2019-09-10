@@ -719,50 +719,10 @@ The input files use the installed capacity feature. Buffer is set to zero, back 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer0-ma-steps.png} 
-	\hfill
-	\caption{Power supply for different values of steps forward using ma.}
-	\label{fig:29-ste-ma}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer0-arma-steps.png} 
-	\hfill
-	\caption{Power supply for different values of steps forward using arma.}
-	\label{fig:29-ste-arma}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer0-arch-steps.png} 
-	\hfill
-	\caption{Power supply for different values of steps forward using arch.}
-	\label{fig:29-ste-arch}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
 	\includegraphics[width=\textwidth]{29-figures/29-power-buffer0-poly-steps.png} 
 	\hfill
 	\caption{Power supply for different values of steps forward using poly.}
 	\label{fig:29-ste-poly}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer0-exp_smoothing-steps.png} 
-	\hfill
-	\caption{Power supply for different values of steps forward using exp\_smoothing.}
-	\label{fig:29-ste-exp_smoothing}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer0-holt_winters-steps.png} 
-	\hfill
-	\caption{Power supply for different values of steps forward using holt\_winters.}
-	\label{fig:29-ste-hots_winters}
 \end{figure}
 
 \begin{figure}[H]
@@ -1002,55 +962,6 @@ Figure \ref{fig:30flow} shows the flow of Eg01-Eg30.
 	\caption{EG01-EG30.}
 	\label{fig:30flow}
 \end{figure}
-
-\subsection{Flat Power Demand}
-
-This section presents plots of power for all the prediction methods. The power demand is 60000 MW throughout the whole simulation. The input files use the installed capacity feature. Buffer is set to zero, back steps is set to two, and steps takes the default value of one.
-Figures \ref{fig:30-NO}, \ref{fig:30-DO}, and \ref{fig:30-SO} display the power supply and demand.
-Table \ref{tab:30-power} records the number of steps whit under supply, the cumulative under supply, and the cumulative oversupply.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{30-figures/30-power-buffer01.png} 
-	\hfill
-	\caption{NO algorithms.}
-	\label{fig:30-NO}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{30-figures/30-power-buffer02.png} 
-	\hfill
-	\caption{DO algorithms.}
-	\label{fig:30-DO}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{30-figures/30-power-buffer03.png} 
-	\hfill
-	\caption{SO algorithms.}
-	\label{fig:30-SO}
-\end{figure}
-
-\begin{table}[H]
-	\centering
-	\caption{Undersupply and oversupply of Power for the different algorithms used to calculate EG01-EG24.}
-	\label{tab:30-power}
-	\begin{tabularx}{\textwidth}{lRRR}
-		\hline
-		Algorithm & Undersupplied & Cumulative  & Cumulative \\
-		& Timesteps     & Undersupply [GW.mo]  & Oversupply [GW.mo] \\ \hline
-		MA        & 15 & 144.0 & 1718.7 \\ 
-		ARMA      & 15 & 144.0 & 1718.7 \\ 
-		ARCH      & 15 & 144.0 & 1718.7 \\ 
-		POLY      & 4  & 90.0 & 5026.5 \\ 
-		EXP\_SMOOTHING 	& 16 & 204.0 & 1718.7 \\ 
-		HOLT-WINTERS  	& 16 & 204.0 & 1718.7 \\ 
-		FFT       & 5 & 150.0 & 5044.5 \\ 
-		SW\_SEASONAL    & 14 & 141.0 & 784.0 \\ \hline
-	\end{tabularx}
-\end{table}
 
 \subsection{Linearly increasing Power Demand}
 
