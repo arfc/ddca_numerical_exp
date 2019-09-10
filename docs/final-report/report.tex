@@ -78,7 +78,7 @@ Figure \ref{fig:23flow} shows the flow of Eg01-Eg23.
 	\label{fig:23flow}
 \end{figure}
 
-\subsection{Power}
+\subsection{Flat Power Demand}
 
 This section presents plots of power for all the prediction methods. The power demand is 60000 MW throughout the whole simulation. The input files use the installed capacity feature. Buffer is set to zero, back steps is set to two, and steps takes the default value of one.
 Figures \ref{fig:23-NO}, \ref{fig:23-DO}, and \ref{fig:23-SO} display the power supply and demand.
@@ -204,7 +204,7 @@ The input files use the installed capacity feature. Buffer takes the values 0, 2
 This section presents a sensitivity analysis for different values of steps.
 Figure \ref{fig:23-steps} shows a comparison of the cumulative under supply for different values of steps forward.
 
-Figures \ref{fig:23-ste-ma} to \ref{fig:23-ste-fft} display a comparison for some of the methods of the power supply for different steps.
+Figures \ref{fig:23-ste-poly} and \ref{fig:23-ste-fft} display a comparison for some of the methods of the power supply for different steps.
 
 The input files use the installed capacity feature. Buffer is set to zero, back steps is set to two, and steps takes the values 1, 2, 3, 4, and 5.
 
@@ -220,50 +220,10 @@ Seeing figure \ref{fig:23-steps} we note that the more steps used, the worse the
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{23-figures/23-power-buffer0-ma-steps.png} 
-	\hfill
-	\caption{Power supply for different values of steps forward using ma.}
-	\label{fig:23-ste-ma}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{23-figures/23-power-buffer0-arma-steps.png} 
-	\hfill
-	\caption{Power supply for different values of steps forward using arma.}
-	\label{fig:23-ste-arma}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{23-figures/23-power-buffer0-arch-steps.png} 
-	\hfill
-	\caption{Power supply for different values of steps forward using arch.}
-	\label{fig:23-ste-arch}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
 	\includegraphics[width=\textwidth]{23-figures/23-power-buffer0-poly-steps.png} 
 	\hfill
 	\caption{Power supply for different values of steps forward using poly.}
 	\label{fig:23-ste-poly}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{23-figures/23-power-buffer0-exp_smoothing-steps.png} 
-	\hfill
-	\caption{Power supply for different values of steps forward using exp\_smoothing.}
-	\label{fig:23-ste-exp_smoothing}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{23-figures/23-power-buffer0-holt_winters-steps.png} 
-	\hfill
-	\caption{Power supply for different values of steps forward using holt\_winters.}
-	\label{fig:23-ste-hots_winters}
 \end{figure}
 
 \begin{figure}[H]
@@ -534,55 +494,6 @@ Figure \ref{fig:24flow} shows the flow of Eg01-Eg24.
 	\label{fig:24flow}
 \end{figure}
 
-\subsection{Flat Power Demand}
-
-This section presents plots of power for all the prediction methods. The power demand is 60000 MW throughout the whole simulation. The input files use the installed capacity feature. Buffer is set to zero, back steps is set to two, and steps takes the default value of one.
-Figures \ref{fig:24-NO}, \ref{fig:24-DO}, and \ref{fig:24-SO} display the power supply and demand.
-Table \ref{tab:24-power} records the number of steps whit under supply, the cumulative under supply, and the cumulative oversupply.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{24-figures/24-power-buffer01.png} 
-	\hfill
-	\caption{NO algorithms.}
-	\label{fig:24-NO}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{24-figures/24-power-buffer02.png} 
-	\hfill
-	\caption{DO algorithms.}
-	\label{fig:24-DO}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{24-figures/24-power-buffer03.png} 
-	\hfill
-	\caption{SO algorithms.}
-	\label{fig:24-SO}
-\end{figure}
-
-\begin{table}[H]
-	\centering
-	\caption{Undersupply and oversupply of Power for the different algorithms used to calculate EG01-EG24.}
-	\label{tab:24-power}
-	\begin{tabularx}{\textwidth}{lRRR}
-		\hline
-		Algorithm & Undersupplied & Cumulative  & Cumulative \\
-		& Timesteps     & Undersupply [GW.mo]  & Oversupply [GW.mo] \\ \hline
-		MA        & 26 	& 306.0 &  907.8   \\ 
-		ARMA      & 26 	& 306.0 &  907.8   \\ 
-		ARCH      & 26 	& 306.0 &  907.8   \\ 
-		POLY      &  6 	& 235.0 &  2820.5  \\ 
-		EXP\_SMOOTHING 	& 27 & 366.0 & 907.8 \\ 
-		HOLT-WINTERS  	& 27 & 366.0 & 907.8 \\ 
-		FFT       & 8	& 307.0	& 2820.5 \\ 
-		SW\_SEASONAL    & 36 & 308.0 & 398.1	\\ \hline
-	\end{tabularx}
-\end{table}
-
 \subsection{Linearly increasing Power Demand}
 
 This section presents plots of power for all the prediction methods. The power demand increases linearly with the expression $60000 MW + 250*t MW/year$. The input files use the installed capacity feature. Buffer is set to zero, back steps is set to two, and steps takes the default value of one.
@@ -631,6 +542,30 @@ Table \ref{tab:24-lin-power} records the number of steps whit under supply, the 
 		SW\_SEASONAL    & 107 & 318.8 & 579.09 \\ \hline
 	\end{tabularx}
 \end{table}
+
+\subsection{Buffer}
+
+This section presents a sensitivity analysis for different values of the buffer. Figure \ref{fig:24-buff} shows a comparison of the cumulative under supply for different buffer sizes.
+
+Figure \ref{fig:24-buf-fft} displays a comparison for some of the methods of the power supply for different buffer sizes.
+
+The input files use the installed capacity feature. Buffer takes the values 0, 2000, 4000, 6000, and 8000. Back steps is set to two, and steps takes the default value of one.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{24-figures/24-sens-buffer.png} 
+	\hfill
+	\caption{Sensitivity analysis for different buffer sizes for some prediction algorithms.}
+	\label{fig:24-buff}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{24-figures/24-power-buffer-fft.png} 
+	\hfill
+	\caption{Power supply for different buffer sizes using ma.}
+	\label{fig:24-buf-fft}
+\end{figure}
 
 \section{Eg01-Eg29}
 
