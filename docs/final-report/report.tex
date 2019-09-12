@@ -81,8 +81,8 @@ Figure \ref{fig:23flow} shows the flow of Eg01-Eg23.
 \subsection{Flat Power Demand}
 
 This section presents plots of power for all the prediction methods. The power demand is 60000 MW throughout the whole simulation. Table \ref{tab:23-inputs} shows the input file values. Figures \ref{fig:23-NO}, \ref{fig:23-DO}, and \ref{fig:23-SO} display the power demand supply for the Non-optimizing (NO), Deterministic-optimizing (DO), and Stochastic-optimizing methods (SO), respectively.
-Table \ref{tab:23-power} records the number of steps with under supply, the cumulative under supply, and the cumulative oversupply. Cumulative under supply and cumulative oversupply represent the summation of the difference between the power supplied and the power demanded for all the time steps in the simulation. This magnitude could best be thought of as energy. The cumulative under supply represents the energy not provided during the time steps in which the supply did not meet the demand. Likewise, the oversupply would be the excess energy produced.
-By looking at table \ref{tab:23-power}, the smallest cumulative under supply and smallest amount of under supply time steps are for poly.
+Table \ref{tab:23-power} records the number of steps with under supply, the cumulative under supply, and the cumulative oversupply. Cumulative under supply and cumulative oversupply represent the summation of the difference between the power supplied and the power demanded for all the time steps in the simulation. This magnitude could be best understood as energy. The cumulative under supply represents the energy not provided during the time steps in which the supply did not meet the demand. Likewise, the oversupply is the excess of energy produced.
+In table \ref{tab:23-power} we see that the smallest cumulative under supply and smallest amount of under supply time steps are for poly and fft.
 
 \begin{table}[H]
 	\centering
@@ -125,7 +125,7 @@ By looking at table \ref{tab:23-power}, the smallest cumulative under supply and
 
 \begin{table}[H]
 	\centering
-	\caption{Undersupply and oversupply of Power for the different prediction algorithms used to calculate EG01-EG23.}
+	\caption{Under supply and oversupply of Power for the different prediction algorithms used to calculate EG01-EG23.}
 	\label{tab:23-power}
 	\begin{tabularx}{\textwidth}{lRRR}
 		\hline
@@ -144,13 +144,13 @@ By looking at table \ref{tab:23-power}, the smallest cumulative under supply and
 
 \subsection{Buffer}
 
-This section presents a sensitivity analysis for different values of the buffer. Figure \ref{fig:23-buff} shows a comparison of the cumulative under supply for different buffer sizes for some of the prediction methods. The cumulative under supply, remains constant for some of the methods and decreases with the increase of the buffer for others. Figure \ref{fig:23-buf-poly} displays the power supply and demand for different values of the buffer using poly. For this last case, the under supply remains constant. Figure \ref{fig:23-buf-poly} helps to understand the observed behavior. During at the transition we can see that even for the buffer with size 0 there is no under supply. Then, increasing the buffer will not decrease an under supply that is already zero.
+This section presents a sensitivity analysis for different values of the buffer. Figure \ref{fig:23-buff} shows a comparison of the cumulative under supply for different buffer sizes for different prediction methods. The cumulative under supply, remains constant for some of the methods and decreases with the increase of the buffer for others. Figure \ref{fig:23-buf-poly} displays the power supply and demand for different values of the buffer using poly. For this last case, the under supply remains constant. Figure \ref{fig:23-buf-poly} helps to understand the observed behavior. During at the transition we can see that even for the buffer with size 0 MW there is no under supply. Then, increasing the buffer will not decrease an under supply that is already zero.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{23-figures/23-sens-buffer.png} 
 	\hfill
-	\caption{Sensitivity analysis for different buffer sizes for some prediction algorithms.}
+	\caption{Sensitivity analysis for different buffer sizes for different prediction algorithms.}
 	\label{fig:23-buff}
 \end{figure}
 
@@ -168,14 +168,14 @@ This section presents a sensitivity analysis for different values of forward ste
 Figure \ref{fig:23-steps} shows a plot of the cumulative under supply for different values of forward steps using poly.
 Slightly increasing the number of forward steps decreases the under supply. Increasing the number of forward steps too much has a negative impact on the results.
 Figures \ref{fig:23-ste-poly} displays the plots for power supply for different number of forward steps. For 4 and 5 forward steps, the under supply increases.
-The cause of this is that increasing the number of forward steps increases the supply of power. The increase in power production means that more reactors are deployed and consequently, more fuel to start is required. As they require too much fuel, the reactors will not start properly, and the scenario will fail. Figure \ref{fig:23-ste-fft-mixerout} helps to understand this behavior. This figure shows that the demand of fuel for the FRs is larger than the supply of the same commodity.
-The forward steps capability should be used cautiously to avoid this under supply from happening.
+Increasing the number of forward steps enlarges the production of power, more reactors are deployed and consequently, the new reactors require more fuel. As they require more fuel, the available fuel will not be enough, and the scenario will fail. Figure \ref{fig:23-ste-fft-mixerout} helps to understand this behavior. This figure shows that the demand of fuel for the FRs is larger than the supply of the same commodity.
+The forward steps capability should be used only with small number of forward steps to avoid this under supply from happening.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{23-figures/23-sens-steps.png} 
 	\hfill
-	\caption{Cumulative under supply for different number of forward steps using poly.}
+	\caption{Cumulative under supply varying the number of forward steps using poly.}
 	\label{fig:23-steps}
 \end{figure}
 
@@ -183,7 +183,7 @@ The forward steps capability should be used cautiously to avoid this under suppl
 	\centering
 	\includegraphics[width=\textwidth]{23-figures/23-power-buffer0-poly-steps.png} 
 	\hfill
-	\caption{Power supply for different values of steps forward using poly.}
+	\caption{Power supply varying the number of forward steps using poly.}
 	\label{fig:23-ste-poly}
 \end{figure}
 
@@ -346,7 +346,7 @@ For the back-end commodities, the notion of under supply and over supply are dif
 
 \begin{table}[H]
 	\centering
-	\caption{Undersupply and oversupply of different commodities using poly to calculate EG01-EG23.}
+	\caption{Under supply and oversupply of different commodities using poly to calculate EG01-EG23.}
 	\label{tab:23-commod}
 	\begin{tabularx}{\textwidth}{lRRR}
 		\hline
@@ -377,9 +377,27 @@ Figure \ref{fig:24flow} shows the flow of Eg01-Eg24.
 
 \subsection{Linearly increasing Power Demand}
 
-This section presents plots of power for all the prediction methods. The power demand increases linearly with the expression $60000 MW + 250*t MW/year$. The input files use the installed capacity feature. Buffer is set to zero, back steps is set to two, and steps takes the default value of one.
-Figures \ref{fig:24-lin-NO}, \ref{fig:24-lin-DO}, and \ref{fig:24-lin-SO} display the power supply and demand.
-Table \ref{tab:24-lin-power} records the number of steps whit under supply, the cumulative under supply, and the cumulative oversupply.
+This section presents plots of power for all the prediction methods. The power demand is 60000 MW throughout the whole simulation. Table \ref{tab:23-inputs} shows the input file values. Figures \ref{fig:23-NO}, \ref{fig:23-DO}, and \ref{fig:23-SO} display the power demand supply for the Non-optimizing (NO), Deterministic-optimizing (DO), and Stochastic-optimizing methods (SO), respectively.
+Table \ref{tab:23-power} records the number of steps with under supply, the cumulative under supply, and the cumulative oversupply. Cumulative under supply and cumulative oversupply represent the summation of the difference between the power supplied and the power demanded for all the time steps in the simulation. This magnitude could be best understood as energy. The cumulative under supply represents the energy not provided during the time steps in which the supply did not meet the demand. Likewise, the oversupply is the excess of energy produced.
+In table \ref{tab:23-power} we see that the smallest cumulative under supply and smallest amount of under supply time steps are for poly and fft.
+
+This section presents plots of power for all the prediction methods. The power demand increases linearly with the expression $60000 MW + 250*t MW/year$. Table \ref{tab:24-inputs} shows the input file values. Figures \ref{fig:24-lin-NO}, \ref{fig:24-lin-DO}, and \ref{fig:24-lin-SO} display the power demand supply for the Non-optimizing (NO), Deterministic-optimizing (DO), and Stochastic-optimizing methods (SO), respectively.
+Table \ref{tab:24-lin-power} records the number of steps whit under supply, the cumulative under supply, and the cumulative oversupply. In the same table we see that the smallest cumulative under supply and smallest amount of under supply time steps are for fft.
+
+\begin{table}[H]
+	\centering
+	\caption{EG01-EG24 input file values.}
+	\label{tab:24-inputs}
+	\begin{tabularx}{\textwidth}{lR}
+		\hline
+		Parameter			& Value \\ 	\hline
+		Demand equation		& 60GW + 250MW/year*t  \\
+		Installed Capacity 	& 1 \\
+		Buffer    			& 0 \\
+		Forward Steps		& 1 \\
+		Backward Steps		& 2 \\		\hline
+	\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
 	\centering
@@ -407,7 +425,7 @@ Table \ref{tab:24-lin-power} records the number of steps whit under supply, the 
 
 \begin{table}[H]
 	\centering
-	\caption{Undersupply and oversupply of Power for the different prediction algorithms used to calculate EG01-EG24.}
+	\caption{Under supply and oversupply of Power for the different prediction algorithms used to calculate EG01-EG24.}
 	\label{tab:24-lin-power}
 	\begin{tabularx}{\textwidth}{lRRR}
 		\hline
@@ -470,7 +488,7 @@ Table \ref{tab:29-power} records the number of steps with under supply, the cumu
 	\centering
 	\includegraphics[width=\textwidth]{29-figures/29-power0-buffer01.png} 
 	\hfill
-	\caption{NO algorithms.}
+	\caption{Constant power demand of 60GW and power supply obtained with the SO algorithms.}
 	\label{fig:29-NO}
 \end{figure}
 
@@ -478,7 +496,7 @@ Table \ref{tab:29-power} records the number of steps with under supply, the cumu
 	\centering
 	\includegraphics[width=\textwidth]{29-figures/29-power0-buffer02.png} 
 	\hfill
-	\caption{DO algorithms.}
+	\caption{Constant power demand of 60GW and power supply obtained with the DO algorithms.}
 	\label{fig:29-DO}
 \end{figure}
 
@@ -486,7 +504,7 @@ Table \ref{tab:29-power} records the number of steps with under supply, the cumu
 	\centering
 	\includegraphics[width=\textwidth]{29-figures/29-power0-buffer03.png} 
 	\hfill
-	\caption{SO algorithms.}
+	\caption{Constant power demand of 60GW and power supply obtained with the SO algorithms.}
 	\label{fig:29-SO}
 \end{figure}
 
@@ -849,6 +867,21 @@ Figure \ref{fig:30flow} shows the flow of Eg01-Eg30.
 This section presents plots of power for all the prediction methods. The power demand increases linearly with the expression $60000 MW + 250*t MW/year$. The input files use the installed capacity feature. Buffer is set to zero, back steps is set to two, and steps takes the default value of one.
 Figures \ref{fig:30-lin-NO}, \ref{fig:30-lin-DO}, and \ref{fig:30-lin-SO} display the power supply and demand.
 Table \ref{tab:30-lin-power} records the number of steps whit under supply, the cumulative under supply, and the cumulative oversupply.
+
+\begin{table}[H]
+	\centering
+	\caption{EG01-EG30 input file values.}
+	\label{tab:30-inputs}
+	\begin{tabularx}{\textwidth}{lR}
+		\hline
+		Parameter			& Value \\ 	\hline
+		Demand equation		& 60GW + 250MW/year*t  \\
+		Installed Capacity 	& 1 \\
+		Buffer    			& 0 \\
+		Forward Steps		& 1 \\
+		Backward Steps		& 2 \\		\hline
+	\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
 	\centering
