@@ -80,7 +80,7 @@ Figure \ref{fig:23flow} shows the flow of Eg01-Eg23.
 
 \subsection{Flat Power Demand}
 
-This section presents plots of power for all the prediction methods. The power demand is 60000 MW throughout the whole simulation. Table \ref{tab:23-inputs} shows the input file values. Figures \ref{fig:23-NO}, \ref{fig:23-DO}, and \ref{fig:23-SO} display the power demand supply for the Non-optimizing (NO), Deterministic-optimizing (DO), and Stochastic-optimizing methods (SO), respectively.
+This section presents plots of power for all the prediction methods. The power demand is 60000 MW throughout the whole simulation. Table \ref{tab:23-inputs} shows the input file values. Figures \ref{fig:23-NO}, \ref{fig:23-DO}, and \ref{fig:23-SO} display the power demand supply for the Non-optimizing (NO), Deterministic-optimizing (DO), and Stochastic-optimizing methods (SO), respectively. The plots show the curves close to when the transition begins. It takes a small number of time steps in the beginning of the simulation until the supply meets the demand.
 Table \ref{tab:23-power} records the number of steps with under supply, the cumulative under supply, and the cumulative oversupply. Cumulative under supply and cumulative oversupply represent the summation of the difference between the power supplied and the power demanded for all the time steps in the simulation. This magnitude could be best understood as energy. The cumulative under supply represents the energy not provided during the time steps in which the supply did not meet the demand. Likewise, the oversupply is the excess of energy produced.
 In table \ref{tab:23-power} we see that the smallest cumulative under supply and smallest amount of under supply time steps are for poly and fft.
 
@@ -209,22 +209,15 @@ For the back-end commodities, the notion of under supply and over supply are dif
 	\centering
 	\caption{Commodity names used in the simulation of EG01-EG23.}
 	\label{tab:23-commodities}
-	\begin{tabularx}{\textwidth}{lLL}
+	\begin{tabularx}{\textwidth}{lL}
 		\hline
-		Commodity name  & Figure & Represents \\ \hline
-  		power           & \ref{fig:23-power} & Power \\
-		sourceout       & \ref{fig:23-sourceout} & Natural-U \\
-        enrichmentout   & \ref{fig:23-enrichmentout} & Enriched-U \\
-        mixerout        & \ref{fig:23-mixerout} & FR fuel \\
-  		lwrout          & \ref{fig:23-lwrout} & Spent fuel of LWRs \\
-  		frout           & \ref{fig:23-frout} & Spent fuel of FRs \\
-  		lwrstorageout   & \ref{fig:23-lwrstorageout} & Cooled down spent fuel of LWRs \\
-  		frstorageout    & \ref{fig:23-frstorageout} & Cooled down spent fuel of FRs \\	
-  		lwrpu   & \ref{fig:23-lwrpu} & Pu from spent fuel of LWRs \\
-  		frpu    & \ref{fig:23-frpu} & Pu from spent fuel of FRs \\
-  		lwrreprocessingwaste & \ref{fig:23-lwrreprocessingwaste} & Waste from the reprocessing of spent fuel of LWRs \\
- 		frreprocessingwaste & \ref{fig:23-frreprocessingwaste} & Waste from the reprocessing of spent fuel of FRs \\ \hline
-
+		Commodity & Figure \\ \hline
+  		Power           & \ref{fig:23-power} \\
+		Natural-U       & \ref{fig:23-sourceout} \\
+        Enriched-U   	& \ref{fig:23-enrichmentout} \\
+        FR fuel       	& \ref{fig:23-mixerout} \\
+  		Reprocessed Pu from spent fuel of LWRs & \ref{fig:23-lwrpu} \\
+  		Reprocessed Pu from spent fuel of FRs  & \ref{fig:23-frpu} \\ \hline
 	\end{tabularx}
 \end{table}
 
@@ -232,7 +225,7 @@ For the back-end commodities, the notion of under supply and over supply are dif
 	\centering
 	\includegraphics[width=\textwidth]{23-figures/0-poly-power.png} 
 	\hfill
-	\caption{Supply and demand of the commodity power.}
+	\caption{Demand and supply of Power and number of reactors deployed.}
 	\label{fig:23-power}
 \end{figure}
 
@@ -241,18 +234,18 @@ For the back-end commodities, the notion of under supply and over supply are dif
 	\begin{subfigure}[]{0.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{23-figures/0-poly-sourceout.png} 
-		\caption{Commodity sourceout.}
+		\caption{Natural-U.}
 		\label{fig:23-sourceout}
 	\end{subfigure}
 	\vspace{1cm}
 	\begin{subfigure}[]{0.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{23-figures/0-poly-enrichmentout.png} 
-		\caption{Commodity enrichmentout.}
+		\caption{Enriched-U.}
 		\label{fig:23-enrichmentout}
 	\end{subfigure}
 	\hfill
-	\caption{Supply and demand of different commodities for the prediction method poly.}
+	\caption{Demand and supply of different commodities and number of facilities that produce them.}
 	\label{fig:23-front}
 \end{figure}
 
@@ -260,48 +253,8 @@ For the back-end commodities, the notion of under supply and over supply are dif
 	\centering
 	\includegraphics[width=\textwidth]{23-figures/0-poly-mixerout.png} 
 	\hfill
-	\caption{Supply and demand of the commodity mixerout.}
+	\caption{Demand and supply of FR fuel and number of FR reactors.}
 	\label{fig:23-mixerout}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[]{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{23-figures/0-poly-lwrout.png} 
-		\caption{Commodity lwrout.}
-		\label{fig:23-lwrout}
-	\end{subfigure}
-	\vspace{1cm}
-	\begin{subfigure}[]{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{23-figures/0-poly-frout.png} 
-		\caption{Commodity frout.}
-		\label{fig:23-frout}
-	\end{subfigure}
-	\hfill
-	\caption{Supply and demand of different commodities for the prediction method poly.}
-	\label{fig:23-out}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[t]{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{23-figures/0-poly-lwrstorageout.png} 
-		\caption{Commodity lwrstorageout.}
-		\label{fig:23-lwrstorageout}
-	\end{subfigure}
-	\vspace{1cm}
-	\begin{subfigure}[t]{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{23-figures/0-poly-frstorageout.png} 
-		\caption{Commodity frstorageout.}
-		\label{fig:23-frstorageout}
-	\end{subfigure}
-	\hfill
-	\caption{Supply and demand of different commodities for the prediction method poly.}
-	\label{fig:23-storageout}
 \end{figure}
 
 \begin{figure}[H]
@@ -309,39 +262,19 @@ For the back-end commodities, the notion of under supply and over supply are dif
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{23-figures/0-poly-lwrpu.png} 
-		\caption{Commodity lwrpu.}
+		\caption{Reprocessed Pu from spent fuel of LWRs.}
 		\label{fig:23-lwrpu}
 	\end{subfigure}
 	\vspace{1cm}
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{23-figures/0-poly-frpu.png} 
-		\caption{Commodity frpu.}
+		\caption{Reprocessed Pu from spent fuel of FRs.}
 		\label{fig:23-frpu}
 	\end{subfigure}
 	\hfill
-	\caption{Supply and demand of different commodities for the prediction method poly.}
+	\caption{Demand and supply of different commodities and number of facilities supplied with them.}
 	\label{fig:23-pu}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[t]{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{23-figures/0-poly-lwrreprocessingwaste.png} 
-		\caption{Commodity lwrreprocessingwaste.}
-		\label{fig:23-lwrreprocessingwaste}
-	\end{subfigure}
-	\vspace{1cm}
-	\begin{subfigure}[t]{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{23-figures/0-poly-frreprocessingwaste.png} 
-		\caption{Commodity frreprocessingwaste.}
-		\label{fig:23-frreprocessingwaste}
-	\end{subfigure}
-	\hfill
-	\caption{Supply and demand of different commodities for the prediction method poly.}
-	\label{fig:23-waste}
 \end{figure}
 
 \begin{table}[H]
@@ -352,14 +285,10 @@ For the back-end commodities, the notion of under supply and over supply are dif
 		\hline
 		Commodity & Undersupplied & Cumulative  & Cumulative \\
 		& Timesteps     & Undersupply [$10^3$Kg]  & Oversupply [$10^6$Kg] \\ \hline
-		sourceout & 2 & 4713.  &  35648   \\ 
-		enrichmentout & 4 & 48.5$x 10^3$  &  42259   \\ 
-		lwrout & 1 & 149 & - \\
-		frout & 1 & 211 & - \\
-		lwrstorageout & 1 & 149 & - \\
-		frstorageout & 1 & 211 & - \\
-        lwrpu & 1 & 1.7 & - \\
-        frpu & 1 & 27.4 & - \\ \hline
+		Natural-U & 2 & 4713  &  35648   \\ 
+		Enriched-U & 4 & 48.5$.10^3$  &  42259   \\ 
+        Reprocessed Pu from spent fuel of LWRs & 1 & 1.7 & - \\
+        Reprocessed Pu from spent fuel of FRs & 1 & 27.4 & - \\ \hline
 	\end{tabularx}
 \end{table}
 
@@ -377,7 +306,7 @@ Figure \ref{fig:24flow} shows the flow of Eg01-Eg24.
 
 \subsection{Linearly increasing Power Demand}
 
-This section presents plots of power for all the prediction methods. The power demand increases linearly with the expression $60000 MW + 250*t MW/year$. Table \ref{tab:24-inputs} shows the input file values. Figures \ref{fig:24-lin-NO}, \ref{fig:24-lin-DO}, and \ref{fig:24-lin-SO} display the power demand supply for the Non-optimizing (NO), Deterministic-optimizing (DO), and Stochastic-optimizing methods (SO), respectively.
+This section presents plots of power for all the prediction methods. The power demand increases linearly with the expression $60000 MW + 250*t MW/year$. Table \ref{tab:24-inputs} shows the input file values. Figures \ref{fig:24-lin-NO}, \ref{fig:24-lin-DO}, and \ref{fig:24-lin-SO} display the power demand supply for the Non-optimizing (NO), Deterministic-optimizing (DO), and Stochastic-optimizing methods (SO), respectively. The plots show the curves close to when the transition begins. It takes a small number of time steps in the beginning of the simulation until the supply meets the demand.
 Table \ref{tab:24-lin-power} records the number of steps whit under supply, the cumulative under supply, and the cumulative oversupply. The smallest cumulative under supply and smallest amount of under supply time steps are for fft.
 
 \begin{table}[H]
@@ -543,27 +472,17 @@ In this simulation, front-end commodities are power, sourceout, enrichmentout, f
 	\centering
 	\caption{Commodity names used in the simulation of EG01-EG29.}
 	\label{tab:29-commodities}
-	\begin{tabularx}{\textwidth}{lLL}
+	\begin{tabularx}{\textwidth}{lL}
 		\hline
-		Commodity name  & Figures & Represents \\ \hline
-		power           & \ref{fig:29-power} & Power \\
-		sourceout       & \ref{fig:29-sourceout} & Natural-U \\
-		enrichmentout   & \ref{fig:29-enrichmentout} & Enriched-U \\
-		frmixerout      &  \ref{fig:29-frmixerout} & FR fuel \\
-    	moxmixerout     &  \ref{fig:29-moxmixerout} & MOX fuel \\
-		lwrout          & \ref{fig:29-out1} & Spent fuel of LWRs \\
-		frout           & \ref{fig:29-frout} & Spent fuel of FRs \\
-		frout           & \ref{fig:29-moxout} & Spent fuel of MOX LWRs \\
-		lwrstorageout   & \ref{fig:29-storageout1} & Cooled down spent fuel of LWRs \\
-		frstorageout    & \ref{fig:29-frstorageout} & Cooled down spent fuel of FRs \\	
-		moxstorageout    & \ref{fig:29-moxstorageout} & Cooled down spent fuel of MOX LWRs \\	
-		lwrpu   & \ref{fig:29-pu1} & Pu from spent fuel of LWRs \\
-		frpu    & \ref{fig:29-frpu} & Pu from spent fuel of FRs \\
-		moxpu    & \ref{fig:29-moxpu} & Pu from spent fuel of MOX LWRs \\
-		lwrreprocessingwaste & \ref{fig:29-lwrreprocessingwaste} & Waste from the reprocessing of spent fuel of LWRs \\
-		frreprocessingwaste & \ref{fig:29-frreprocessingwaste} & Waste from the reprocessing of spent fuel of FRs \\
-		moxreprocessingwaste & \ref{fig:29-moxreprocessingwaste} & Waste from the reprocessing of spent fuel of MOX LWRs \\ \hline
-			
+		Commodity & Figure \\ \hline
+		Power           & \ref{fig:29-power} \\
+		Natural-U       & \ref{fig:29-sourceout} \\
+		Enriched-U   	& \ref{fig:29-enrichmentout} \\
+		FR fuel       	& \ref{fig:29-frmixerout} \\
+		MOX LWR fuel   	& \ref{fig:29-moxmixerout} \\
+		Reprocessed Pu from spent fuel of LWRs & \ref{fig:29-pu1} \\
+		Reprocessed Pu from spent fuel of FRs  & \ref{fig:29-frpu} \\
+		Reprocessed Pu from spent fuel of MOX LWRs  & \ref{fig:29-moxpu} \\ \hline
 	\end{tabularx}
 \end{table}
 
@@ -571,7 +490,7 @@ In this simulation, front-end commodities are power, sourceout, enrichmentout, f
 	\centering
 	\includegraphics[width=\textwidth]{29-figures/0-poly-power.png} 
 	\hfill
-	\caption{Supply and demand of the commodity power.}
+	\caption{Demand and supply of Power and number of reactors deployed.}
 	\label{fig:29-power}
 \end{figure}
 
@@ -580,18 +499,18 @@ In this simulation, front-end commodities are power, sourceout, enrichmentout, f
 	\begin{subfigure}[]{0.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{29-figures/0-poly-sourceout.png} 
-		\caption{Commodity sourceout.}
+		\caption{Natural-U.}
 		\label{fig:29-sourceout}
 	\end{subfigure}
 	\vspace{1cm}
 	\begin{subfigure}[]{0.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{29-figures/0-poly-enrichmentout.png} 
-		\caption{Commodity enrichmentout.}
+		\caption{Enriched-U.}
 		\label{fig:29-enrichmentout}
 	\end{subfigure}
 	\hfill
-	\caption{Supply and demand of different commodities for the prediction method poly.}
+	\caption{Demand and supply of different commodities and number of facilities that produce them.}
 	\label{fig:29-front}
 \end{figure}
 
@@ -600,82 +519,26 @@ In this simulation, front-end commodities are power, sourceout, enrichmentout, f
 	\begin{subfigure}[]{0.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{29-figures/0-poly-frmixerout.png} 
-		\caption{Commodity frmixerout.}
+		\caption{FR Fuel.}
 		\label{fig:29-frmixerout}
 	\end{subfigure}
 	\vspace{1cm}
 	\begin{subfigure}[]{0.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{29-figures/0-poly-moxmixerout.png} 
-		\caption{Commodity moxmixerout.}
+		\caption{MOX LWR Fuel.}
 		\label{fig:29-moxmixerout}
 	\end{subfigure}
 	\hfill
-	\caption{Supply and demand of different commodities for the prediction method poly.}
+	\caption{Demand and supply of fuel and number of reactors.}
 	\label{fig:29-mix}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/0-poly-lwrout.png} 
-	\hfill
-	\caption{Supply and demand of the commodity lwrout.}
-	\label{fig:29-out1}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[]{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{29-figures/0-poly-frout.png} 
-		\caption{Commodity frout.}
-		\label{fig:29-frout}
-	\end{subfigure}
-	\vspace{1cm}
-	\begin{subfigure}[]{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{29-figures/0-poly-moxout.png} 
-		\caption{Commodity moxout.}
-		\label{fig:29-moxout}
-	\end{subfigure}
-	\hfill
-	\caption{Supply and demand of different commodities for the prediction method poly.}
-	\label{fig:29-out2}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/0-poly-lwrstorageout.png} 
-	\hfill
-	\caption{Supply and demand of the commodity lwrstorageout.}
-	\label{fig:29-storageout1}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[t]{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{29-figures/0-poly-frstorageout.png} 
-		\caption{Commodity frstorageout.}
-		\label{fig:29-frstorageout}
-	\end{subfigure}
-	\vspace{1cm}
-	\begin{subfigure}[t]{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{29-figures/0-poly-moxstorageout.png} 
-		\caption{Commodity moxstorageout.}
-		\label{fig:29-moxstorageout}
-	\end{subfigure}
-	\hfill
-	\caption{Supply and demand of different commodities for the prediction method poly.}
-	\label{fig:29-storageout2}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{29-figures/0-poly-lwrpu.png} 
 	\hfill
-	\caption{Supply and demand of the commodity lwrpu.}
+	\caption{Demand and supply of reprocessed Pu from spent fuel of LWRs and number of facilities supplied with them.}
 	\label{fig:29-pu1}
 \end{figure}
 
@@ -684,7 +547,7 @@ In this simulation, front-end commodities are power, sourceout, enrichmentout, f
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{23-figures/0-poly-frpu.png} 
-		\caption{Commodity frpu.}
+		\caption{Reprocessed Pu from spent fuel of FRs.}
 		\label{fig:29-frpu}
 	\end{subfigure}
 	\vspace{1cm}
@@ -695,59 +558,22 @@ In this simulation, front-end commodities are power, sourceout, enrichmentout, f
 		\label{fig:29-moxpu}
 	\end{subfigure}
 	\hfill
-	\caption{Supply and demand of different commodities for the prediction method poly.}
+	\caption{Demand and supply of different commodities and number of facilities supplied with them.}
 	\label{fig:29-pu2}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/0-poly-lwrreprocessingwaste.png} 
-	\hfill
-	\caption{Supply and demand of the commodity lwrreprocessingwaste.}
-	\label{fig:29-lwrreprocessingwaste}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[t]{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{23-figures/0-poly-frreprocessingwaste.png} 
-		\caption{Commodity frreprocessingwaste.}
-		\label{fig:29-frreprocessingwaste}
-	\end{subfigure}
-	\vspace{1cm}
-	\begin{subfigure}[t]{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{29-figures/0-poly-moxreprocessingwaste.png} 
-		\caption{Commodity moxreprocessingwaste.}
-		\label{fig:29-moxreprocessingwaste}
-	\end{subfigure}
-	\hfill
-	\caption{Supply and demand of different commodities for the prediction method poly.}
-	\label{fig:29-waste}
 \end{figure}
 
 \begin{table}[H]
 	\centering
-	\caption{Undersupply and oversupply of different commodities using poly to calculate EG01-EG29.}
+	\caption{Under supply and oversupply of different commodities using poly to calculate EG01-EG29.}
 	\label{tab:29-commod}
 	\begin{tabularx}{\textwidth}{lRRR}
 		\hline
 		Commodity & Undersupplied & Cumulative  & Cumulative \\
 		& Timesteps & Undersupply [$10^3$Kg]  & Oversupply [$10^6$Kg] \\ \hline
-		sourceout & 1 & 34394.0  & 132319869.5 \\ 
-		enrichmentout & 1 & 16126.1 & 102751545581.6 \\
-
-		lwrout & 1 & 1791.8 & - \\
-		frout & 1 & 142.2 & - \\
-		moxout & 1 & 265.0 & - \\
-
-		frmixerout & 2 & 284.4 & 124827.3 \\
-        moxmixerout & 2 & 530.1 & 354541.5 \\
-
-		lwrstorageout & 1 & 1791.8 & - \\
-		frstorageout & 1 & 142.2 & - \\
-		moxstorageout & 1 & 265.0 & - \\ \hline
+		Natural-U & 1 & 34394.0  & 132319869.5 \\ 
+		Enriched-U & 1 & 16126.1 & 102751545581.6 \\
+		FR Fuel & 2 & 284.4 & 124827.3 \\
+        MOX LWR Fuel & 2 & 530.1 & 354541.5 \\ \hline
 	\end{tabularx}
 \end{table}
 
@@ -766,7 +592,7 @@ Figure \ref{fig:30flow} shows the flow of Eg01-Eg30.
 \subsection{Linearly increasing Power Demand}
 
 This section presents plots of power for all the prediction methods. The power demand increases linearly with the expression $60000 MW + 250*t MW/year$. The input files use the installed capacity feature. Buffer is set to zero, back steps is set to two, and steps takes the default value of one.
-Figures \ref{fig:30-lin-NO}, \ref{fig:30-lin-DO}, and \ref{fig:30-lin-SO} display the power supply and demand.
+Figures \ref{fig:30-lin-NO}, \ref{fig:30-lin-DO}, and \ref{fig:30-lin-SO} display the power supply and demand. The plots show the curves close to when the transition begins. It takes a small number of time steps in the beginning of the simulation until the supply meets the demand.
 Table \ref{tab:30-lin-power} records the number of steps whit under supply, the cumulative under supply, and the cumulative oversupply. The smallest cumulative under supply and smallest amount of under supply time steps are for poly and fft.
 
 \begin{table}[H]
