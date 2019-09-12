@@ -144,7 +144,7 @@ In table \ref{tab:23-power} we see that the smallest cumulative under supply and
 
 \subsection{Buffer}
 
-This section presents a sensitivity analysis for different values of the buffer. Figure \ref{fig:23-buff} shows a comparison of the cumulative under supply for different buffer sizes for different prediction methods. The cumulative under supply, remains constant for some of the methods and decreases with the increase of the buffer for others. Figure \ref{fig:23-buf-poly} displays the power supply and demand for different values of the buffer using poly. For this last case, the under supply remains constant. Figure \ref{fig:23-buf-poly} helps to understand the observed behavior. During at the transition we can see that even for the buffer with size 0 MW there is no under supply. Then, increasing the buffer will not decrease an under supply that is already zero.
+This section presents a sensitivity analysis for different values of the buffer. Figure \ref{fig:23-buff} shows a comparison of the cumulative under supply for different buffer sizes for different prediction methods. The cumulative under supply, remains constant for some of the methods and decreases with the increase of the buffer for others. Figure \ref{fig:23-buf-poly} displays the power demand and supply for different values of the buffer using poly. For this last case, the under supply remains constant. Figure \ref{fig:23-buf-poly} helps to understand the observed behavior. During at the transition we can see that even for the buffer with size 0 MW there is no under supply. Then, increasing the buffer will not decrease an under supply that is already zero.
 
 \begin{figure}[H]
 	\centering
@@ -377,12 +377,8 @@ Figure \ref{fig:24flow} shows the flow of Eg01-Eg24.
 
 \subsection{Linearly increasing Power Demand}
 
-This section presents plots of power for all the prediction methods. The power demand is 60000 MW throughout the whole simulation. Table \ref{tab:23-inputs} shows the input file values. Figures \ref{fig:23-NO}, \ref{fig:23-DO}, and \ref{fig:23-SO} display the power demand supply for the Non-optimizing (NO), Deterministic-optimizing (DO), and Stochastic-optimizing methods (SO), respectively.
-Table \ref{tab:23-power} records the number of steps with under supply, the cumulative under supply, and the cumulative oversupply. Cumulative under supply and cumulative oversupply represent the summation of the difference between the power supplied and the power demanded for all the time steps in the simulation. This magnitude could be best understood as energy. The cumulative under supply represents the energy not provided during the time steps in which the supply did not meet the demand. Likewise, the oversupply is the excess of energy produced.
-In table \ref{tab:23-power} we see that the smallest cumulative under supply and smallest amount of under supply time steps are for poly and fft.
-
 This section presents plots of power for all the prediction methods. The power demand increases linearly with the expression $60000 MW + 250*t MW/year$. Table \ref{tab:24-inputs} shows the input file values. Figures \ref{fig:24-lin-NO}, \ref{fig:24-lin-DO}, and \ref{fig:24-lin-SO} display the power demand supply for the Non-optimizing (NO), Deterministic-optimizing (DO), and Stochastic-optimizing methods (SO), respectively.
-Table \ref{tab:24-lin-power} records the number of steps whit under supply, the cumulative under supply, and the cumulative oversupply. In the same table we see that the smallest cumulative under supply and smallest amount of under supply time steps are for fft.
+Table \ref{tab:24-lin-power} records the number of steps whit under supply, the cumulative under supply, and the cumulative oversupply. The smallest cumulative under supply and smallest amount of under supply time steps are for fft.
 
 \begin{table}[H]
 	\centering
@@ -444,17 +440,13 @@ Table \ref{tab:24-lin-power} records the number of steps whit under supply, the 
 
 \subsection{Buffer}
 
-This section presents a sensitivity analysis for different values of the buffer. Figure \ref{fig:24-buff} shows a comparison of the cumulative under supply for different buffer sizes.
-
-Figure \ref{fig:24-buf-fft} displays a comparison for some of the methods of the power supply for different buffer sizes.
-
-The input files use the installed capacity feature. Buffer takes the values 0, 2000, 4000, 6000, and 8000. Back steps is set to two, and steps takes the default value of one.
+This section presents a sensitivity analysis for different values of the buffer. Figure \ref{fig:24-buff} shows a comparison of the cumulative under supply for different buffer sizes using fft. Figure \ref{fig:24-buf-fft} displays the power demand and supply for different values of the buffer using fft. The cumulative under supply decreases with the increase of the buffer, reaching an asymptotic value. That value is given by the initialization of the scenario, when the buffer does not affect considerably the under supply.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{24-figures/24-sens-buffer.png} 
 	\hfill
-	\caption{Sensitivity analysis for different buffer sizes for some prediction algorithms.}
+	\caption{Sensitivity analysis for different buffer sizes using fft.}
 	\label{fig:24-buff}
 \end{figure}
 
@@ -462,7 +454,7 @@ The input files use the installed capacity feature. Buffer takes the values 0, 2
 	\centering
 	\includegraphics[width=\textwidth]{24-figures/24-power-buffer-fft.png} 
 	\hfill
-	\caption{Power supply for different buffer sizes using ma.}
+	\caption{Power supply for different buffer sizes using fft.}
 	\label{fig:24-buf-fft}
 \end{figure}
 
@@ -480,9 +472,23 @@ Figure \ref{fig:29flow} shows the flow of Eg01-Eg29.
 
 \subsection{Flat Power Demand}
 
-This section presents plots of power for all the prediction methods. The power demand is 60000 MW throughout the whole simulation. The input files use the installed capacity feature. Buffer is set to zero, back steps is set to two, and steps takes the default value of one.
-Figures \ref{fig:29-NO}, \ref{fig:29-DO}, and \ref{fig:29-SO} display the power supply and demand.
-Table \ref{tab:29-power} records the number of steps with under supply, the cumulative under supply, and the cumulative oversupply.
+This section presents plots of power for all the prediction methods. The power demand is 60000 MW throughout the whole simulation. Table \ref{tab:29-inputs} shows the input file values. Figures \ref{fig:29-NO}, \ref{fig:29-DO}, and \ref{fig:29-SO} display the power demand supply for the Non-optimizing (NO), Deterministic-optimizing (DO), and Stochastic-optimizing methods (SO), respectively.
+Table \ref{tab:29-power} records the number of steps with under supply, the cumulative under supply, and the cumulative oversupply. The smallest cumulative under supply and smallest amount of under supply time steps are for poly and fft.
+
+\begin{table}[H]
+	\centering
+	\caption{EG01-EG29 input file values.}
+	\label{tab:29-inputs}
+	\begin{tabularx}{\textwidth}{lR}
+		\hline
+		Parameter			& Value \\ 	\hline
+		Demand equation		& 60e3  \\
+		Installed Capacity 	& 1 \\
+		Buffer    			& 0 \\
+		Forward Steps		& 1 \\
+		Backward Steps		& 2 \\		\hline
+	\end{tabularx}
+\end{table}
 
 \begin{figure}[H]
 	\centering
@@ -510,7 +516,7 @@ Table \ref{tab:29-power} records the number of steps with under supply, the cumu
 
 \begin{table}[H]
 	\centering
-	\caption{Undersupply and oversupply of Power for the different prediction algorithms used to calculate EG01-EG29.}
+	\caption{Under supply and oversupply of Power for the different prediction algorithms used to calculate EG01-EG29.}
 	\label{tab:29-power}
 	\begin{tabularx}{\textwidth}{lRRR}
 		\hline
@@ -526,111 +532,6 @@ Table \ref{tab:29-power} records the number of steps with under supply, the cumu
 		SW\_SEASONAL    & 14 & 139.0 & 798.9 \\ \hline
 	\end{tabularx}
 \end{table}
-
-\subsection{Buffer}
-
-This section presents a sensitivity analysis for different values of the buffer. Figure \ref{fig:29-buff} shows a comparison of the cumulative under supply for different buffer sizes.
-
-Figures \ref{fig:29-buf-ma} to \ref{fig:29-buf-fft} display a comparison for some of the methods of the power supply for different buffer sizes.
-
-The input files use the installed capacity feature. Buffer takes the values 0, 2000, 4000, 6000, and 8000. Back steps is set to two, and steps takes the default value of one.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-sens-buffer.png} 
-	\hfill
-	\caption{Sensitivity analysis for different buffer sizes for some prediction algorithms.}
-	\label{fig:29-buff}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer-ma.png} 
-	\hfill
-	\caption{Power supply for different buffer sizes using ma.}
-	\label{fig:29-buf-ma}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer-arma.png} 
-	\hfill
-	\caption{Power supply for different buffer sizes using arma.}
-	\label{fig:29-buf-arma}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer-arch.png} 
-	\hfill
-	\caption{Power supply for different buffer sizes using arch.}
-	\label{fig:29-buf-arch}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer-poly.png} 
-	\hfill
-	\caption{Power supply for different buffer sizes using poly.}
-	\label{fig:29-buf-poly}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer-exp_smoothing.png} 
-	\hfill
-	\caption{Power supply for different buffer sizes using exp\_smoothing.}
-	\label{fig:29-buf-exp_smoothing}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer-holt_winters.png} 
-	\hfill
-	\caption{Power supply for different buffer sizes using holt\_winters.}
-	\label{fig:29-buf-hots_winters}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer-fft.png} 
-	\hfill
-	\caption{Power supply for different buffer sizes using fft.}
-	\label{fig:29-buf-fft}
-\end{figure}
-
-\subsection{Forward Steps}
-
-This section presents a sensitivity analysis for different values of steps.
-Figure \ref{fig:29-steps} shows a comparison of the cumulative under supply for different values of steps forward.
-
-Figures \ref{fig:29-ste-ma} to \ref{fig:29-ste-fft} display a comparison for some of the methods of the power supply for different steps.
-
-The input files use the installed capacity feature. Buffer is set to zero, back steps is set to two, and steps takes the values 1, 2, 3, 4, and 5.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-sens-steps.png} 
-	\hfill
-	\caption{Sensitivity analysis for different number of steps forward for some prediction algorithms.}
-	\label{fig:29-steps}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer0-poly-steps.png} 
-	\hfill
-	\caption{Power supply for different values of steps forward using poly.}
-	\label{fig:29-ste-poly}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{29-figures/29-power-buffer0-fft-steps.png} 
-	\hfill
-	\caption{Power supply for different values of steps forward using fft.}
-	\label{fig:29-ste-fft}
-\end{figure}
 
 \subsection{Different commodities}
 
@@ -866,7 +767,7 @@ Figure \ref{fig:30flow} shows the flow of Eg01-Eg30.
 
 This section presents plots of power for all the prediction methods. The power demand increases linearly with the expression $60000 MW + 250*t MW/year$. The input files use the installed capacity feature. Buffer is set to zero, back steps is set to two, and steps takes the default value of one.
 Figures \ref{fig:30-lin-NO}, \ref{fig:30-lin-DO}, and \ref{fig:30-lin-SO} display the power supply and demand.
-Table \ref{tab:30-lin-power} records the number of steps whit under supply, the cumulative under supply, and the cumulative oversupply.
+Table \ref{tab:30-lin-power} records the number of steps whit under supply, the cumulative under supply, and the cumulative oversupply. The smallest cumulative under supply and smallest amount of under supply time steps are for poly and fft.
 
 \begin{table}[H]
 	\centering
@@ -909,7 +810,7 @@ Table \ref{tab:30-lin-power} records the number of steps whit under supply, the 
 
 \begin{table}[H]
 	\centering
-	\caption{Undersupply and oversupply of Power for the different prediction algorithms used to calculate EG01-EG24.}
+	\caption{Under supply and oversupply of Power for the different prediction algorithms used to calculate EG01-EG24.}
 	\label{tab:30-lin-power}
 	\begin{tabularx}{\textwidth}{lRRR}
 		\hline
@@ -925,29 +826,5 @@ Table \ref{tab:30-lin-power} records the number of steps whit under supply, the 
 		SW\_SEASONAL  & 51 & 147.3 & 873.4 \\ \hline
 	\end{tabularx}
 \end{table}
-
-\subsection{Buffer}
-
-This section presents a sensitivity analysis for different values of the buffer. Figure \ref{fig:30-buff} shows a comparison of the cumulative under supply for different buffer sizes.
-
-Figure \ref{fig:30-buf-fft} displays a comparison for some of the methods of the power supply for different buffer sizes.
-
-The input files use the installed capacity feature. Buffer takes the values 0, 2000, 4000, 6000, and 8000. Back steps is set to two, and steps takes the default value of one.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{30-figures/30-sens-buffer.png} 
-	\hfill
-	\caption{Sensitivity analysis for different buffer sizes for some prediction algorithms.}
-	\label{fig:30-buff}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{30-figures/30-power-buffer-fft.png} 
-	\hfill
-	\caption{Power supply for different buffer sizes using ma.}
-	\label{fig:30-buf-fft}
-\end{figure}
 
 \end{document}
