@@ -197,13 +197,9 @@ The forward steps capability should be used only with small number of forward st
 
 \subsection{Different commodities}
 
-Table \ref{tab:23-commodities} shows the name of the variables used in the simulations and what they represent in the cycle. Table \ref{tab:23-commod} presents the number of steps of under supply, cumulative under supply, and cumulative oversupply for some of the commodities.
-
-Table \ref{tab:23-commod} needs some further explanation. The simulation differentiates between front-end and back-end commodities. In this simulation, front-end commodities are power, sourceout, and enrichmentout. All the rest of the commodities are back-end. 
-
-For the first ones, under supply means that a facility requires that commodity and the supply is not enough. Over supply, means the opposite. A facility requires that commodity but there is too much of it. In other words, the facilities that provide such commodity are over sized. D3ploy can avoid this situation by deploying more facilities with smaller sizes.
-
-For the back-end commodities, the notion of under supply and over supply are different. This facilities are meant to have an accumulation of material, so they have to over sized. For example, a sink has to be large enough so we do not have to deploy new continuously. It could still happen that the sink gets full and there is a need to build a new one. This is measure by the under supply. When there is too much material that needs to be disposed and the current sinks cannot take that quantity, there is a time step with under supply. Consequently, d3ploy will deploy a new facility on the next time step.
+Since the prediction algorithm poly performed the best, this section presents plots for the supply and demand of the most meaningful commodities in the scenario.
+Table \ref{tab:23-commodities} summarizes the figures in this section and the respective commodities.
+Table \ref{tab:23-commod} presents the number of steps of under supply, cumulative under supply, and cumulative oversupply of such commodities.
 
 \begin{table}[H]
 	\centering
@@ -464,9 +460,9 @@ Table \ref{tab:29-power} records the number of steps with under supply, the cumu
 
 \subsection{Different commodities}
 
-Table \ref{tab:29-commodities} shows the name of the variables used in the simulations and what they represent in the cycle. Table \ref{tab:29-commod} presents the number of steps of under supply, cumulative under supply, and cumulative oversupply for some of the commodities.
-
-In this simulation, front-end commodities are power, sourceout, enrichmentout, frmixerout, and moxmixerout. All the rest of the commodities are back-end.
+Since the prediction algorithm poly performed the best, this section presents plots for the supply and demand of the most meaningful commodities in the scenario.
+Table \ref{tab:29-commodities} summarizes the figures in this section and the respective commodities.
+Table \ref{tab:29-commod} presents the number of steps of under supply, cumulative under supply, and cumulative oversupply of such commodities.
 
 \begin{table}[H]
 	\centering
