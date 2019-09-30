@@ -99,7 +99,7 @@ Each section in this report demonstrates the use of \deploy to set up a transiti
 scenario. 
 We will be looking at constant power demand transition scenarios for EG01-23 and EG01-29, 
 and linearly increasing power demand transition scenarios for EG01-24 and EG01-30. 
-All the results from this report is accessible a github repository \cite{noauthor_arfc/d3ploy:_2019}. 
+All the results from this report are accessible in a github repository \cite{noauthor_arfc/d3ploy:_2019}. 
 
 \section{Eg01-Eg23}
 
@@ -124,12 +124,12 @@ demand and corresponding supply from the Non-optimizing (NO), Deterministic-opti
 and Stochastic-optimizing methods (SO), respectively. 
 The plots only show the power demand and supply during the transition period as 
 undersupply mostly occurs during the transition period. 
-Undersupply of power occur during two main time periods:  
+Undersupply of power occurs during two main time periods:  
 initial demand for the commodity and during the transition period. 
 Undersupply time steps occurring at the beginning of the simulation 
 is expected since without time series data at the beginning of the simulation, 
 \deploy takes a few time steps to collect time series data about power demand 
-to begin predicting and starting deployment of reactor and supporting fuel 
+to begin predicting and starting the deployment of reactor and supporting fuel 
 cycle facilities. 
 Table \ref{tab:23-power} records the number of steps with undersupply, 
 the cumulative undersupply, and the cumulative oversupply for 
@@ -154,7 +154,7 @@ prediction methods.
 		\hline
 		Parameter			& Value \\ 	\hline
 		Demand equation		& 6e4  \\
-		Installed Capacity 	& 1 \\
+		Deployment Driving Method 	& Installed Capacity \\
 		Buffer    			& 0 \\
 		Forward Steps		& 1 \\
 		Backward Steps		& 2 \\		\hline
@@ -243,7 +243,7 @@ Figure \ref{fig:23-steps} shows a plot of the cumulative undersupply
 varying number of forward steps using the poly prediction method.
 Slightly increasing the number of forward steps decreases the undersupply. 
 Increasing the number of forward steps too much has a negative impact on the results.
-Figures \ref{fig:23-ste-poly} displays the plots for power supply for different 
+Figure \ref{fig:23-ste-poly} displays the plots for power supply for different 
 number of forward steps. For 4 and 5 forward steps, the undersupply increases.
 Increasing the number of forward steps enlarges the production of power, 
 more reactors are deployed and consequently, the new reactors require more fuel. 
@@ -289,7 +289,7 @@ cumulative undersupply, and cumulative oversupply for each commodity.
 
 \begin{table}[H]
 	\centering
-	\caption{Commodity names used in the simulation of EG01-EG23.}
+	\caption{Table of figures of commodities in the simulation of EG01-EG23.}
 	\label{tab:23-commodities}
 	\begin{tabularx}{\textwidth}{lR}
 		\hline
@@ -593,7 +593,7 @@ cumulative undersupply, and cumulative oversupply of such commodities.
 
 \begin{table}[H]
 	\centering
-	\caption{Commodity names used in the simulation of EG01-EG29.}
+	\caption{Table of figures of commodities in the simulation of EG01-EG29.}
 	\label{tab:29-commodities}
 	\begin{tabularx}{\textwidth}{lL}
 		\hline
