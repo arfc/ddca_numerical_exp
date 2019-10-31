@@ -1,3 +1,4 @@
+
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage[T1]{fontenc} % Output font encoding for international characters
@@ -58,8 +59,113 @@ fill=blue!30]
 \bibliographystyle{elsarticle-num}
 
 \begin{document}
-\title{DDCA Project Final Quarterly Report}
-\maketitle
+
+%----------------------------------------------------------------------------------------
+%    TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage} % Suppresses displaying the page number on the title page and the subsequent page counts as page 1
+    \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for horizontal lines, change thickness here
+
+    \center % Centre everything on the page
+
+    %------------------------------------------------
+    %    Title
+    %------------------------------------------------
+
+    \HRule\\[0.2cm]
+
+     \begin{minipage}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{arfc-logo}
+        \end{minipage}%
+        \begin{minipage}{0.6\textwidth}
+        {\begin{flushright}\huge\bfseries 
+                Comparison of Demand Driven Deployment Methods for Nuclear Fuel 
+                Cycle Simulation\end{flushright}}
+        %{\begin{flushright}\large\textit{And Equally Convoluted Subtitle}\end{flushright}}
+
+        \end{minipage}
+
+    \vspace{0.2cm}
+    \HRule
+    \vspace{0.5cm}
+
+    %------------------------------------------------
+    %    Author(s)
+    %------------------------------------------------
+
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushleft}
+            \large
+            \textit{Authors}\\
+                Gwendolyn \textsc{Chee}\\
+                Roberto \textsc{Fairhurst}\\
+                Robert \textsc{Flanagan}\\
+        \end{flushleft}
+    \end{minipage}
+    ~
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushright}
+            \large
+            \textit{Supervisor}\\
+            Kathryn D. \textsc{Huff} % Supervisor's name
+        \end{flushright}
+    \end{minipage}
+
+    % If you don't want a supervisor, uncomment the two lines below and comment the code above
+    %{\large\textit{Author}}\\
+    %John \textsc{Smith} % Your name
+
+    %------------------------------------------------
+    %    Report Number
+    %------------------------------------------------
+    \vspace{1cm}
+    \textsc{\LARGE\bfseries UIUC-ARFC-2019-05} % Replace YYYY with the year, NN with report index
+    \vspace{0.5cm}
+
+    %------------------------------------------------
+    %    Date
+    %------------------------------------------------
+
+    \vspace{0.5cm} % Position the date further down the remaining page
+    {\large Sept 29, 2019} % Date, change the \today to a set date if you want to be precise
+    \vspace{0.5cm}
+
+%------------------------------------------------
+    %    Headings
+    %------------------------------------------------
+
+    \textsc{\LARGE Advanced Reactors and Fuel Cycles}\\[0.25cm] % Research Group
+
+    \textsc{\large Dept. of Nuclear, Plasma, \& Radiological Engineering}\\% Department
+
+    \textsc{\large University of Illiois at Urbana-Champaign}\\ % University
+
+
+
+    %------------------------------------------------
+    %    Logo
+    %------------------------------------------------
+
+    \vspace{0.5cm}
+    \includegraphics[width=0.8\textwidth]{illinois}\\[1cm] % Include a department/university logo - this will require the graphicx package
+
+    %----------------------------------------------------------------------------------------
+
+    %------------------------------------------------
+    %   Funding
+    %------------------------------------------------
+    % For this section, either use \vfill to fill the space
+    % or insert funding acknowledgement
+    \textit{This research is being performed using funding received from the 
+    Department of Energy (DOE) Office of Nuclear Energy’s Nuclear Energy 
+    University Program (Project 16-10512, DE-NE0008567) `Demand-Driven Cycamore 
+    Archetypes’.} 
+
+\end{titlepage}
+
+%----------------------------------------------------------------%
+
 \tableofcontents
 
 \pagebreak
